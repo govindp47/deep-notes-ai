@@ -1,0 +1,76 @@
+- Now, let's discuss the `.env` file. If you haven't encountered a `.env` file before, it's essentially a file used to store sensitive information like API keys or configuration values. Its primary purpose is security.
+- I have my own `.env` file stored in my folder structure to keep my API key hidden, as exposing it could lead to financial loss.
+- You might wonder why we need an API key. We require the API key because we are making calls to an external large language model (LLM). If we were using our own LLM, such as through OpenAI, we wouldn't need an API key; we would simply use the OpenAI library integration with LangChain.
+- Since we are using an external service, we need an API to communicate with the LLM hosted on their cloud servers.
+- To load our API key, we can use a simple Python code snippet: `load_dotenv()`.
+- Now that we are on the same page, let's code our AI agent. First, we define the state as we usually do. We will create a class called `AgentState` that is a typed dictionary.
+- The attributes we need in this state are minimal; we really just need one: the messages part.
+- The messages will be in the form of a list of human messages. This is important because when we invoke the graph, we are inputting human messages to inform the LLM that these are messages from the user.
+- We need to specify that these messages are of the type `HumanMessage`.
+- Next, we initialize the large language model (LLM) by writing `lm = ChatOpenAI()`, and we specify the model we want to use. I will be using GPT-4.
+- There are also other models available, such as ChatAnthropic and ChatOpenAI, among others. Personally, I prefer ChatOpenAI because it is straightforward to use.
+- I have also tried using ChatOAI, but I encountered some difficulties integrating it with LangChain, which is why I opted for OpenAI.
+- If you are concerned about costs, don't worry; it is very affordable. You could also consider using the GPT-4 mini model if cost is a significant concern. The input and output tokens are priced in mere pennies for thousands of tokens.
+- Now, let's define our node through a function called `process`, where we will define the state and return it.
+- To call the LLM, LangChain and the LangGraph team use the term "invoke." To run the LLM, we will also use the `invoke` method.
+- We will store the response we get in a variable by calling `lm.invoke()`. This method requires an input of `LanguageModelInput`, which essentially asks what you want the LLM to do.
+- Our question will be contained in the messages, so we will write `state.messages`. When we pass this to the LLM through the invoke method, it will generate a response from its cloud server via our API.
+- The response will then be stored in the `response` variable.
+- We can print this response and return the state.
+- Now, we need to create the graph. We have created a node called `process`, which is where the action occurs, and we have added an edge from the start to the endpoint and compiled the graph.
+- Next, we will ask for user input by writing `user_input = input("Enter something: ")`. We need to invoke the agent since we are creating a graph.
+- Let's run this code now. When we execute `python agentbot.py`, we can enter a message, such as "hi." The AI's response will be "Hello, how can I assist you today?"
+- I assure you that I did not pre-code this response; this is the actual LLM in action. If we run it again and input "Who are you?" it will respond, "I'm an AI language model created by OpenAI called ChatGPT."
+- This confirms that the LLM is functioning correctly. However, why limit ourselves to just one message? We can modify the code to allow for multiple messages, similar to a chatbot.
+- The code for this will involve iterating through user input until the user types "exit," which will break the loop and signify that they no longer wish to interact with the LLM.
+- Let's run this updated code. When we execute `python agentbot.py`, we can say "hi" again, and the AI will respond. We can continue the conversation by asking questions like "Who made you?" or "What is 2 + 2?" and receive appropriate responses.
+- However, if I ask, "What is my name?" the AI will respond, "I'm sorry, but I don't have the ability to know your name or any personal information about you." This is because we have not implemented any memory in the code.
+- This is why I referred to this section as a simple bot. It is not yet an agent; it is merely a basic LLM wrapper.
+- Now you know how to integrate LLMs into your graphs, and it's quite straightforward. The code is only about 25 to 29 lines long.
+- There won't be any exercises for this section since there isn't much to do with this basic implementation.
+- Next, we will build our second AI system, aiming to address the limitations we faced in the previous system, particularly the lack of memory.
+- We will create a chatbot that can remember previous interactions. The objectives for this subsection include using different message types, specifically human and AI messages, and maintaining a full conversation history.
+- We will again use the GPT-4 model with the LangChain's ChatOpenAI library to create a more sophisticated conversation loop.
+- The main goal is to create a form of memory for our agent. Let's begin coding our simple chatbot.
+- As before, I have imported all the necessary libraries, which are largely the same as before, but I have added two new components: the AI message and the Union type annotation.
+- The Union type annotation allows us to define a variable that can hold multiple types of data. If this is your first time encountering it, I recommend reviewing the first chapter for a better understanding.
+- Now, let's define the state again as a class called `AgentState`, which is a typed dictionary.
+- Previously, we defined the state with just a list of human messages. This time, we will also include AI messages to build a more sophisticated chatbot.
+- Instead of creating separate lists for human and AI messages, we can use the Union type annotation to allow for both types in a single list.
+- Human and AI messages are built-in data types within LangGraph and LangChain.
+- While these libraries are great, you can create your own AI agentic system using just Python functions without relying on a library. However, I recommend using these libraries, especially LangGraph, as they provide a good balance of control and simplicity.
+- Now, let's initialize the large language model again, using GPT-4.
+- We will create our node, which will have the same graph structure as before, but the actions we perform will differ slightly.
+- Let's write a docstring for the node, stating that it will solve the request you input.
+- We will invoke the LLM with the state messages, which can be either human or AI messages.
+- We will append the AI message content to the state messages after extracting it from the response.
+- To make the output more readable in the terminal, we will print the state and return it.
+- Now, we will create the same graph structure as before, reusing the code to save time.
+- This time, we will initialize a conversation history to keep track of the dialogue.
+- We will use a while loop to ask the user for their request. The loop will continue until the user types "exit."
+- The conversation history will be updated with the human message, which is the user's input.
+- We will invoke the agent, which is the compiled version of the graph, with the entire conversation history, not just the current human message.
+- This will allow the agent to remember previous interactions, making the conversation more coherent.
+- After processing the input, we will replace the conversation history with the result messages.
+- Let's run the code now. When we execute `python memory_agent.py`, we can test the chatbot's memory.
+- If I say, "Hi, my name is Steve," the AI will respond, "Hi Steve, it's great to meet you. How can I help you today?"
+- If I then ask, "What is my name?" the AI will correctly respond, "You are Steve," demonstrating that it remembers the previous context.
+- We can continue the conversation, and the AI will maintain the context throughout.
+- To visualize the current state, we can add print statements to see how the conversation history evolves.
+- After running the program and inputting various messages, we can observe how the state changes and how the AI responds.
+- However, there are two significant problems with this implementation. The first is that if we exit the program, the conversation history is lost.
+- To address this, we can store the conversation history in a text file. This is a simple solution for prototyping, although a more robust approach would involve using a database.
+- The code for saving the conversation history involves creating a text file and writing each message to it, distinguishing between human and AI messages.
+- After running the program again and inputting messages, we can check the text file to see the logged conversation.
+- The second problem is that as the conversation continues, the length of the state increases, which can lead to higher costs when using the LLM due to the number of tokens consumed.
+- A potential solution is to limit the number of human messages stored in the conversation history. For example, if the number of messages exceeds five, we can remove the oldest message.
+- This approach helps manage costs while still maintaining relevant context in the conversation.
+- We have learned how to integrate human and AI messages into our chatbot and create a more sophisticated system with memory.
+- Now, we will build our third AI agent, which will be a special type known as a React agent, standing for reasoning and acting.
+- This type of agent is common in AI development, and we will learn how to create tools in LangGraph.
+- The objectives for this section include building a React graph, working with different types of messages, and testing the robustness of our graph.
+- The main goal is to create a robust React agent. Let's proceed to the code. 
+- This section will be lengthy due to the numerous imports, so I will explain each line to ensure we are all on the same page.
+- The first line imports `Annotated`, `Sequence`, and `TypedDict` from the `typing` module. While we are familiar with `TypedDict`, we have not yet encountered `Annotated` or `Sequence`.
+- `Annotated` is a type annotation that provides additional context to a variable or key without affecting its data type.
+- For example, if we create a `TypedDict` with an email key, we would typically write `email: str`. However, with `Annotated`, we can specify that the email must follow a certain format while still being a string.

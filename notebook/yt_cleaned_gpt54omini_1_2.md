@@ -1,0 +1,182 @@
+- There might be logical errors. Trust me, I know. 
+- I want to write some code that will help you visualize this. 
+- You can use the IPython library. 
+- This code is very similar to the first graph I showed you. 
+- The only difference is the name of the node, which we've set to "greater." 
+- It is called "greater" because that's the name we gave to this node. 
+- Let's run this code. 
+- To run it, use the built-in method `invoke`. 
+- Let's pass in the message as something like "Bob" and store the result in a variable. 
+- To get the value of `result`, we need to reference a certain attribute. 
+- The only attribute we have in the entire graph is `message`. 
+- We simply put `message`, and we get the final answer, which is "Hey Bob, how's your day going?" 
+- This is exactly how we set our function to perform the action. 
+- It says "Hey," concatenates the input message (in this case, just the name), and adds "how's your day going?" 
+- I could have changed this to anything else; the functions are almost endless. 
+- That's the whole flow of how everything works. 
+- Hopefully, you understood how to build this very first "Hello World" graph. 
+- It's quite simple, but don't worry if you didn't fully understand it. 
+- I'm now going to show you the exercise you need to complete to solidify this. 
+- The exercise for this graph is quite similar to what we just did. 
+- I want you to create a personalized compliment agent. 
+- You should pass in your name, like "Bob," and then output something like "Bob, you're doing an amazing job learning Langraph." 
+- To give you a hint, you need to concatenate the state, not replace it. 
+- This is very similar to what we just did and quite basic. 
+- You should be able to do this; it's really just to get your hands dirty. 
+- Once you've completed this exercise, join me when we build the second graph. 
+- Now we're about to build our second graph. 
+- It's again quite similar to the first graph we built, except now we're going to be able to pass multiple inputs. 
+- The objectives you will be learning in this are to build a more complicated agent state and create a processing node that performs operations on list data. 
+- We will see how to work with different data types apart from just strings. 
+- We will set up the entire graph that processes and outputs these results and computes them. 
+- The main goal I want you to learn in this subsection is how to handle multiple inputs. 
+- Let's code this. 
+- I've imported the same things again: the type dictionary and the state graph. 
+- I've also imported the list this time. 
+- The list is just a simple data structure you should already know. 
+- If you remember from the previous graph we made, we are supposed to implement the state schema first. 
+- We use the class `AgentState` as a type dictionary. 
+- I could have named the state schema anything I wanted; I could have named it something arbitrary like "bottle." 
+- In this case, I've just called it `AgentState` because that's how I learned it, and it tells you what it actually is: the state of your agent. 
+- The main goal for this graph is to handle and process multiple different inputs. 
+- We create multiple keys in the state. 
+- Let's say something like `values: List[int]` for a list of integers. 
+- Let's also pass in a `name` which will be a string, and have the `result` as a string. 
+- Now we are operating on two different types of data structures: a list of integers and a string. 
+- We are handling three different inputs: `values`, `name`, and `result`. 
+- Let's run this. 
+- Now let's build our node. 
+- In this graph, we're just going to have a single node to keep things easy. 
+- Let's write `def process_values`. 
+- We need to pass in the state and return the updated state. 
+- We write `state: AgentState` and pass out the `AgentState`. 
+- Building healthy habits is important, so let's write a docstring: "This function processes multiple different values and inputs." 
+- Now, let's sum the values we pass in and concatenate the name as well, storing it in the result. 
+- We pass in `state.result` because the action we're performing is on the `result` attribute. 
+- Let's say something like "Hi there" and refer to the `name`. 
+- The sum is equal to the built-in Python function `sum(state.values)`. 
+- Lastly, we return the updated state. 
+- Now we create the graph. 
+- This is going to be very similar to what we did in the previous section because there's just a node, a start point, and an endpoint. 
+- We use the state graph to initialize a graph and pass in our state schema, `AgentState`, and store this in the variable `graph`. 
+- Let's add our node. 
+- `graph.add_node` requires two parameters: the name and the action. 
+- In this case, the name will be "processor," and the action will be performed by the function `process_values`. 
+- Now, I've already told you how to initialize a start point and an endpoint. 
+- You attach your entry point to your node, which is the processor node, and the same goes for finish. 
+- You compile it using `graph.compile`. 
+- Take a moment to think about how this graph will look. 
+- It should be very similar to how the graph actually looks, but the only difference is the name of the node, which we've kept as "processor." 
+- Now let's test this. 
+- We use the `invoke` function. 
+- Make sure to store your compiled graph in a variable because if you invoke the graph without compiling it, it won't work. 
+- That's why you need to invoke using `app`. 
+- If I did `graph.get_graph`, it would say the state graph object has no attribute because your graph hasn't been compiled yet. 
+- Let's store this in `answers` and invoke it. 
+- Let's pass in some values, like a list of integers: `[1, 2, 3, 4]`, and the name as "Steve." 
+- Let's print `answers` to see what happens. 
+- You can see your values are `[1, 2, 3, 4]`, your name is "Steve," and your result is "Hi there, Steve. Your sum is equal to 10." 
+- This is because that's exactly what we asked the node to perform. 
+- If I wanted to access just the result, I could specify `result` and get it in a cleaner manner. 
+- Now, I want to try one more thing to build your understanding. 
+- Let's add some print statements here. 
+- Let's print the state before the action and after the action. 
+- This shows how the state gets updated. 
+- You can see the values are `[1, 2, 3, 4]`, and the name is "Steve." 
+- Notice I didn't pass `result` as an input; Langraph automatically sets that as a `None` value if you don't pass it. 
+- If I had used `state.result` to update itself or something else, I would run into a problem because `state.result` has been initialized as `None`. 
+- Be mindful of that. 
+- In this case, it worked because we're only assigning `state.result`. 
+- After the action has been performed, you can see the result is updated. 
+- Hopefully, you understood that. 
+- It should have been quite intuitive, but to solidify your understanding even more, complete the exercise. 
+- I'll see you at the exercise. 
+- For your second exercise, I want you to create a graph that passes in a single list of integers along with a name and an operation. 
+- If the operation is "plus," you add the elements, and if it's "times," you multiply all the elements, all within the same node. 
+- For example, your input could be "Jack Sparrow," your values `[1, 2, 3, 4]`, and your operation "multiplication." 
+- Your output should be in the format of "Hi Jack Sparrow, your answer is 24." 
+- You would need an if statement in your node, so it's slightly more complicated, but the whole concept is the same. 
+- Once you've completed this exercise, I will see you when we build the third graph. 
+- Now, welcome to your third graph. 
+- This time, we're going to build a sequential graph. 
+- This means we're going to create and handle multiple nodes that can sequentially process and update different parts of the state. 
+- We will learn how to connect nodes together in a graph through edges. 
+- We will invoke the graph and see how the state gets transformed as we progress through our graphs step by step. 
+- Your main goal is to understand how to create and handle multiple nodes in Langraph. 
+- Let's code this. 
+- The imports are the same: state graph and type dictionary. 
+- As in the previous two graphs, we will code the state schema or the agent state first. 
+- Let's have `class AgentState`. 
+- It needs to be in the form of a typed dictionary. 
+- Let's have three attributes: `name: str`, `age: str`, and `final: str`. 
+- Now, we're about to build our two node functions, which are the actions. 
+- Let's name the first one `first_node`. 
+- We pass in the state and return the updated state. 
+- The docstring will say this is the first node of our sequence. 
+- In this node, I want to manipulate the final part. 
+- Let's say `state.final = f"{state.name}, hi there."` 
+- We return the state. 
+- Now we create a new node. 
+- Let's call it `second_node`. 
+- The docstring will say this is the second node. 
+- In this case, I want to have `state.final = f"You are {state.age} years old."` 
+- This is a simple example to help you understand. 
+- There is one logical error I want you to identify. 
+- Once we've built our graph, we would say "Hi" to whoever we pass in, let's say "Charlie." 
+- We store that in the final attribute in the state. 
+- But when we get to our second node, we replace it with "You are age years old." 
+- We want both of them, so we need to concatenate them. 
+- We can have `state.final = f"{state.final} {state.age} years old."` 
+- Now we have solved the logical error. 
+- Let's build the graph. 
+- We use `state_graph` to create the graph framework. 
+- Let's add these nodes to our graph. 
+- We will add the `first_node` and `second_node`. 
+- We need to set the entry point and the end point. 
+- We connect the first node to the second node using an edge. 
+- We use `graph.add_edge` to create a directed edge between the first node and the second node. 
+- The flow of data or state updates is from the first node to the second node. 
+- Now that we've built that, let's invoke it. 
+- Let's pass the parameters as "Charlie" and "20." 
+- Print the result. 
+- You can see it says "Hi Charlie, you are 20 years old." 
+- We could have performed all of this in one single node, but the aim was to create multiple nodes and handle how the state progresses. 
+- You learned how to use the `add_edge` method and that you can change the keys of your state at any point in time. 
+- Be mindful of replacing content in one of the attributes, as that can lead to logical errors. 
+- Now, let's move on to the exercise for this third graph. 
+- I want you to build on top of what we just covered. 
+- Instead of two nodes, build three nodes in a sequence. 
+- You will need to accept the user's name, their age, and a list of their skills. 
+- The first node will personalize the name field with a greeting. 
+- The second node will describe the user's age. 
+- The third node will list all of the user's skills in a formatted string. 
+- You will need to combine this and store it in a result field and output that. 
+- The format should be something like "Linda, welcome to the system. You are 31 years old, and you have skills in Python, machine learning, and Langraph." 
+- You will need to use the `add_edge` method twice. 
+- This will solidify your understanding of how to build graphs in general. 
+- Once you've done that, answers will be on GitHub for all of the exercises. 
+- I will see you in the next section where we build our fourth graph. 
+- Welcome! I'm particularly excited to teach you this graph, graph 4. 
+- We will learn how to build a conditional graph. 
+- For the first time, we will implement conditional logic. 
+- We will be using multiple nodes to perform different operations such as addition and subtraction. 
+- We will create a router node to handle decisions and control the graph flow. 
+- The main goal is to show you how to create conditional edges in Langraph. 
+- Let's code this up now. 
+- The imports are slightly modified this time. 
+- We have the type dictionary and state graph, but now I've also imported start and endpoint. 
+- We will design the state schema as `class AgentState`. 
+- We will pass in two numbers and an operation, either "plus" or "minus." 
+- The final number will be the result of either adding or subtracting the two numbers. 
+- Let's create our first node function, `adder`, which adds the two numbers. 
+- We will also create a node for subtraction called `subtractor`. 
+- Now we will create a node called `decide_next_node`, which will select the next phase of the graph. 
+- This node will route the flow based on the operation attribute. 
+- If `state.operation` is "plus," we will return the edge for addition. 
+- If it's "minus," we will return the edge for subtraction. 
+- Now we build the graph using `state_graph`. 
+- We will add the nodes to our graph and set the entry and exit points. 
+- We will connect the nodes using edges. 
+- This will allow us to route the flow of data based on the operation. 
+- Once we've built everything, we will invoke it and see how it works. 
+- This will help you understand how to implement conditional logic in the overall graph structure.

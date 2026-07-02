@@ -1,0 +1,151 @@
+- Welcome to this video course on Langraph, the powerful Python library for building advanced conversational AI workflows. 
+- In this course, Vbeca will teach you how to design, implement, and manage complex dialogue systems using a graph-based approach. 
+- By the end, you'll be equipped to build robust, scalable conversational applications that leverage the full potential of large language models. 
+- My name is Vava, and I'm a robotics and AI student. 
+- In this course, we're going to be learning all about the fundamentals of Langraph. 
+- I assume you've heard of Langraph before, hence why you clicked on this course. 
+- I also assume you have never coded in Langraph before. 
+- Because of this assumption, I have explained every single thing in as much detail as I possibly can. 
+- This might mean that I will be going slow at times, so if you want, you can always speed me up. 
+- In this course, we will be building a lot of graphs and AI agents. 
+- We will learn a lot about the theory, and I have also provided exercises throughout the course, with all of the answers available on GitHub. 
+- If you're ready to start this journey with me, let's go to our first section. 
+- In this section, we will cover something called type annotations. 
+- This will be a completely theoretical section, but it will be short and brief. 
+- The reason I've included this specific section is that when we eventually code our AI agents and graphs in Langraph, these will start popping up everywhere. 
+- I don't want you to start coding without having seen these before or without knowing what they actually are. 
+- So, let's begin with dictionaries. 
+- Dictionaries are a data structure, and there's a reason I've included it here. 
+- In this case, I've described a very simple dictionary called movie, which has two keys: name and year. 
+- It has two values: "Avengers Endgame" and 2019. 
+- Dictionaries allow for efficient data retrieval based on their unique keys. 
+- They are flexible and easy to implement, but there's a potential problem with them. 
+- It can be a challenge to ensure that the data is of a particular structure, which could be a huge problem in larger projects. 
+- In simple terms, dictionaries do not check if the data is the correct type or structure, which can lead to logical errors in your project. 
+- If your project is large, this could be quite a headache to identify. 
+- The solution for this is something called a type dictionary. 
+- Here is an example of how to create a type dictionary in Python. 
+- I want to emphasize that this type annotation is used extensively in Langraph to define states. 
+- A type dictionary is easy to implement; you implement it as a class. 
+- In this case, I've implemented the same example I showed you earlier, where I described the movie with the same keys and values. 
+- Notice in this class, I have defined the actual data type of what each key should be. 
+- For example, the name is a string, and the year is an integer. 
+- To initialize a dictionary, I have done the same thing with "Avengers Endgame" and 2019. 
+- There are two main benefits of using a type dictionary: type safety, because we've explicitly defined what should be in this data structure, which reduces runtime errors, and enhanced readability, making debugging easier if something goes wrong within this type dictionary. 
+- Now we move on to another type of annotation, which is union. 
+- You might have seen these later type annotations before if you have coded in Python, but I'm giving you a high-level overview of what they are. 
+- Union specifies that a value can be either of the defined data types. 
+- For example, I created a simple function that takes in a value and squares it. 
+- The input x could be either an integer or a float, and union indicates that x can only be an integer or a float. 
+- If I pass in 5 or 1.234, this would be fine, but if I pass in a string, it would fail. 
+- This function is simple, but in more complicated applications, union is useful for type safety, helping to catch incorrect usage. 
+- Another type annotation similar to union is optional. 
+- Optional indicates that a parameter could either be a specific type or None. 
+- For example, I described a function called nice_message that takes in a name. 
+- If you pass in a name, it will say "Hi there, [name]." 
+- If you don't pass in anything, optional indicates that the name parameter could either be a string or None. 
+- If nothing is passed, it will say "Hey, random person." 
+- It cannot be anything else; it must be either a string or None. 
+- Now comes another type annotation called any, which means the value could be anything. 
+- I created a simple function called print_value that takes in something and prints it. 
+- For example, if I pass in a string, it prints it, and anything is allowed. 
+- One last type annotation is the lambda function. 
+- Lambda functions are useful for creating small functions efficiently. 
+- For example, I created a square function that takes in a number and squares it. 
+- If I pass in 10, it gives me 100. 
+- Another example is using lambda with the map function to square each number in a list. 
+- Lambda functions are shortcuts for writing small functions, making everything efficient. 
+- You can see how powerful these type annotations are, and they will come up frequently. 
+- You don't need to memorize this; just have a high-level overview of what they are. 
+- Now, let's continue. 
+- In this section, we will look at the different elements in Langraph. 
+- The first element is the state. 
+- A state is a shared data structure that holds the current information or context of the entire application. 
+- In simpler terms, it is like the application's memory, keeping track of the variables and data that nodes can access and modify as they execute. 
+- Think of the whiteboard in a meeting room as an analogy. 
+- Each time you want to record or update information, you write it on the whiteboard, which acts as your state, while the participants act as nodes. 
+- The state shows the updated content of your entire application. 
+- Now, let's move on to the node, another fundamental element in Langraph. 
+- Nodes are individual functions or operations that perform specific tasks within the graph. 
+- Each node receives an input, often the current state of your application, processes it, and produces an output or an updated state. 
+- An analogy for this is the assembly line station, where each station performs a specific job. 
+- Each of these stations represents a node because they do one specific task. 
+- To connect these different nodes together, we need to understand the graph. 
+- The graph is the overarching structure that maps out how different tasks, or nodes, are connected and executed. 
+- It visually represents the workflow, showing the sequence and conditional parts between various operations. 
+- You can think of it as a roadmap, displaying different routes connecting cities with intersections offering choices on which path to take next. 
+- Edges are the connections between nodes that determine the flow of execution. 
+- They tell the application which node should be executed next after the current one completes its task. 
+- An analogy for this is a train track connecting two stations, where the train represents the state being updated from one station to another. 
+- There is also a type of edge called a conditional edge, which decides the next node to be executed based on specific conditions applied to the current state. 
+- An analogy for this is a traffic light, where the light color decides the next step. 
+- The start point, or start node, is a virtual entry point in Langraph that marks where the workflow begins. 
+- It doesn't perform any operations itself but serves as the designated starting position for the graph's execution. 
+- You can think of it as the starting line of a race. 
+- The end node signifies the conclusion of the workflow in Langraph. 
+- When the application reaches this node, the graph's execution stops, indicating that all intended processes have been completed. 
+- You can think of it as the finish line in a race. 
+- Tools are specialized functions or utilities that nodes can utilize to perform specific tasks, such as fetching data from an API. 
+- They enhance the capabilities of nodes by providing additional functionalities. 
+- The difference between a tool and a node is that a node is part of the graph structure, while tools are functionalities used within the nodes. 
+- An analogy for this is tools in a toolbox, where each tool has a distinct purpose. 
+- A tool node is a special kind of node whose main job is to run a tool. 
+- For example, a tool node could be a node that uses a tool to fetch data from an API and connects the tool's output back into the state for other nodes to use. 
+- The state graph is an important element that builds and compiles the graph structure. 
+- It manages the nodes, edges, and overall state, ensuring that the workflow operates in a unified way and that data flows correctly between components. 
+- You can think of it as a blueprint of a building, outlining the design and connections within the building. 
+- A runnable in Langraph is a standardized executable component that performs a specific task within an AI workflow. 
+- It acts as a fundamental building block, allowing us to create modular systems. 
+- The difference between a runnable and a node is that a runnable can represent various operations, while a node typically receives a state, performs an action, and updates the state. 
+- You can think of a runnable as a Lego brick, which can be combined to create sophisticated AI workflows. 
+- Now let's move on to the different types of messages in Langraph. 
+- The five most common message types are: 
+  - The human message, which represents input from a user. 
+  - The AI message, which represents responses generated by AI models. 
+  - The system message, which provides instructions or context to the model. 
+  - The tool message, which is specific to tool usage. 
+  - The function message, which represents a function call. 
+- If you've used an API like a large language model API before, many of these will be familiar, especially the system message, AI message, and human message. 
+- This concludes this section. 
+- Now we are about to start coding in Langraph for the very first time. 
+- Now that we've covered all the theory, we will code up some graphs. 
+- We will code our very first graph in this subsection. 
+- However, I have a slight confession: we are not going to be building any AI agents in this section. 
+- This is because we haven't seen how to code in Langraph yet, and combining LLMs, APIs, and tools could be quite messy and confusing, especially since we have never coded in Langraph before. 
+- This course is designed to be beginner-friendly, detailed, and comprehensive, and we will proceed step by step. 
+- Don't worry; we will be coding AI agents soon. 
+- For now, we will build a couple of graphs to understand Langraph better, the syntax, and how to code graphs confidently. 
+- The graph we will build together is called the hello world graph, as it is the most basic form of a graph we can code in Langraph. 
+- The objectives are to understand and define the agent state structure, create simple node functions, process them, and update the state. 
+- We will build the first basic Langraph structure and understand how to compile, invoke, and process it. 
+- The main goal of this section is to understand how data flows through a single node in Langraph. 
+- The graph we will be building has a start point and an end point, with nodes sandwiched in between. 
+- Now let's code this very first graph. 
+- I have imported three main things: dict, type dict, and state graph. 
+- The dict and type dict are dictionary and type dictionary, while state graph is a framework that helps you design and manage the flow of tasks in your application. 
+- The first thing we will do after importing everything is create the state of our agent, which we will call agent state. 
+- The state is a shared data structure that keeps track of all the information as the application runs. 
+- We will build the agent state through a class. 
+- Let's create a class called agent state, and the state needs to be in the form of a typed dictionary. 
+- We will pass in one input called message, specifying the data type as string. 
+- Now we will code our first node, which is another fundamental element in Langraph. 
+- To define a node, we create a standard Python function. 
+- Let's create a greeting node function that takes in an input and specifies the output type. 
+- The input type of a node needs to be the state, and the output type also has to be the state. 
+- The state of our application is the agent state we defined earlier. 
+- We will return the updated state after performing actions in this function. 
+- It's important to create docstrings for our functions, as they inform AI agents about what the function does. 
+- We will write a docstring stating that this is a simple node that adds a greeting message to the state. 
+- We will update the state by manipulating the message part of the state. 
+- For example, we can concatenate "Hey" with the state message. 
+- Finally, we will return the updated state. 
+- Now let's build the graph using the state graph framework. 
+- To create a graph in Langraph, we use the state graph attribute and pass in our state schema, which is the agent state. 
+- We will store this in a variable called graph. 
+- To add a node to this graph, we use the inbuilt function graph.add_node, which requires two parameters: the name of the node and the action it will perform. 
+- We will name the node "greeter" and specify the action as the greeting node function. 
+- Now we need to add the start and end points to the graph. 
+- We can do this by calling the inbuilt function set_entry_point and passing the key of the node we want the start node to connect to. 
+- We will pass "greeter" as the key for both the start and end points. 
+- Finally, we will compile the graph using the inbuilt compile function and store it in a variable. 
+- Just because the graph compiles without errors doesn't mean it will run successfully, as there could be logical errors in more complicated graphs.

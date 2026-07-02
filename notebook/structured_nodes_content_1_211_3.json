@@ -1,0 +1,148 @@
+{
+    "items": [
+        {
+            "id": "228b8636-5bd0-4a9c-8175-740d43ddf1b5",
+            "markdown": "Welcome to this video course on Langraph, the powerful Python library for building advanced conversational AI workflows.\n\nIn this course, Vbeca will teach you how to design, implement, and manage complex dialogue systems using a graph-based approach.\n\nBy the end, you'll be equipped to build robust, scalable conversational applications that leverage the full potential of large language models."
+        },
+        {
+            "id": "082e8dd3-90dd-4e2f-8cbe-abea45bf3277",
+            "markdown": "My name is Vava, and I'm a robotics and AI student.\n\nIn this course, we're going to be learning all about the fundamentals of Langraph.\n\nI assume you've heard of Langraph before, hence why you clicked on this course.\n\nI also assume you have never coded in Langraph before.\n\nBecause of this assumption, I have explained every single thing in as much detail as I possibly can.\n\nThis might mean that I will be going slow at times, so if you want, you can always speed me up."
+        },
+        {
+            "id": "7bc7f573-60db-4ebd-9df9-3c6434aa72ed",
+            "markdown": "In this course, we will be building a lot of graphs and AI agents.\n\nWe will learn a lot about the theory, and I have also provided exercises throughout the course, with all of the answers available on GitHub.\n\nIf you're ready to start this journey with me, let's go to our first section."
+        },
+        {
+            "id": "46192c2d-c707-492f-8d18-dc3e12b65f33",
+            "markdown": "In this section, we will cover something called type annotations.\n\nThis will be a completely theoretical section, but it will be short and brief.\n\nThe reason I've included this specific section is that when we eventually code our AI agents and graphs in Langraph, these will start popping up everywhere.\n\nI don't want you to start coding without having seen these before or without knowing what they actually are."
+        },
+        {
+            "id": "9adc9132-f46e-4e11-b31c-2f7a151df74c",
+            "markdown": "So, let's begin with dictionaries.\n\nDictionaries are a data structure, and there's a reason I've included it here.\n\nIn this case, I've described a very simple dictionary called `movie`, which has two keys: `name` and `year`.\n\nIt has two values: \"Avengers Endgame\" and 2019."
+        },
+        {
+            "id": "35cbdb75-5db7-43ff-a828-0c8895e60ec8",
+            "markdown": "Dictionaries allow for efficient data retrieval based on their unique keys.\n\nThey are flexible and easy to implement, but there's a potential problem with them.\n\nIt can be a challenge to ensure that the data is of a particular structure, which could be a huge problem in larger projects.\n\nIn simple terms, dictionaries do not check if the data is the correct type or structure, which can lead to logical errors in your project.\n\nIf your project is large, this could be quite a headache to identify.\n\nThe solution for this is something called a type dictionary."
+        },
+        {
+            "id": "0173360f-4c47-47e0-87b9-e21fe49fed2b",
+            "markdown": "The solution for this is something called a type dictionary.\n\nHere is an example of how to create a type dictionary in Python.\n\nI want to emphasize that this type annotation is used extensively in Langraph to define states.\n\nA type dictionary is easy to implement; you implement it as a class.\n\nIn this case, I've implemented the same example I showed you earlier, where I described the `movie` with the same keys and values.\n\nNotice in this class, I have defined the actual data type of what each key should be.\n\nFor example, the `name` is a string, and the `year` is an integer.\n\nTo initialize a dictionary, I have done the same thing with \"Avengers Endgame\" and 2019."
+        },
+        {
+            "id": "01ff72a3-103f-4d84-9df4-39bead2b37a5",
+            "markdown": "There are two main benefits of using a type dictionary:\n\n- Type safety, because we've explicitly defined what should be in this data structure, which reduces runtime errors.\n- Enhanced readability, making debugging easier if something goes wrong within this type dictionary."
+        },
+        {
+            "id": "c8cb21f8-8d83-495d-9c2a-0fc1c6cadbfa",
+            "markdown": "Now we move on to another type of annotation, which is union.\n\nYou might have seen these later type annotations before if you have coded in Python, but I'm giving you a high-level overview of what they are.\n\nUnion specifies that a value can be either of the defined data types.\n\nFor example, I created a simple function that takes in a value and squares it.\n\nThe input `x` could be either an integer or a float, and union indicates that `x` can only be an integer or a float.\n\nIf I pass in 5 or 1.234, this would be fine, but if I pass in a string, it would fail.\n\nThis function is simple, but in more complicated applications, union is useful for type safety, helping to catch incorrect usage."
+        },
+        {
+            "id": "85f08c14-7fa2-4eb7-83c8-7aa00cdf3225",
+            "markdown": "Another type annotation similar to union is optional.\n\nOptional indicates that a parameter could either be a specific type or None.\n\nFor example, I described a function called `nice_message` that takes in a `name`.\n\nIf you pass in a name, it will say \"Hi there, [name].\"\n\nIf you don't pass in anything, optional indicates that the `name` parameter could either be a string or None.\n\nIf nothing is passed, it will say \"Hey, random person.\"\n\nIt cannot be anything else; it must be either a string or None."
+        },
+        {
+            "id": "b9323571-70ce-4a02-9102-9c520d2834fe",
+            "markdown": "Now comes another type annotation called `any`, which means the value could be anything.\n\nI created a simple function called `print_value` that takes in something and prints it.\n\nFor example, if I pass in a string, it prints it, and anything is allowed."
+        },
+        {
+            "id": "a3409bca-edc3-4995-a90e-adcc8dd16dc0",
+            "markdown": "One last type annotation is the lambda function.\n\nLambda functions are useful for creating small functions efficiently.\n\nFor example, I created a square function that takes in a number and squares it.\n\nIf I pass in 10, it gives me 100.\n\nAnother example is using lambda with the `map` function to square each number in a list.\n\nLambda functions are shortcuts for writing small functions, making everything efficient."
+        },
+        {
+            "id": "77ecbfb2-c33f-4f5a-b690-a9ac21d70269",
+            "markdown": "You can see how powerful these type annotations are, and they will come up frequently.\n\nYou don't need to memorize this; just have a high-level overview of what they are.\n\nNow, let's continue."
+        },
+        {
+            "id": "aef26eda-4812-4c5a-bef1-95da93bd87a6",
+            "markdown": "In this section, we will look at the different elements in Langraph.\n\nThe first element is the state.\n\nA state is a shared data structure that holds the current information or context of the entire application.\n\nIn simpler terms, it is like the application's memory, keeping track of the variables and data that nodes can access and modify as they execute.\n\nThink of the whiteboard in a meeting room as an analogy.\n\nEach time you want to record or update information, you write it on the whiteboard, which acts as your state, while the participants act as nodes.\n\nThe state shows the updated content of your entire application."
+        },
+        {
+            "id": "4d1a9e0f-ff7b-43fd-be12-387472632a0a",
+            "markdown": "Now, let's move on to the node, another fundamental element in Langraph.\n\nNodes are individual functions or operations that perform specific tasks within the graph.\n\nEach node receives an input, often the current state of your application, processes it, and produces an output or an updated state.\n\nAn analogy for this is the assembly line station, where each station performs a specific job.\n\nEach of these stations represents a node because they do one specific task.\n\nTo connect these different nodes together, we need to understand the graph."
+        },
+        {
+            "id": "ee8b7283-acd7-4b69-a0f3-6a768684079d",
+            "markdown": "To connect these different nodes together, we need to understand the graph.\n\nThe graph is the overarching structure that maps out how different tasks, or nodes, are connected and executed.\n\nIt visually represents the workflow, showing the sequence and conditional parts between various operations.\n\nYou can think of it as a roadmap, displaying different routes connecting cities with intersections offering choices on which path to take next."
+        },
+        {
+            "id": "2b6cdfe3-10ab-4f59-800b-410012649222",
+            "markdown": "Edges are the connections between nodes that determine the flow of execution.\n\nThey tell the application which node should be executed next after the current one completes its task.\n\nAn analogy for this is a train track connecting two stations, where the train represents the state being updated from one station to another.\n\nThere is also a type of edge called a conditional edge, which decides the next node to be executed based on specific conditions applied to the current state.\n\nAn analogy for this is a traffic light, where the light color decides the next step."
+        },
+        {
+            "id": "eaf12732-3738-4ec2-ac0e-45e9cd388076",
+            "markdown": "The start point, or start node, is a virtual entry point in Langraph that marks where the workflow begins.\n\nIt doesn't perform any operations itself but serves as the designated starting position for the graph's execution.\n\nYou can think of it as the starting line of a race.\n\nThe end node signifies the conclusion of the workflow in Langraph.\n\nWhen the application reaches this node, the graph's execution stops, indicating that all intended processes have been completed.\n\nYou can think of it as the finish line in a race."
+        },
+        {
+            "id": "21b7af2a-864c-4943-81ec-981142e53b70",
+            "markdown": "Tools are specialized functions or utilities that nodes can utilize to perform specific tasks, such as fetching data from an API.\n\nThey enhance the capabilities of nodes by providing additional functionalities.\n\nThe difference between a tool and a node is that a node is part of the graph structure, while tools are functionalities used within the nodes.\n\nAn analogy for this is tools in a toolbox, where each tool has a distinct purpose.\n\nA tool node is a special kind of node whose main job is to run a tool.\n\nFor example, a tool node could be a node that uses a tool to fetch data from an API and connects the tool's output back into the state for other nodes to use."
+        },
+        {
+            "id": "fe5af497-1ce9-4545-a76c-8df433f2d731",
+            "markdown": "The state graph is an important element that builds and compiles the graph structure.\n\nIt manages the nodes, edges, and overall state, ensuring that the workflow operates in a unified way and that data flows correctly between components."
+        },
+        {
+            "id": "f49ee36d-57d7-49b6-9a9c-ccf7fa5e5afb",
+            "markdown": "The state graph is an important element that builds and compiles the graph structure.\n\nIt manages the nodes, edges, and overall state, ensuring that the workflow operates in a unified way and that data flows correctly between components.\n\nYou can think of it as a blueprint of a building, outlining the design and connections within the building.\n\nA runnable in Langraph is a standardized executable component that performs a specific task within an AI workflow.\n\nIt acts as a fundamental building block, allowing us to create modular systems.\n\nThe difference between a runnable and a node is that a runnable can represent various operations, while a node typically receives a state, performs an action, and updates the state.\n\nYou can think of a runnable as a Lego brick, which can be combined to create sophisticated AI workflows."
+        },
+        {
+            "id": "45e235d4-3acf-42cf-9279-8203abe9b9a9",
+            "markdown": "Now let's move on to the different types of messages in Langraph.\n\nThe five most common message types are:\n\n1. The human message, which represents input from a user.\n2. The AI message, which represents responses generated by AI models.\n3. The system message, which provides instructions or context to the model.\n4. The tool message, which is specific to tool usage.\n5. The function message, which represents a function call.\n\nIf you've used an API like a large language model API before, many of these will be familiar, especially the system message, AI message, and human message."
+        },
+        {
+            "id": "f2ac82c3-b3db-4ad4-a15f-ab01dcec8b2f",
+            "markdown": "This concludes this section."
+        },
+        {
+            "id": "eff31837-ea2c-4115-b0d6-c1ef148eb223",
+            "markdown": "Now we are about to start coding in Langraph for the very first time.\n\nNow that we've covered all the theory, we will code up some graphs.\n\nWe will code our very first graph in this subsection.\n\nHowever, I have a slight confession: we are not going to be building any AI agents in this section.\n\nThis is because we haven't seen how to code in Langraph yet, and combining LLMs, APIs, and tools could be quite messy and confusing, especially since we have never coded in Langraph before.\n\nThis course is designed to be beginner-friendly, detailed, and comprehensive, and we will proceed step by step.\n\nDon't worry; we will be coding AI agents soon."
+        },
+        {
+            "id": "e4779de1-76f2-4580-b3d3-51ad992cc8c7",
+            "markdown": "For now, we will build a couple of graphs to understand Langraph better, the syntax, and how to code graphs confidently.\n\nThe graph we will build together is called the hello world graph, as it is the most basic form of a graph we can code in Langraph.\n\nThe objectives are to understand and define the agent state structure, create simple node functions, process them, and update the state.\n\nWe will build the first basic Langraph structure and understand how to compile, invoke, and process it.\n\nThe main goal of this section is to understand how data flows through a single node in Langraph.\n\nThe graph we will be building has a start point and an end point, with nodes sandwiched in between."
+        },
+        {
+            "id": "0b00abe7-fb69-45e7-8cc5-6c40f4f6eeb8",
+            "markdown": "Now let's code this very first graph.\n\nI have imported three main things: `dict`, `TypedDict`, and `state graph`.\n\nThe `dict` and `TypedDict` are dictionary and type dictionary, while `state graph` is a framework that helps you design and manage the flow of tasks in your application.\n\nThe first thing we will do after importing everything is create the state of our agent, which we will call agent state."
+        },
+        {
+            "id": "620d887f-46cd-46e1-8463-fa856ddf0311",
+            "markdown": "The first thing we will do after importing everything is create the state of our agent, which we will call agent state.\n\nThe state is a shared data structure that keeps track of all the information as the application runs.\n\nWe will build the agent state through a class.\n\nLet's create a class called `AgentState`, and the state needs to be in the form of a typed dictionary.\n\nWe will pass in one input called `message`, specifying the data type as `str`.\n\nNow we will code our first node, which is another fundamental element in Langraph.\n\nTo define a node, we create a standard Python function.\n\nLet's create a `greeting` node function that takes in an input and specifies the output type.\n\nThe input type of a node needs to be the state, and the output type also has to be the state.\n\nThe state of our application is the `AgentState` we defined earlier."
+        },
+        {
+            "id": "0cf95812-bedf-4a18-8d29-c333fe505705",
+            "markdown": "Now we will code our first node, which is another fundamental element in Langraph.\n\nTo define a node, we create a standard Python function.\n\nLet's create a `greeting` node function that takes in an input and specifies the output type.\n\nThe input type of a node needs to be the state, and the output type also has to be the state.\n\nThe state of our application is the `AgentState` we defined earlier.\n\nWe will return the updated state after performing actions in this function.\n\nIt's important to create docstrings for our functions, as they inform AI agents about what the function does.\n\nWe will write a docstring stating that this is a simple node that adds a greeting message to the state.\n\nWe will update the state by manipulating the `message` part of the state.\n\nFor example, we can concatenate \"Hey\" with the state `message`.\n\nFinally, we will return the updated state."
+        },
+        {
+            "id": "56456988-c915-480c-b239-91099e337b75",
+            "markdown": "Now let's build the graph using the state graph framework.\n\nTo create a graph in Langraph, we use the state graph attribute and pass in our state schema, which is the `AgentState`.\n\nWe will store this in a variable called `graph`.\n\nTo add a node to this graph, we use the inbuilt function `graph.add_node`, which requires two parameters: the name of the node and the action it will perform.\n\nWe will name the node `greeter` and specify the action as the `greeting` node function.\n\nNow we need to add the start and end points to the graph.\n\nWe can do this by calling the inbuilt function `set_entry_point` and passing the key of the node we want the start node to connect to.\n\nWe will pass `greeter` as the key for both the start and end points.\n\nFinally, we will compile the graph using the inbuilt `compile` function and store it in a variable.\n\nJust because the graph compiles without errors doesn't mean it will run successfully, as there could be logical errors in more complicated graphs."
+        },
+        {
+            "id": "bc3d575a-a69f-4213-b12a-cd115b73cd17",
+            "markdown": "Finally, we will compile the graph using the inbuilt `compile` function and store it in a variable.\n\nJust because the graph compiles without errors doesn't mean it will run successfully, as there could be logical errors in more complicated graphs.\n\nThere might be logical errors. Trust me, I know.\n\nI want to write some code that will help you visualize this.\n\nYou can use the IPython library.\n\nThis code is very similar to the first graph I showed you.\n\nThe only difference is the name of the node, which we've set to `greater`.\n\nIt is called `greater` because that's the name we gave to this node.\n\nLet's run this code."
+        },
+        {
+            "id": "129ddf09-07f4-4490-89bf-c3ec9f96d69c",
+            "markdown": "To run it, use the built-in method `invoke`.\n\nLet's pass in the message as something like \"Bob\" and store the result in a variable.\n\nTo get the value of `result`, we need to reference a certain attribute.\n\nThe only attribute we have in the entire graph is `message`.\n\nWe simply put `message`, and we get the final answer, which is \"Hey Bob, how's your day going?\"\n\nThis is exactly how we set our function to perform the action.\n\nIt says \"Hey,\" concatenates the input message (in this case, just the name), and adds \"how's your day going?\"\n\nI could have changed this to anything else; the functions are almost endless."
+        },
+        {
+            "id": "c929a83e-715e-41b6-95a8-69de43d2394d",
+            "markdown": "To get the value of `result`, we need to reference a certain attribute.\n\nThe only attribute we have in the entire graph is `message`.\n\nWe simply put `message`, and we get the final answer, which is \"Hey Bob, how's your day going?\"\n\nThis is exactly how we set our function to perform the action.\n\nIt says \"Hey,\" concatenates the input message (in this case, just the name), and adds \"how's your day going?\"\n\nI could have changed this to anything else; the functions are almost endless.\n\nThat's the whole flow of how everything works."
+        },
+        {
+            "id": "9a8bb0a8-5956-4490-b27b-efcc3631b166",
+            "markdown": "Hopefully, you understood how to build this very first \"Hello World\" graph.\n\nIt's quite simple, but don't worry if you didn't fully understand it.\n\nI'm now going to show you the exercise you need to complete to solidify this.\n\nThe exercise for this graph is quite similar to what we just did.\n\nI want you to create a personalized compliment agent.\n\nYou should pass in your name, like \"Bob,\" and then output something like \"Bob, you're doing an amazing job learning Langraph.\"\n\nTo give you a hint, you need to concatenate the state, not replace it.\n\nThis is very similar to what we just did and quite basic.\n\nYou should be able to do this; it's really just to get your hands dirty."
+        },
+        {
+            "id": "17fc891d-7531-4abe-9134-da621ec741d2",
+            "markdown": "Once you've completed this exercise, join me when we build the second graph.\n\nNow we're about to build our second graph.\n\nIt's again quite similar to the first graph we built, except now we're going to be able to pass multiple inputs.\n\nThe objectives you will be learning in this are to build a more complicated agent state and create a processing node that performs operations on list data.\n\nWe will see how to work with different data types apart from just strings.\n\nWe will set up the entire graph that processes and outputs these results and computes them.\n\nThe main goal I want you to learn in this subsection is how to handle multiple inputs.\n\nLet's code this."
+        },
+        {
+            "id": "5e61946f-cfb0-442d-b8d7-1f0b3e3d64c9",
+            "markdown": "I've imported the same things again: the type dictionary and the state graph.\n\nI've also imported the `List` this time.\n\nThe `List` is just a simple data structure you should already know.\n\nIf you remember from the previous graph we made, we are supposed to implement the state schema first.\n\nWe use the class `AgentState` as a type dictionary.\n\nI could have named the state schema anything I wanted; I could have named it something arbitrary like \"bottle.\"\n\nIn this case, I've just called it `AgentState` because that's how I learned it, and it tells you what it actually is: the state of your agent.\n\nThe main goal for this graph is to handle and process multiple different inputs.\n\nWe create multiple keys in the state.\n\nLet's say something like `values: List[int]` for a list of integers.\n\nLet's also pass in a `name` which will be a string, and have the `result` as a string.\n\nNow we are operating on two different types of data structures: a list of integers and a string."
+        },
+        {
+            "id": "5ef3d60f-2617-4398-9ff9-c60adbe45717",
+            "markdown": "We are handling three different inputs: `values`, `name`, and `result`.\n\nLet's run this.\n\nNow let's build our node.\n\nIn this graph, we're just going to have a single node to keep things easy.\n\nLet's write `def process_values`.\n\nWe need to pass in the state and return the updated state.\n\nWe write `state: AgentState` and pass out the `AgentState`.\n\nBuilding healthy habits is important, so let's write a docstring: \"This function processes multiple different values and inputs.\"\n\nNow, let's sum the values we pass in and concatenate the name as well, storing it in the result.\n\nWe pass in `state.result` because the action we're performing is on the `result` attribute.\n\nLet's say something like \"Hi there\" and refer to the `name`.\n\nThe sum is equal to the built-in Python function `sum(state.values)`.\n\nLastly, we return the updated state."
+        }
+    ]
+}

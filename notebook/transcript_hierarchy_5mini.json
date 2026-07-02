@@ -1,0 +1,1256 @@
+{
+    "hierarchy": [
+        {
+            "id": "b3f5f2d5-8a6e-4d2e-a7e3-1d2a4f9b6c01",
+            "name": "Introduction",
+            "start_point": 1,
+            "end_point": 12,
+            "children": [
+                {
+                    "id": "a1c9b6f2-3d4e-4f6a-9c2b-2e5a7f8d9011",
+                    "name": "CONTENT",
+                    "start_point": 1,
+                    "end_point": 3,
+                    "children": []
+                },
+                {
+                    "id": "2f4e7a8b-5c6d-4e9f-b2a3-4d7e9b0c1122",
+                    "name": "Instructor Introduction",
+                    "start_point": 4,
+                    "end_point": 9,
+                    "children": [
+                        {
+                            "id": "3c7a9d2f-6b5e-4f1a-a2b3-5e8f0c1d2233",
+                            "name": "CONTENT",
+                            "start_point": 4,
+                            "end_point": 9,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "5d8f0b3a-1c2e-4a7f-b6d4-6f9b1e2c3344",
+                    "name": "Course Scope",
+                    "start_point": 10,
+                    "end_point": 12,
+                    "children": [
+                        {
+                            "id": "6e9a1c4b-2d3f-4b8e-c7a5-7f0b2d3e4455",
+                            "name": "CONTENT",
+                            "start_point": 10,
+                            "end_point": 12,
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "d6f2e3a7-9b8c-4c1d-a5f0-8a2b3c4d5566",
+            "name": "Type Annotations",
+            "start_point": 13,
+            "end_point": 60,
+            "children": [
+                {
+                    "id": "f1a2b3c4-5678-4d9e-8f0a-1b2c3d4e6677",
+                    "name": "Section Overview",
+                    "start_point": 13,
+                    "end_point": 16,
+                    "children": [
+                        {
+                            "id": "0a1b2c3d-4e5f-6789-0abc-def123456788",
+                            "name": "CONTENT",
+                            "start_point": 13,
+                            "end_point": 16,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "9b8c7d6e-5f4a-4b3c-a2d1-0e9f8a7b6699",
+                    "name": "Dictionaries",
+                    "start_point": 17,
+                    "end_point": 25,
+                    "children": [
+                        {
+                            "id": "1a2b3c4d-5e6f-7081-92a3-b4c5d6e77889",
+                            "name": "CONTENT",
+                            "start_point": 17,
+                            "end_point": 25,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "2b3c4d5e-6f70-41a8-92b3-c5d6e7f88900",
+                    "name": "Type Dictionary (TypedDict)",
+                    "start_point": 26,
+                    "end_point": 34,
+                    "children": [
+                        {
+                            "id": "3d4e5f6a-7b80-41c9-8d2e-e6f7a8b99011",
+                            "name": "CONTENT",
+                            "start_point": 26,
+                            "end_point": 34,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "4c5d6e7f-8091-4a2b-b3c4-d5e6f7a00122",
+                    "name": "Union Annotation",
+                    "start_point": 35,
+                    "end_point": 41,
+                    "children": [
+                        {
+                            "id": "5e6f7a80-9123-4b3c-c4d5-e6f7a8b11223",
+                            "name": "CONTENT",
+                            "start_point": 35,
+                            "end_point": 41,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "6d7e8f90-1234-4c5d-b6a7-f8e9a1b22334",
+                    "name": "Optional Annotation",
+                    "start_point": 42,
+                    "end_point": 48,
+                    "children": [
+                        {
+                            "id": "7e8f9012-3456-4d6e-c7b8-09a1b2c33445",
+                            "name": "CONTENT",
+                            "start_point": 42,
+                            "end_point": 48,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "8f901234-5678-4e7f-a8b9-0c1d2e445566",
+                    "name": "Any Type",
+                    "start_point": 49,
+                    "end_point": 51,
+                    "children": [
+                        {
+                            "id": "90a1b2c3-4567-4f8a-b9c0-1d2e3f556677",
+                            "name": "CONTENT",
+                            "start_point": 49,
+                            "end_point": 51,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "a0b1c2d3-5678-4f9a-b0c1-2d3e4f667788",
+                    "name": "Lambda Functions",
+                    "start_point": 52,
+                    "end_point": 57,
+                    "children": [
+                        {
+                            "id": "b1c2d3e4-6789-40ab-c1d2-3e4f55667899",
+                            "name": "CONTENT",
+                            "start_point": 52,
+                            "end_point": 57,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "c2d3e4f5-7890-41bc-d2e3-4f5566678899",
+                    "name": "Summary",
+                    "start_point": 58,
+                    "end_point": 60,
+                    "children": [
+                        {
+                            "id": "d3e4f5a6-8901-42cd-e3f4-556667778900",
+                            "name": "CONTENT",
+                            "start_point": 58,
+                            "end_point": 60,
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "e7f8a9b0-1234-4c5d-b6e7-8f9012a3bcd4",
+            "name": "Langraph Core Elements",
+            "start_point": 61,
+            "end_point": 109,
+            "children": [
+                {
+                    "id": "f4e3d2c1-9876-4b5a-8c9d-0e1f2a3b4455",
+                    "name": "State",
+                    "start_point": 61,
+                    "end_point": 67,
+                    "children": [
+                        {
+                            "id": "a4b5c6d7-1234-4e5f-8a9b-1c2d3e4f5566",
+                            "name": "CONTENT",
+                            "start_point": 61,
+                            "end_point": 67,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "b5c6d7e8-2345-4f6a-9b0c-2d3e4f556677",
+                    "name": "Node and Graph",
+                    "start_point": 68,
+                    "end_point": 76,
+                    "children": [
+                        {
+                            "id": "c6d7e8f9-3456-40ab-9c0d-3e4f55667788",
+                            "name": "CONTENT",
+                            "start_point": 68,
+                            "end_point": 76,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "d7e8f901-4567-41bc-0d1e-4f5566778899",
+                    "name": "Edges and Conditional Edges",
+                    "start_point": 77,
+                    "end_point": 81,
+                    "children": [
+                        {
+                            "id": "e8f90123-5678-42cd-1e2f-556677889900",
+                            "name": "CONTENT",
+                            "start_point": 77,
+                            "end_point": 81,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "f9012345-6789-43de-2f3a-667788990011",
+                    "name": "Start and End Nodes",
+                    "start_point": 82,
+                    "end_point": 87,
+                    "children": [
+                        {
+                            "id": "01234567-89ab-44ef-3f4b-778899001122",
+                            "name": "CONTENT",
+                            "start_point": 82,
+                            "end_point": 87,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "12345678-9abc-45f0-4a5b-889900112233",
+                    "name": "Tools and Tool Nodes",
+                    "start_point": 88,
+                    "end_point": 96,
+                    "children": [
+                        {
+                            "id": "23456789-abcd-46a1-5b6c-990011223344",
+                            "name": "CONTENT",
+                            "start_point": 88,
+                            "end_point": 96,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "3456789a-bcde-47b2-6c7d-001122334455",
+                    "name": "State Graph and Runnable",
+                    "start_point": 94,
+                    "end_point": 100,
+                    "children": [
+                        {
+                            "id": "456789ab-cdef-48c3-7d8e-112233445566",
+                            "name": "CONTENT",
+                            "start_point": 94,
+                            "end_point": 100,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "56789abc-def0-49d4-8e9f-223344556677",
+                    "name": "Message Types",
+                    "start_point": 101,
+                    "end_point": 108,
+                    "children": [
+                        {
+                            "id": "6789abcd-ef01-4ae5-9f0a-334455667788",
+                            "name": "CONTENT",
+                            "start_point": 101,
+                            "end_point": 108,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "789abcde-f012-4bf6-0a1b-445566778899",
+                    "name": "Section Close",
+                    "start_point": 109,
+                    "end_point": 109,
+                    "children": [
+                        {
+                            "id": "89abcdef-0123-4c07-1b2c-556677889900",
+                            "name": "CONTENT",
+                            "start_point": 109,
+                            "end_point": 109,
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "8a9b0c1d-2345-4e6f-8a9b-0c1d2e3f4456",
+            "name": "Coding: Graph Examples",
+            "start_point": 110,
+            "end_point": 376,
+            "children": [
+                {
+                    "id": "9a0b1c2d-3456-4f7a-9b0c-1d2e3f445566",
+                    "name": "Hello World Graph (Graph 1)",
+                    "start_point": 110,
+                    "end_point": 177,
+                    "children": [
+                        {
+                            "id": "0f1e2d3c-4567-48a9-b0c1-2d3e4f556677",
+                            "name": "Objectives",
+                            "start_point": 110,
+                            "end_point": 121,
+                            "children": [
+                                {
+                                    "id": "1f2e3d4c-5678-499a-c1b2-3e4f55667788",
+                                    "name": "CONTENT",
+                                    "start_point": 110,
+                                    "end_point": 121,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "2f3e4d5c-6789-4aab-d2c3-4f5566778899",
+                            "name": "Graph Description and Setup",
+                            "start_point": 122,
+                            "end_point": 136,
+                            "children": [
+                                {
+                                    "id": "3f4e5d6c-7890-4bbc-e3d4-556677889900",
+                                    "name": "CONTENT",
+                                    "start_point": 122,
+                                    "end_point": 136,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "4f5e6d7c-8901-4ccd-f4e5-667788990011",
+                            "name": "Node Implementation",
+                            "start_point": 132,
+                            "end_point": 141,
+                            "children": [
+                                {
+                                    "id": "5f6e7d8c-9012-4dde-05f6-778899001122",
+                                    "name": "CONTENT",
+                                    "start_point": 132,
+                                    "end_point": 141,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "6f7e8d9c-0123-4eef-16g7-889900112233",
+                            "name": "Graph Construction",
+                            "start_point": 142,
+                            "end_point": 151,
+                            "children": [
+                                {
+                                    "id": "7f8e9d0c-1234-4ff0-27h8-990011223344",
+                                    "name": "CONTENT",
+                                    "start_point": 142,
+                                    "end_point": 151,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "8f9e0d1c-2345-4011-38i9-001122334455",
+                            "name": "Run and Visualize",
+                            "start_point": 152,
+                            "end_point": 166,
+                            "children": [
+                                {
+                                    "id": "9f0e1d2c-3456-4122-49j0-112233445566",
+                                    "name": "CONTENT",
+                                    "start_point": 152,
+                                    "end_point": 166,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "af0e1d2c-4567-4233-5k1a-223344556677",
+                            "name": "Exercise and Wrap-up",
+                            "start_point": 167,
+                            "end_point": 177,
+                            "children": [
+                                {
+                                    "id": "bf1e2d3c-5678-4344-6l2b-334455667788",
+                                    "name": "CONTENT",
+                                    "start_point": 167,
+                                    "end_point": 177,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "bc1d2e3f-5678-49a0-8b2c-3d4e5f667788",
+                    "name": "Graph 2: Multiple Inputs",
+                    "start_point": 178,
+                    "end_point": 250,
+                    "children": [
+                        {
+                            "id": "cd2e3f4a-6789-4ab1-9c3d-4e5f66778899",
+                            "name": "Intro and Objectives",
+                            "start_point": 178,
+                            "end_point": 184,
+                            "children": [
+                                {
+                                    "id": "de3f4a5b-7890-4bc2-ad4e-5f6677889900",
+                                    "name": "CONTENT",
+                                    "start_point": 178,
+                                    "end_point": 184,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "ef4a5b6c-8901-4cd3-be5f-667788990011",
+                            "name": "Imports and State Schema",
+                            "start_point": 185,
+                            "end_point": 197,
+                            "children": [
+                                {
+                                    "id": "0e5a6b7c-9012-4de4-cf60-778899001122",
+                                    "name": "CONTENT",
+                                    "start_point": 185,
+                                    "end_point": 197,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "1e6b7c8d-0123-4ef5-d071-889900112233",
+                            "name": "Processing Node",
+                            "start_point": 199,
+                            "end_point": 209,
+                            "children": [
+                                {
+                                    "id": "2e7c8d9e-1234-4f06-e182-990011223344",
+                                    "name": "CONTENT",
+                                    "start_point": 199,
+                                    "end_point": 209,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "3e8d9e0f-2345-4017-f293-001122334455",
+                            "name": "Graph Assembly",
+                            "start_point": 210,
+                            "end_point": 221,
+                            "children": [
+                                {
+                                    "id": "4e9e0f1a-3456-4128-0a04-112233445566",
+                                    "name": "CONTENT",
+                                    "start_point": 210,
+                                    "end_point": 221,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "5ea0b1c2-4567-4239-1b15-223344556677",
+                            "name": "Testing and State Printing",
+                            "start_point": 222,
+                            "end_point": 242,
+                            "children": [
+                                {
+                                    "id": "6fb1c2d3-5678-434a-2c26-334455667788",
+                                    "name": "CONTENT",
+                                    "start_point": 222,
+                                    "end_point": 242,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "7fc2d3e4-6789-445b-3d37-445566778899",
+                            "name": "Exercise",
+                            "start_point": 243,
+                            "end_point": 250,
+                            "children": [
+                                {
+                                    "id": "8gd3e4f5-7890-456c-4e48-556677889900",
+                                    "name": "CONTENT",
+                                    "start_point": 243,
+                                    "end_point": 250,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "cdef0123-7890-4a1b-8c2d-4e5f66778899",
+                    "name": "Graph 3: Sequential Nodes",
+                    "start_point": 251,
+                    "end_point": 309,
+                    "children": [
+                        {
+                            "id": "def01234-8901-4b2c-9d3e-5f6677889900",
+                            "name": "Intro and Objectives",
+                            "start_point": 251,
+                            "end_point": 256,
+                            "children": [
+                                {
+                                    "id": "ef012345-9012-4c3d-ad4f-667788990011",
+                                    "name": "CONTENT",
+                                    "start_point": 251,
+                                    "end_point": 256,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "f0123456-0123-4d4e-be50-778899001122",
+                            "name": "State Schema and Node Functions",
+                            "start_point": 258,
+                            "end_point": 276,
+                            "children": [
+                                {
+                                    "id": "01234567-1234-4e5f-cf61-889900112233",
+                                    "name": "CONTENT",
+                                    "start_point": 258,
+                                    "end_point": 276,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "12345678-2345-4f60-d072-990011223344",
+                            "name": "Graph Construction and Edges",
+                            "start_point": 282,
+                            "end_point": 289,
+                            "children": [
+                                {
+                                    "id": "23456789-3456-4071-e183-001122334455",
+                                    "name": "CONTENT",
+                                    "start_point": 282,
+                                    "end_point": 289,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "34567890-4567-4182-f294-112233445566",
+                            "name": "Invoke and Results",
+                            "start_point": 290,
+                            "end_point": 296,
+                            "children": [
+                                {
+                                    "id": "45678901-5678-4293-03a5-223344556677",
+                                    "name": "CONTENT",
+                                    "start_point": 290,
+                                    "end_point": 296,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "56789012-6789-43a4-14b6-334455667788",
+                            "name": "Exercise",
+                            "start_point": 297,
+                            "end_point": 309,
+                            "children": [
+                                {
+                                    "id": "67890123-7890-44b5-25c7-445566778899",
+                                    "name": "CONTENT",
+                                    "start_point": 297,
+                                    "end_point": 309,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "2345abcd-8901-4a2b-9c3d-5e6f77889900",
+                    "name": "Graph 4: Conditional Graphs",
+                    "start_point": 310,
+                    "end_point": 351,
+                    "children": [
+                        {
+                            "id": "3456bcde-9012-4b3c-ad4e-6f7788990011",
+                            "name": "Intro and Objectives",
+                            "start_point": 310,
+                            "end_point": 316,
+                            "children": [
+                                {
+                                    "id": "4567cdef-0123-4c4d-be5f-778899001122",
+                                    "name": "CONTENT",
+                                    "start_point": 310,
+                                    "end_point": 316,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "5678def0-1234-4d5e-cf60-889900112233",
+                            "name": "Setup and State Schema",
+                            "start_point": 317,
+                            "end_point": 326,
+                            "children": [
+                                {
+                                    "id": "6789ef01-2345-4e6f-d071-990011223344",
+                                    "name": "CONTENT",
+                                    "start_point": 317,
+                                    "end_point": 326,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "7890f012-3456-4f70-e182-001122334455",
+                            "name": "Router Node and Logic",
+                            "start_point": 322,
+                            "end_point": 336,
+                            "children": [
+                                {
+                                    "id": "8901f123-4567-4081-f293-112233445566",
+                                    "name": "CONTENT",
+                                    "start_point": 322,
+                                    "end_point": 336,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "9012f234-5678-4192-0a04-223344556677",
+                            "name": "Conditional Edge Construction",
+                            "start_point": 337,
+                            "end_point": 347,
+                            "children": [
+                                {
+                                    "id": "a123f345-6789-42a3-1b15-334455667788",
+                                    "name": "CONTENT",
+                                    "start_point": 337,
+                                    "end_point": 347,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "b234f456-7890-43b4-2c26-445566778899",
+                            "name": "Invocation and Walkthrough",
+                            "start_point": 345,
+                            "end_point": 349,
+                            "children": [
+                                {
+                                    "id": "c345f567-8901-44c5-3d37-556677889900",
+                                    "name": "CONTENT",
+                                    "start_point": 345,
+                                    "end_point": 349,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "d456f678-9012-45d6-4e48-667788990011",
+                            "name": "Exercise",
+                            "start_point": 350,
+                            "end_point": 351,
+                            "children": [
+                                {
+                                    "id": "e567f789-0123-46e7-5f59-778899001122",
+                                    "name": "CONTENT",
+                                    "start_point": 350,
+                                    "end_point": 351,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "c3456789-0123-4a5b-8c6d-7e8f99001122",
+                    "name": "Graph 5: Looping Graph",
+                    "start_point": 352,
+                    "end_point": 376,
+                    "children": [
+                        {
+                            "id": "d4567890-1234-4b6c-9d7e-8f9001122333",
+                            "name": "Intro and Objectives",
+                            "start_point": 352,
+                            "end_point": 356,
+                            "children": [
+                                {
+                                    "id": "e5678901-2345-4c7d-ad8f-900112233344",
+                                    "name": "CONTENT",
+                                    "start_point": 352,
+                                    "end_point": 356,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "f6789012-3456-4d8e-be90-011223344455",
+                            "name": "State and Node Design",
+                            "start_point": 357,
+                            "end_point": 366,
+                            "children": [
+                                {
+                                    "id": "07890123-4567-4e9f-cfa1-122334445566",
+                                    "name": "CONTENT",
+                                    "start_point": 357,
+                                    "end_point": 366,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "18901234-5678-40a0-d0b1-233445556677",
+                            "name": "Loop Logic and Router",
+                            "start_point": 363,
+                            "end_point": 371,
+                            "children": [
+                                {
+                                    "id": "29a12345-6789-41b1-e1c2-344556667788",
+                                    "name": "CONTENT",
+                                    "start_point": 363,
+                                    "end_point": 371,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "39b23456-7890-42c2-f2d3-455667778899",
+                            "name": "Build, Run and Output",
+                            "start_point": 367,
+                            "end_point": 372,
+                            "children": [
+                                {
+                                    "id": "4ac34567-8901-43d3-03e4-566778899900",
+                                    "name": "CONTENT",
+                                    "start_point": 367,
+                                    "end_point": 372,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "4bd45678-9012-44e4-14f5-677889900011",
+                            "name": "Exercise",
+                            "start_point": 373,
+                            "end_point": 376,
+                            "children": [
+                                {
+                                    "id": "5ce56789-0123-45f5-2506-788990001122",
+                                    "name": "CONTENT",
+                                    "start_point": 373,
+                                    "end_point": 376,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "d456789a-2345-4f6a-8b7c-9d0e11223344",
+                    "name": "AI Agents and Advanced Topics",
+                    "start_point": 377,
+                    "end_point": 623,
+                    "children": [
+                        {
+                            "id": "e56789ab-3456-4a7b-9c8d-0e1122334455",
+                            "name": ".env and Simple Agent",
+                            "start_point": 377,
+                            "end_point": 406,
+                            "children": [
+                                {
+                                    "id": "f6789abc-4567-4b8c-ad9e-112233445566",
+                                    "name": ".env Explanation",
+                                    "start_point": 377,
+                                    "end_point": 381,
+                                    "children": [
+                                        {
+                                            "id": "0890abcd-5678-4c9d-beaf-223344556677",
+                                            "name": "CONTENT",
+                                            "start_point": 377,
+                                            "end_point": 381,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "1901bcde-6789-4da0-cfb0-334455667788",
+                                    "name": "Agent State and LLM Init",
+                                    "start_point": 382,
+                                    "end_point": 389,
+                                    "children": [
+                                        {
+                                            "id": "2a12cdef-7890-4eb1-d0c1-445566778899",
+                                            "name": "CONTENT",
+                                            "start_point": 382,
+                                            "end_point": 389,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "3b23def0-8901-4fc2-e1d2-556677889900",
+                                    "name": "Node Invocation and Simple Loop",
+                                    "start_point": 390,
+                                    "end_point": 396,
+                                    "children": [
+                                        {
+                                            "id": "4c34ef01-9012-40d3-f2e3-667788990011",
+                                            "name": "CONTENT",
+                                            "start_point": 390,
+                                            "end_point": 396,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "4d45f012-0123-41e4-03f4-778899001122",
+                                    "name": "Interactive Behavior and Limitations",
+                                    "start_point": 397,
+                                    "end_point": 406,
+                                    "children": [
+                                        {
+                                            "id": "5e56f123-1234-42f5-14g5-889900112233",
+                                            "name": "CONTENT",
+                                            "start_point": 397,
+                                            "end_point": 406,
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "f6789abc-5678-4b9d-ae0f-001122334455",
+                            "name": "Memory Chatbot",
+                            "start_point": 407,
+                            "end_point": 445,
+                            "children": [
+                                {
+                                    "id": "08789bcd-6789-4cae-bf10-112233445566",
+                                    "name": "Intro and Objectives",
+                                    "start_point": 407,
+                                    "end_point": 413,
+                                    "children": [
+                                        {
+                                            "id": "1987cdef-7890-4dbf-cg21-223344556677",
+                                            "name": "CONTENT",
+                                            "start_point": 407,
+                                            "end_point": 413,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "29a8def0-8901-4ec0-dh32-334455667788",
+                                    "name": "State with Human and AI Messages",
+                                    "start_point": 414,
+                                    "end_point": 421,
+                                    "children": [
+                                        {
+                                            "id": "3ab9ef01-9012-4fd1-ei43-445566778899",
+                                            "name": "CONTENT",
+                                            "start_point": 414,
+                                            "end_point": 421,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "4bcaf012-0123-50e2-fj54-556677889900",
+                                    "name": "Conversation Loop and History",
+                                    "start_point": 422,
+                                    "end_point": 431,
+                                    "children": [
+                                        {
+                                            "id": "5cdbf123-1234-51f3-gk65-667788990011",
+                                            "name": "CONTENT",
+                                            "start_point": 422,
+                                            "end_point": 431,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "6dec0123-2345-52g4-hl76-778899001122",
+                                    "name": "Examples and Run",
+                                    "start_point": 432,
+                                    "end_point": 437,
+                                    "children": [
+                                        {
+                                            "id": "7efd1234-3456-53h5-im87-889900112233",
+                                            "name": "CONTENT",
+                                            "start_point": 432,
+                                            "end_point": 437,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "8feb2345-4567-54i6-jn98-990011223344",
+                                    "name": "Persistence and Cost Management",
+                                    "start_point": 437,
+                                    "end_point": 443,
+                                    "children": [
+                                        {
+                                            "id": "90fc3456-5678-55j7-ko09-001122334455",
+                                            "name": "CONTENT",
+                                            "start_point": 437,
+                                            "end_point": 443,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "a0fd4567-6789-56k8-lp10-112233445566",
+                                    "name": "Summary",
+                                    "start_point": 444,
+                                    "end_point": 445,
+                                    "children": [
+                                        {
+                                            "id": "b1fe5678-7890-57l9-mq21-223344556677",
+                                            "name": "CONTENT",
+                                            "start_point": 444,
+                                            "end_point": 445,
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "a1234567-8901-4b2c-9d3e-334455667788",
+                            "name": "React Agent (Reasoning and Acting)",
+                            "start_point": 446,
+                            "end_point": 537,
+                            "children": [
+                                {
+                                    "id": "b2345678-9012-4c3d-ae4f-445566778899",
+                                    "name": "Intro and Objectives",
+                                    "start_point": 445,
+                                    "end_point": 449,
+                                    "children": [
+                                        {
+                                            "id": "c3456789-0123-4d4e-bf50-556677889900",
+                                            "name": "CONTENT",
+                                            "start_point": 445,
+                                            "end_point": 449,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "d4567890-1234-4e5f-c061-667788990011",
+                                    "name": "Typing and Annotated Types",
+                                    "start_point": 450,
+                                    "end_point": 481,
+                                    "children": [
+                                        {
+                                            "id": "e5678901-2345-4f60-d172-778899001122",
+                                            "name": "CONTENT",
+                                            "start_point": 450,
+                                            "end_point": 481,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "f6789012-3456-4071-e283-889900112233",
+                                    "name": "Tool Definition and Binding",
+                                    "start_point": 482,
+                                    "end_point": 491,
+                                    "children": [
+                                        {
+                                            "id": "07891234-4567-4182-f394-990011223344",
+                                            "name": "CONTENT",
+                                            "start_point": 482,
+                                            "end_point": 491,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "18902345-5678-4293-0435-001122334455",
+                                    "name": "Model Call Node and Reducer",
+                                    "start_point": 492,
+                                    "end_point": 503,
+                                    "children": [
+                                        {
+                                            "id": "29013456-6789-43a4-1546-112233445566",
+                                            "name": "CONTENT",
+                                            "start_point": 492,
+                                            "end_point": 503,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "3a045678-7890-44b5-2657-223344556677",
+                                    "name": "Conditional Edge and Tool Loop",
+                                    "start_point": 504,
+                                    "end_point": 514,
+                                    "children": [
+                                        {
+                                            "id": "4b156789-8901-45c6-3768-334455667788",
+                                            "name": "CONTENT",
+                                            "start_point": 504,
+                                            "end_point": 514,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "5c26789a-9012-46d7-4879-445566778899",
+                                    "name": "Execution and Examples",
+                                    "start_point": 515,
+                                    "end_point": 523,
+                                    "children": [
+                                        {
+                                            "id": "6d3789ab-0123-47e8-598a-556677889900",
+                                            "name": "CONTENT",
+                                            "start_point": 515,
+                                            "end_point": 523,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "7e489abc-1234-48f9-6a9b-667788990011",
+                                    "name": "Tool Expansion and Robustness",
+                                    "start_point": 524,
+                                    "end_point": 532,
+                                    "children": [
+                                        {
+                                            "id": "8f59abcd-2345-490a-7bac-778899001122",
+                                            "name": "CONTENT",
+                                            "start_point": 524,
+                                            "end_point": 532,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "90abbcde-3456-4a1b-8cbd-889900112233",
+                                    "name": "Summary and Transition",
+                                    "start_point": 533,
+                                    "end_point": 537,
+                                    "children": [
+                                        {
+                                            "id": "a1bcdef0-4567-4b2c-9dce-990011223344",
+                                            "name": "CONTENT",
+                                            "start_point": 533,
+                                            "end_point": 537,
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "b2345678-4567-4c8d-9e0f-a1b2c3d4e5f6",
+                            "name": "Drafter Project (Mini Project)",
+                            "start_point": 538,
+                            "end_point": 601,
+                            "children": [
+                                {
+                                    "id": "c3456789-5678-4d9e-0f1a-b2c3d4e5f607",
+                                    "name": "Project Overview and Requirements",
+                                    "start_point": 538,
+                                    "end_point": 547,
+                                    "children": [
+                                        {
+                                            "id": "d4567890-6789-4eaf-1g2b-c3d4e5f60718",
+                                            "name": "CONTENT",
+                                            "start_point": 538,
+                                            "end_point": 547,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "e5678901-7890-4fb0-2h3c-d4e5f6071829",
+                                    "name": "Global State and Tools Rationale",
+                                    "start_point": 552,
+                                    "end_point": 561,
+                                    "children": [
+                                        {
+                                            "id": "f6789012-8901-50c1-3i4d-e5f60718293a",
+                                            "name": "CONTENT",
+                                            "start_point": 552,
+                                            "end_point": 561,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "08901234-9012-51d2-4j5e-f60718293a4b",
+                                    "name": "Update and Save Tools",
+                                    "start_point": 560,
+                                    "end_point": 570,
+                                    "children": [
+                                        {
+                                            "id": "19a12345-0123-52e3-5k6f-0718293a4b5c",
+                                            "name": "CONTENT",
+                                            "start_point": 560,
+                                            "end_point": 570,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "2ab23456-1234-53f4-6l7g-18293a4b5c6d",
+                                    "name": "Agent Node and System Prompt",
+                                    "start_point": 574,
+                                    "end_point": 585,
+                                    "children": [
+                                        {
+                                            "id": "3bc34567-2345-5405-7m8h-293a4b5c6d7e",
+                                            "name": "CONTENT",
+                                            "start_point": 574,
+                                            "end_point": 585,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "4cd45678-3456-5516-8n9i-3a4b5c6d7e8f",
+                                    "name": "Graph Assembly and Run",
+                                    "start_point": 589,
+                                    "end_point": 596,
+                                    "children": [
+                                        {
+                                            "id": "5de56789-4567-5627-9o0j-4b5c6d7e8f90",
+                                            "name": "CONTENT",
+                                            "start_point": 589,
+                                            "end_point": 596,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "6ef67890-5678-5738-0p1k-5c6d7e8f9011",
+                                    "name": "Extensions and Notes",
+                                    "start_point": 597,
+                                    "end_point": 601,
+                                    "children": [
+                                        {
+                                            "id": "7f078901-6789-5849-1q2l-6d7e8f901122",
+                                            "name": "CONTENT",
+                                            "start_point": 597,
+                                            "end_point": 601,
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "c3456789-6789-4d0e-9f1a-7b8c9d0e1f23",
+                            "name": "RAG Agent (Retrieval-Augmented Generation)",
+                            "start_point": 601,
+                            "end_point": 623,
+                            "children": [
+                                {
+                                    "id": "d4567890-7890-4e1f-0g2b-8c9d0e1f2a34",
+                                    "name": "Overview and Setup",
+                                    "start_point": 601,
+                                    "end_point": 606,
+                                    "children": [
+                                        {
+                                            "id": "e5678901-8901-4f20-1h3c-9d0e1f2a3456",
+                                            "name": "CONTENT",
+                                            "start_point": 601,
+                                            "end_point": 606,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "f6789012-9012-5021-2i4d-0e1f2a345678",
+                                    "name": "Embeddings and Document Chunking",
+                                    "start_point": 605,
+                                    "end_point": 611,
+                                    "children": [
+                                        {
+                                            "id": "07891234-0123-5132-3j5e-1f2a34567889",
+                                            "name": "CONTENT",
+                                            "start_point": 605,
+                                            "end_point": 611,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "18902345-1234-5243-4k6f-2a3456788901",
+                                    "name": "Retriever Tool and Binding",
+                                    "start_point": 612,
+                                    "end_point": 618,
+                                    "children": [
+                                        {
+                                            "id": "29013456-2345-5354-5l7g-3a4567889012",
+                                            "name": "CONTENT",
+                                            "start_point": 612,
+                                            "end_point": 618,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "3a045678-3456-5465-6m8h-4a5678890123",
+                                    "name": "Agent Integration and Testing",
+                                    "start_point": 618,
+                                    "end_point": 622,
+                                    "children": [
+                                        {
+                                            "id": "4b156789-4567-5576-7n9i-5a6788901234",
+                                            "name": "CONTENT",
+                                            "start_point": 618,
+                                            "end_point": 622,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "5c26789a-5678-5687-8o0j-6a7890123456",
+                                    "name": "Summary and Course Conclusion",
+                                    "start_point": 623,
+                                    "end_point": 624,
+                                    "children": [
+                                        {
+                                            "id": "6d3789ab-6789-5798-9p1k-7a8901234567",
+                                            "name": "CONTENT",
+                                            "start_point": 623,
+                                            "end_point": 624,
+                                            "children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

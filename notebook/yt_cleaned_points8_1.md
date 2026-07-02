@@ -1,0 +1,1038 @@
+- Welcome to this video course on Langraph, the powerful Python library for building advanced conversational AI workflows.
+- In this course, Vbeca will teach you how to design, implement, and manage complex dialogue systems using a graph-based approach.
+- By the end, you'll be equipped to build robust, scalable conversational applications that leverage the full potential of large language models.
+- Hey guys, my name is Vava and I'm a robotics and AI student.
+- In this course, we're going to be learning all about the fundamentals of Langraph.
+- Now, I assume you've heard of Langraph before, hence why you clicked on this course.
+- But I'm also going to assume you have never coded in Langraph before.
+- Because of this assumption, I have explained every single thing in as much detail as I possibly can.
+- This might mean that I go slow at times, so if you want, you can always speed me up.
+- What are we going to be learning in this course?
+- To start, we're going to be building a lot of graphs and a lot of AI agents.
+- We're going to be learning a lot about the theory.
+- I've also provided exercises throughout the course, and all of the answers will be provided on GitHub.
+- If you're ready to start on this journey with me, let's go to our first section.
+- Welcome to the first section of this course.
+- In this section, we'll be covering something called type annotations.
+- Admittedly, this is going to be a completely theoretical section, but it will be short and brief.
+- The reason I've kept this specific section in the course is because when we eventually go on to code our AI agents, our graphs, and Langraph, these will start popping up everywhere.
+- I don't want you to start coding without ever having seen these before or really not knowing what these actually are.
+- Let's begin with dictionaries.
+- Dictionaries are a data structure.
+- There's a reason I've kept it here, so let's see how a dictionary is described in Python.
+- In this case, I've described a very simple dictionary called movie, and it has two keys, the name and the year.
+- It has two values, Avengers Endgame and 2019.
+- Dictionaries are awesome.
+- They allow for efficient data retrieval based on their unique keys.
+- They're flexible and easy to implement, but there's a potential problem with them.
+- It's a challenge to ensure that the data is a particular structure.
+- This could be a huge problem in larger projects.
+- To put things in simple words, it doesn't really check if the data is the correct data type or structure, and that could be the source of a lot of logical errors in your project.
+- If your project is really, really large, then this could be quite a headache to identify because it's such a small detail.
+- What is the solution for this?
+- It's something called a type dictionary.
+- Here is an example of how you create a type dictionary in Python.
+- I want to emphasize that this type annotation is used extensively in Langraph.
+- This will be used to define states.
+- Don't worry, we haven't covered states yet.
+- We will cover that in the next section.
+- Just be mindful that this is quite important.
+- A type dictionary is quite easy to implement.
+- You implement it as a class.
+- In this case, I've implemented the same example I showed you previously, with the same exact keys and values.
+- It still has the name and the year.
+- Notice in this class, I have defined the actual data type of what that key should be.
+- The name is a string and the year is an integer.
+- To initialize a dictionary, I have done the exact same thing, to have Avengers Endgame and 2019.
+- There are two main benefits of using a type dictionary.
+- It provides type safety because we've explicitly defined what should be in this data structure.
+- This will reduce runtime errors.
+- Readability is enhanced as well, and this will make debugging easier if something goes wrong within this type dictionary.
+- We've covered type dictionary now.
+- Now we move on to another type of annotation, which is union.
+- You might have seen these later type annotations before if you've coded in Python, but I'm just giving you a high-level overview of what these are.
+- Take a look at this example.
+- I've created a very simple function which takes in a value and squares it.
+- In this case, the input x could be either an integer or a float.
+- Union basically says that whatever value you have can only be these data types.
+- So in this case, x can only be an integer or a float.
+- If I pass in five or 1.234, this would be completely fine.
+- It would square the number and everything.
+- But if I passed in a string like I am a string, it would completely fail.
+- Admittedly, yes, this function is quite easy.
+- If I passed in I am a string, it would have failed anyway.
+- But in more complicated applications, hopefully you can see how this actually is useful.
+- In fact, the makers of LangChain and Langraph used Union quite extensively throughout making the actual library.
+- It is flexible and easy to code, and it allows for type safety because it can provide hints to help catch incorrect usage.
+- Something similar to Union is another type annotation, which is optional.
+- Optional is quite similar, and in this case I've described another function, nice message.
+- You pass in a name.
+- If you pass in a name, it will say hi there, name.
+- For example, let the name be Bob.
+- If I pass in Bob to this function, it would say hi there Bob.
+- But what if I don't pass in anything?
+- Optional says that the name parameter could either be a string or a None value.
+- If I pass in nothing, it will go in this if statement and say hey random person.
+- It cannot be anything else.
+- It can't be an integer or a boolean or a float or anything like that.
+- It has to be either a string or a None value because that's what I've defined here.
+- Now comes another type annotation called Any.
+- Any is really the easiest one to understand.
+- It literally means this value could be anything.
+- It could be any data structure.
+- In this case, I've created a simple function called print_value where it takes in something and it prints that.
+- For example, I passed in this string and it prints it, and anything and everything is allowed.
+- One last type annotation, I promise, and it's the lambda function.
+- Lambda functions are quite useful.
+- For example, I'll give you two examples now.
+- The first example is this really simple example.
+- We've already created a square function before, where it takes in a value, it takes in a number, and it squares it.
+- For example, if I passed in square 10, it would give me 100.
+- That's an easy example.
+- Let me give you a second example.
+- If you've come from a LeetCode background, then you've probably seen or used lambda before, and you've definitely used map before because it's quite efficient.
+- For example, if I pass in 1, 2, 3, 4, what this piece of code is saying is that it squares each number in nums.
+- This map function maps each value and performs this function to it, so x * x, giving 1, 4, 9, 16, and then converts that back into a list.
+- Lambda functions are just a shortcut to writing small functions, and they make everything quite efficient.
+- This could have been done in one line as well, but for example, a beginner programmer could have used a for loop, whereas a more advanced programmer could have used this, and this is obviously much more efficient.
+- Hopefully you can start to see how powerful these type annotations are, and these will be coming up.
+- No need to memorize this.
+- You just need to have a high-level overview of what they are.
+- Welcome back.
+- In this section, we will look at the different elements in Langraph.
+- Let's begin with our first element, one of the most fundamental elements in all of Langraph: the state.
+- What is a state?
+- It's a shared data structure that holds the current information or context of the entire application.
+- In simpler terms, it is like the application's memory, where it keeps track of the variables and the data that nodes can access and modify as they execute.
+- Don't worry if you don't understand what a node is yet.
+- That is what we will be talking about in the next slide.
+- As a good analogy, think of the whiteboard in a meeting room analogy.
+- Imagine you're in a meeting room and there are different participants as well, and every time you come up with something new or want to record some new information or update some information, you write it on the whiteboard.
+- In this case, the whiteboard acts as your state and the participants act as a node.
+- The state shows us the updated content or information of your entire application.
+- Let's move on to the node, another fundamental element in Langraph.
+- These are just individual functions or operations that perform specific tasks within the graph.
+- Each node receives an input, which is often just the current state of your application.
+- It processes it and then produces an output or an updated state.
+- Here's a good analogy for this: the assembly line station analogy.
+- Each of these stations does one specific job.
+- It could be attaching a part, painting it, inspecting the quality, and so on.
+- The point is each of these stations represents a node because they do one specific task.
+- How do you actually connect these different nodes together?
+- Before we go into that, I think it's important we understand the most important element of them all: the graph.
+- It is so important that it's even in the name Langraph.
+- The graph is just the overarching structure, and it maps out how different tasks, aka nodes, are connected and executed.
+- It visually represents the workflow, showing the sequence and the conditional parts between various operations.
+- A graph is quite self-explanatory, but you can think of it as a road map.
+- On a road map, you can see the different routes connecting cities, with different intersections offering choices on which path to take next.
+- Here's a great image of what a graph is, and these are the individual nodes, but you'll see they're connected somehow.
+- How are these connected?
+- That brings us to the next element: edges.
+- Edges are just the connection between nodes, and these determine the flow of execution.
+- They tell us which node should be executed next after the current one completes its task.
+- A really good analogy is imagining a train track.
+- Think of the train track as an edge, and think of it as connecting two stations, one here and one here, which represent nodes, together in a specific direction.
+- The train which will go on the train track acts as your state.
+- The state gets updated from one station to another.
+- There is another type of edge, and it's called a conditional edge.
+- This is still not very complicated.
+- It's quite simple to understand.
+- These are specialized connections that decide the next node to be executed based on the specific condition or logic applied to the current state.
+- A really good analogy for this is the traffic light analogy.
+- Green could mean to go one way, red could mean to stop, yellow could mean to slow down.
+- The point I'm trying to make here is that the condition, in this case the light color, decides the next step.
+- If you want to think even more simply, you could think about an if-else statement.
+- That being said, we move on to the next element: the start point.
+- The start point, or the start node, is a virtual entry point in Langraph, and this marks where the workflow begins.
+- It's important to note that it doesn't perform any operations itself, but it serves as the designated starting position for the graph's execution.
+- In terms of analogy, it is quite simple to understand, but if you really want, think of it as the starting line of a race.
+- If you have a start point, you need an end point as well, and that's where the end element comes in.
+- The end node signifies the conclusion of the workflow in Langraph.
+- When the application reaches this node, the graph's execution completely stops, and it indicates that all intended processes have been completed.
+- Again, a good analogy for this is just the finish line in a race.
+- Now let's look at tools.
+- Tools are specialized functions or utilities that nodes can utilize to perform specific tasks.
+- For example, it could be fetching data from an API.
+- They enhance the capabilities of these nodes by providing additional functionalities.
+- One common question could be: what's the difference between a tool and a node?
+- The node is just the part of the graph structure.
+- The tools are functionalities used within the nodes.
+- A really good analogy for this is tools in a toolbox.
+- Imagine a hammer for the nails, a screwdriver for the screws, etc.
+- The point is each tool has a distinct purpose.
+- Don't worry.
+- You will understand the differentiation between tools and nodes in a lot more detail later when we code this.
+- But this is just for a general overview.
+- Another question you could be asking is whether there is a middleman between a tool and a node.
+- Short answer is yes.
+- That's where tool node comes in.
+- A tool node is just a special kind of node whose main job is to run a tool.
+- For example, a tool node could be a node where its only job is to use a tool, and that tool's job is to fetch some data from an API.
+- It connects the tool's output back into the state so other nodes can use that information.
+- Think about this analogy going back to the assembly line.
+- In this case, imagine the operator as the tool node, and it controls the machine, which is the tool, and then sends all of these results back into this assembly line.
+- Now if we progress further, let's look at the state graph.
+- This is quite an important element as well.
+- This will be one of the first elements you actually interact with, and its main purpose is to build and compile the graph structure.
+- It manages the nodes, the edges, the overall state, and it makes sure that the workflow operates in a unified way and all of the data flows correctly between components.
+- You can think of it as a blueprint of a building.
+- Just as a blueprint outlines the design and the connections within a building, the state graph does exactly that, but it just defines the structure and the flow of your workflow or application.
+- Now here's where the runnable comes in.
+- Some of you will be coming from a LangChain background, and runnable is quite common there and quite similar in Langraph as well.
+- A runnable in Langraph is just the standardized executable component that performs a specific task within an AI workflow.
+- It basically acts as a fundamental building block, allowing us to create these modular systems.
+- A question you could have right now is: what's the difference between a runnable and a node?
+- Short answer is a runnable can represent various operations, whereas a node in Langraph typically receives a state, performs an action on it, and then updates the state.
+- A good analogy is a Lego brick.
+- Just as Lego bricks can be snapped together to build these complicated structures, runnables can be combined to create sophisticated AI workflows.
+- Let's move on to the different types of messages.
+- If you come from a LangChain background, you'll be quite familiar with these.
+- If you haven't, don't worry.
+- We will look at the five most common message types in Langraph.
+- To start off, there's the human message, which represents the input from a user.
+- The AI message represents responses generated by AI models.
+- The system message is used to provide instructions or context to the model.
+- Tool message is similar to the function message but specific to tool usage.
+- The function message represents the tool of a function call.
+- If you've used an API like a large language model API before, such as OpenAI's API, a lot of these will be quite familiar, especially the system message, the AI message, and the human message.
+- That concludes this section.
+- Now we're about to start coding in Langraph for the very first time.
+- Now that we've covered all the theory, we're actually going to code up some graphs.
+- We're about to code up our very first graph in this subsection.
+- For this overall section, I have a slight confession to make, which is we're not going to be building any AI agents in this section.
+- Why?
+- Because I thought that we haven't really even seen how to actually code in Langraph, and combining all of these LLM APIs and tools and all of that stuff together would be quite messy and quite confusing at times, especially given that we have never coded in Langraph before.
+- Like I said at the beginning of the course, this course is supposed to be beginner friendly, detailed, and comprehensive, and we're going to go in steps, little by little.
+- Don't worry, we will be coding AI agents soon.
+- We're just going to be building a couple of graphs right now, understanding Langraph better, understanding the syntax better, and understanding how to actually code up graphs and get confident with it.
+- Then we will actually build AI agents.
+- What is the graph which we're going to be building together in this section?
+- I call it the hello world graph mainly because it's the most basic form of graph we can actually code in Langraph.
+- The objectives are these.
+- We're going to be understanding and defining the agent state structure, and don't worry, you'll understand what that is in a few minutes.
+- We're going to be creating simple node functions, nodes like we discussed in the previous section, and we're going to be processing them and updating the state.
+- We're going to be building the first ever basic Langraph structure, and we will understand how to compile it, invoke it, process it, everything.
+- The main goal of this section is to really understand how data flows through a single node in Langraph.
+- To give you a bit of a heads up as to what we'll actually be covering, what we're going to be building is this graph.
+- This is the most basic form of graph you can build in Langraph.
+- It has a start point and an end point and this node sandwiched in between them.
+- Hopefully you've understood what the objectives are.
+- It's quite basic.
+- Let's actually code this very first graph.
+- I've imported three main things here: the dict, the type dict, and the state graph.
+- Dict and type dict is obviously dictionary and type dictionary, and state graph are elements which we covered in the previous section.
+- I would highly recommend you going back there if these are completely unfamiliar.
+- You don't need to memorize what these are.
+- To refresh your memory, I've written in the comment here what the state graph is.
+- Think of the state graph as a framework that helps you design and manage the flow of the tasks in your application.
+- That might sound a bit complicated, but once we actually start coding, it will make more sense.
+- The first thing we're going to do after importing everything is create the state of our agent, and let's call it agent state.
+- To refresh your memory again, think of the state as a shared data structure.
+- This keeps track of all of the information as the application runs.
+- Now let's build the agent state.
+- The way we do this in Langraph is through a class.
+- Let's build class agent state, and in these parentheses we will need the state to be in the form of a typed dictionary.
+- Let's keep this very fundamental and basic.
+- Let's just pass in one input.
+- Let's call it something like message, and we specify the data type of that attribute.
+- The data type of message will be a string, so that's why we specify str.
+- Once we've done that, we are now going to be coding our very first node, another very fundamental element in Langraph.
+- How do we actually define a node?
+- It's quite simple.
+- It's just a normal standard Python function.
+- Let's say we are trying to create a simple greeting message.
+- We'll write def greeting_node, and we need to pass in an input and specify what the output type should be.
+- The input type of a node needs to be the state, and the output type also has to be the state because the state keeps track of all of the information in your application.
+- You need to pass that as an input, and you need to return the updated state.
+- Here's how you do it: you pass in state, and what is the state of our application?
+- It's the agent state which we defined earlier.
+- The output is going to be agent state because we need to output the updated state.
+- Our updated state will again just be the agent state once we've done all of the mechanics we do in this function, the actions we perform in this function.
+- Now we need to do something very, very important, and it gets annoying sometimes, but it's a key habit which I want you to form, and it is doc strings.
+- Doc strings in Langraph are quite important.
+- Why?
+- Because doc strings is what will tell your AI agents, when we actually build the AI agents, what that function actually does, what that function's actions are, and what it performs.
+- To create a doc string is just three quotation marks.
+- Let's call the doc string in this case simple node that adds a greeting message to the state.
+- How do we actually refer to this message?
+- Again, this is just normal Python code.
+- We will pass in state and we will type in message.
+- This specific part allows us to actually update the message part of the state.
+- Let's come up with something like hey plus state message.
+- We can also add something like how is your day going, something basic.
+- What's the last thing which I need to do in this function?
+- Remember, a few moments ago I said we have to return the state or the updated state.
+- Well, the updated state we've already done.
+- We've just manipulated the state here, so all we have to do is simply return the state.
+- That runs without any errors.
+- Now let's actually build the graph, which is obviously very important.
+- How do we build the graph?
+- Remember, I said state graph is a framework that helps us design and manage the flow of tasks as a graph.
+- That's exactly what we're about to do now.
+- To create a graph in Langraph, you use the state graph attribute and you pass in your state.
+- You can see the state schema which VS Code has asked for, the description of what the parameters are.
+- Our state schema in this case is just the agent state which we defined.
+- Let's store this in a variable called graph.
+- Now here comes a very important method.
+- How do we actually add a node to this graph?
+- This graph is completely empty right now.
+- To add a node, we use the inbuilt function graph.add_node.
+- It requires two main parameters.
+- What VS Code is suggesting is a lot of confusing information, so to put things simply, you require really two parameters: the name of your node and what action it will perform.
+- Let's call the name something like greeter.
+- VS Code has also asked us to input an action.
+- The action will be whatever your node will actually perform.
+- What action or mechanics will this node actually perform?
+- All of that is defined by this function, the greeting_node function.
+- We simply put the name of the greeting_node function here, and that's it.
+- We've successfully added the greeting node to our graph, and it will be named greeter.
+- Remember this diagram.
+- In this diagram there is supposed to be a start and an end point.
+- We've done the node which is sandwiched in between these, but we haven't really added the start and the end point yet.
+- How do we do that?
+- There are actually multiple ways to do that.
+- In this subsection, in this graph, I'm going to teach you one way.
+- Further down the line, I'll teach you another way.
+- They're both quite easy.
+- You simply call the inbuilt function set_entry_point, and the parameter is just one parameter, which is the key.
+- The key is the name of your node which you want the start node to connect to.
+- Visualize it.
+- The start point is here and the node is here.
+- Obviously you need to reference a node for it to create an edge.
+- We simply pass greeter.
+- Similarly, graph.set_finish_point, we will again pass greeter here as well.
+- Imagine the node is here and your finish point is here, and you need to connect some sort of connection between these two.
+- That's why we use greeter in this case.
+- One last thing which we need to do is actually compile this graph.
+- Use graph.compile using the inbuilt compile function.
+- Let's just store this in a variable.
+- That ran without any errors.
+- But just a word of caution here: just because the graph compiles without any error doesn't mean it will successfully run.
+- Once we build more complicated graphs, there could be so many logical errors.
+- Don't get too happy once it compiles because there might be logical errors.
+- I want to write some code which will actually help you visualize this.
+- You can use the IPython library.
+- You can use this piece of code here.
+- This code is awfully familiar with the first ever graph I showed you.
+- The only difference is the name of the node which we've set.
+- In this case, it's greeter.
+- Let's actually run this.
+- To run, you use the inbuilt method invoke.
+- Let's pass in the message as something like Bob or something and let's actually store this result in a variable.
+- How can we actually get the value of result?
+- We need to actually reference a certain attribute.
+- The only attribute we have in the entire graph is message.
+- We simply just put message, and perfect, you get the final answer, which is hey Bob how is your day going.
+- Why is it like this?
+- Because this is exactly how we set our function to be, what action it performs.
+- It says hey, then concatenates the input message, in this case it's just the name, and it says how is your day going.
+- I could have changed this to absolutely anything else.
+- That's the whole flow of how everything works.
+- Hopefully you understood how to build this very first hello world graph.
+- It's quite simple.
+- Don't worry if you didn't fully understand this.
+- I'm now going to show you what exercise you need to complete to be able to solidify this.
+- Time for your very first exercise.
+- The exercise for this graph is quite similar to what we just did, but I want you to create a personalized compliment agent.
+- You should pass in your name as something like Bob and then output something like Bob, you're doing an amazing job learning Langraph.
+- To give you a hint as to what you need to do, again, you have to concatenate the state, not replace it.
+- It's very similar to what we just did and it's quite basic.
+- This is really just to get your hands dirty.
+- Once you've completed this exercise, join me when we build the second graph.
+- Now we're about to build our second graph as you can see here.
+- It's again quite similar to the first graph we built except now we're going to be able to pass multiple inputs.
+- What are the objectives which you will be learning in this?
+- We're going to build a more complicated agent state.
+- We're going to be creating a processing node that performs operations on list data.
+- Now we're about to see how we can really work with different data types apart from just string.
+- We're going to set up the entire graph that processes and outputs these and computes these results.
+- We're going to be able to invoke the graph with the structured inputs and retrieve the outputs.
+- The main goal which I want you to be able to learn in this specific subsection is really how to handle multiple inputs.
+- Let's code this.
+- Now let's actually code the second graph up, the second application up.
+- Again, I've just imported the same things again: the type dictionary and the state graph.
+- I've also imported the list this time.
+- If you remember from the previous graph we made, we are supposed to implement the state schema first.
+- How do we do that?
+- Again we use the class agent state type dictionary.
+- I could have named the state schema anything I want.
+- I could have named it something arbitrary completely like bottle, for example.
+- In this case I've just said agent state because that's how I learned it.
+- It's like a habit for me now.
+- It also really tells you what it actually is.
+- It's the state of your agent, so that's why I've just kept it like that.
+- The main goal for this graph was to be able to handle and process multiple different inputs.
+- How do we actually assign and do that?
+- The answer is in the state, which is what we're about to do now.
+- Because remember this is just a typed dictionary, so you basically have multiple keys now.
+- Let's say something like values list integers.
+- Let's say one of our inputs is a list of integers, and let's also pass in a name, which will obviously be a string, and let's have the result in a string, something completely random.
+- Now you can see we're now operating on two different types of data structures: a list of integers and a string.
+- And we're handling three different inputs: values, name, result.
+- So now let's actually build our node because in this graph we're just going to have a single node to keep things easy.
+- Remember step by step.
+- Let's write def process_values.
+- Again, what needs to be here?
+- We need to pass in the state and we need to return the updated state.
+- Building healthy habits, I know it's annoying, we have to write the doc string.
+- Let's just write something like this function processes multiple different inputs.
+- Again, I'm not being super specific here because I don't want to spend too long on writing doc strings, and there's no AI or LLM here.
+- That's why it doesn't really matter.
+- I'm just doing this to build healthy habits.
+- Now let's do something like whatever values we pass, the list of integers, let's sum them up.
+- And let's also concatenate the name as well and store it in the result.
+- How do we do that?
+- We pass in state result because that's the action we're performing on the attribute result.
+- Let's say something like hi there and then we refer to the name.
+- Your sum is equal to, and let's just use the inbuilt Python function sum and we pass state values.
+- Lastly, we obviously return the state.
+- Perfect.
+- Now we actually create the graph.
+- This is going to be very similar to what we did in the previous section because again there's just a node, there's a start point and an endpoint.
+- Like last time, we use the state graph to initialize a graph and we pass in our state schema.
+- Agent state.
+- Let's store this in the variable graph.
+- Let's add our node.
+- graph.add_node requires two parameters.
+- It requires the name and the action.
+- In this case the name will be let's call it processor, and your action will be performed by this function, process_values.
+- I've already told you how to initialize a start point and an end point, and this is just given by that code.
+- You attach your entry point to your node.
+- In this case it's just one node, which is the processor node, and same goes with finish, and you compile it using graph.compile.
+- Take a moment now.
+- How do you think this graph will look like?
+- Very similar to how the graph actually looks like, but the only difference now is the name of the node, which we've kept as processor.
+- Now let's actually test this.
+- Let's actually invoke this graph.
+- How do we do that?
+- We use the invoke function.
+- Here's another important part which is quite a common mistake, especially one I have done many times.
+- Make sure to store your compiled graph in a variable because if you invoke the graph, i.e. if you write something like graph.invoke, that won't make sense because you haven't compiled the graph.
+- That's why you need to invoke using app.
+- If you write graph.get_graph, it's completely messed up.
+- It says state graph object has no attribute because your graph hasn't been compiled yet.
+- That's why when I do app.get_graph, the process works.
+- So now let's again store this in answers is equal to app.invoke.
+- Let's pass in some values.
+- Let's say something like values and let's have a list of integers: 1, 2, 3, 4.
+- I'm just trying to prove a point.
+- I'm not trying to make a very complicated graph yet.
+- And let's pass the name as something like Steve.
+- Cool.
+- Let's print answers.
+- Let's see what happens.
+- Perfect.
+- Now you can see your values is 1, 2, 3, 4, your name is Steve, and your result is Hi there Steve. Your sum is equal to 10.
+- Why?
+- Because that's exactly what we asked the node, the action, to perform.
+- Hi there, your name, which in this case is Steve.
+- Your sum is equal to the sum of the values, and 1 + 2 + 3 + 4 is 10.
+- That's how you get this answer.
+- What if I wanted to just access result?
+- I didn't want any of this other nonsense.
+- To do that, you can again just specify result and you will get it in a more clean manner.
+- I want to try one more thing just to build your understanding a bit more.
+- Let's put some print statements here.
+- Let's have a print state here.
+- Then we perform the action and then we print the state here.
+- This is really just to show you how the state gets updated, and it should be interpretable because this is quite a basic piece of code.
+- Print state before the action and print state after.
+- There you go.
+- Value is equal to 1, 2, 3, 4, name is equal to Steve, and these are the inputs we passed.
+- Notice I didn't pass result as an input as well.
+- I could have done that, but Langraph automatically sets that as a None value in this case if you don't pass an input.
+- Here's where you need to be cautious.
+- If I had actually used state result here as well to update state result, like I used state result to update either itself or something else, then you would run into a problem because your state result has been initialized as None since you didn't pass it as an input.
+- Be mindful of that.
+- In this case it worked because we're only assigning state result.
+- We're not using it to assign something.
+- It's getting assigned.
+- After the action has been performed, you can see result is here, and that was exactly what we were getting before we cleaned this up.
+- Hopefully you understood that.
+- It should have been quite intuitive and interpretable, but to solidify your understanding even more, complete the exercise.
+- Welcome to the exercise, your second ever exercise.
+- For this exercise, I want you to create a graph which passes in a single list of integers along with a name and an operation.
+- If the operation is plus, you add the elements.
+- If the operation is times, you multiply all the elements, all within the same node.
+- Don't create an extra node yet.
+- For example, your input should be something like Jack Sparrow, your values 1, 2, 3, 4 again, and then your operation multiplication.
+- Your output should be in the format of hi Jack Sparrow your answer is 24.
+- To give you a hint as to how you would perform something like this, you would need an if statement in your node.
+- It's slightly more complicated, but the whole concept is the same.
+- Once you've completed this exercise, I'll see you when we build this third graph.
+- Welcome to your third graph.
+- What are we going to do this time?
+- Enough processing multiple values and everything.
+- Let's actually get the graph more complicated.
+- That's why we're going to be building a sequential graph.
+- All that basically means is we're going to be creating and handling multiple nodes that can sequentially process and update different parts of the state.
+- We will learn how to connect nodes together in a graph through edges, of course, and we're going to invoke the graph and really see how the state gets transformed as we progress through our graphs step by step.
+- Your main goal should be to understand how to create and handle multiple nodes in Langraph.
+- Let's code up the third graph.
+- We're making quite fast progress.
+- Well done on that.
+- Again, the imports are the same: StateGraph and TypedDict.
+- Like we've done in the previous two graphs, we're going to be coding the state schema or the agent state first.
+- Let's have class agent state, and again it needs to be in the form of a typed dictionary.
+- In this case, let's have the three attributes as all strings because we've already learned how to handle multiple data types.
+- Let's keep it simple.
+- Name string, age string, and final string.
+- Now we're about to build our two node functions, which are again the actions.
+- So again you simply write first_node.
+- In this case, we pass in the state and we return the updated state.
+- Healthy habits again: doc string.
+- This is the first node of our sequence.
+- What do we want to do in this specific node?
+- I want to manipulate the final part.
+- So let's say something like state final is equal to state name, and let's have an f-string: hi there.
+- We'll just return the state.
+- And now again we create a new node, state agent state, return that.
+- I'm just going to copy this doc string and change it.
+- This is the second node.
+- To speed things up, in this case I also want to have state final is equal to you are state age years old.
+- Quite a simple example, easy to follow.
+- That's why I've kept it as a basic graph.
+- It will help you understand.
+- There is one logical error which I've put deliberately here.
+- I want you to try to identify it.
+- The logical error in this case is that once we've built our graph and everything, what would have happened is we would have said hi to whoever we pass in, let's say Charlie or something.
+- So, hi Charlie.
+- We store that in the final attribute in the state, which is what we want.
+- But here's where things start to get logically incorrect.
+- Once we get to our second node, we're updating state final, which you can do.
+- You can interact with these attributes in any node and as many times as you want.
+- But notice this part.
+- What's happening here is we've completely replaced all of the content we had before.
+- Remember how we had hi Charlie?
+- We've just completely replaced it with you are age years old.
+- But we want both of those things.
+- How do we get both of them?
+- We simply concatenate them.
+- We can have something like state plus state final.
+- There we go.
+- The logical error should now be solved.
+- We've concatenated state final, and we're preserving what we had before.
+- Now let's get to the fun part.
+- How do we actually build this graph?
+- It's quite similar to the previous two graphs except there is one new thing which you're about to learn.
+- Like always, we use state graph to start the framework.
+- Let's store it in graph.
+- Again, I could have named this variable anything.
+- I've just kept it graph because it makes intuitive sense.
+- Now we add our nodes.
+- For simplicity's sake, I'm just going to have the name as the same name as the function.
+- So graph.add_node, and second_node.
+- Now that we've added both nodes, we need to obviously add the entry point and the endpoint.
+- We set the entry point like this.
+- Quite self-explanatory because we wanted to connect to the first node, not the second node.
+- So it should be start, first_node, second_node, end point.
+- How do we connect the first node and the second node together though?
+- Hopefully you had an answer for that.
+- If you remember from the previous section, the theory section, there was an element in Langraph called the edge.
+- That's exactly what we're about to do right now.
+- We're about to use edge, and that was the new thing which I was talking about a few moments ago.
+- How do we use it?
+- You use graph.add_edge.
+- The edge we want is between the first node and the second node.
+- That's exactly what we pass here: first_node and second_node.
+- Like before, we will just set the finish point at second_node and we will compile this.
+- How will this graph look like?
+- It should look like that: start point, end point, and these two nodes are sandwiched in between.
+- There is an edge.
+- It should be called a directed edge if I'm being quite picky, because the flow of data or the flow of your state updates is from the first node to your second node.
+- Let's again invoke this.
+- Let's pass the parameter as Charlie and let's pass the age as 20.
+- Print result.
+- Perfect.
+- Now you can see it says hi Charlie you are 20 years old.
+- Obviously we could have performed all of this in one single node, which we have been doing in the previous subsection, but the aim was to be able to create multiple nodes and handle how the state progresses.
+- One important thing which you've learned is how to use the add_edge method.
+- Another concept which you have solidified here is that you can change the keys of your state at any point in time, as many times as you want.
+- Remember here we've passed in state final, and we implemented state final here, and we implemented state final in the second node.
+- If we had more nodes in the sequence, we could have done that again and again and again.
+- We also learned a key logical error: sometimes a lot of people just accidentally replace their content in one of the attributes, and that leads to a lot of logical errors.
+- Always be mindful of that.
+- That again was quite simple, not too hard.
+- Hopefully the exercise which I'm about to give you solidifies this.
+- Welcome to the exercise for this third graph.
+- What I want you to do is build on top of what we just covered.
+- Instead of two nodes, I want you to build three nodes in a sequence.
+- We will have you accept the user's name, their age, and a list of their skills.
+- The first node will be specifically for personalizing the name field with a greeting.
+- The second node will be describing the user's age.
+- The third node will be listing all of the user skills in a formatted string.
+- Then you'll need to combine this and store it in a result field and output that.
+- This should be a combined message.
+- The format I would like you to output is something like this: let's say the name was Linda.
+- Linda welcome to the system.
+- You are 31 years old and you have skills in Python, machine learning, and Langraph.
+- As a hint for this exercise, you'll need to use the add_edge method twice.
+- This will really solidify your understanding on how to build graphs in general.
+- Once you've done that, answers will be on GitHub for all of the exercises.
+- Once you have cross-referenced and checked that you've done it right, I will see you in the next section where we build our fourth graph.
+- Welcome, welcome, welcome.
+- I'm particularly excited for teaching you this graph, graph 4.
+- Why?
+- Because we're about to learn how to build a conditional graph.
+- For the very first time, we're about to implement conditional logic.
+- Obviously we've done it in a previous exercise before, but that was within a single node.
+- This is how to implement conditional logic in the overall graph structure.
+- We will be implementing conditional logic to route the flow of data to different nodes.
+- We will be using the start and the end nodes to manage entry and exit points.
+- We will be designing multiple nodes to perform different operations such as addition and subtraction.
+- We will be able to create a router node to handle decision-making and control the graph flow.
+- The main goal is really to show you how we can use this inbuilt function which allows you to create conditional edges in Langraph.
+- Let's code this up now, and you'll see the imports are slightly modified this time.
+- Again, TypeDict and StateGraph is there.
+- I've also imported START and END point.
+- If you remember a few subsections ago, I told you there are multiple ways to be able to initialize the start and the end point.
+- This is another way you could.
+- Arguably, this is the easier way, but whatever.
+- I don't really have a preference, but I'll teach you both ways regardless.
+- Let's import these.
+- Like standard procedure, we will code up the state schema.
+- So class agent state and again TypedDict.
+- In this case, I want to be able to pass in two numbers and pass in an operation, a plus operation and a minus operation, one of those two operations.
+- Obviously I could have handled all of this within one single node, but that's not the point here.
+- I've kept it deliberately very simple.
+- So the main concept which you learn is how to implement conditional logic.
+- Let's code the different keys which we require.
+- Number one will be an integer.
+- Operation will be a string, a plus or a minus.
+- Number two will be an integer.
+- Final number will be an integer.
+- The final number will be the result of either adding or subtracting the two numbers.
+- Easy enough.
+- We've done this multiple times now.
+- Now here's where things get interesting.
+- Initially, this won't make sense.
+- But when we look at it from a bird's-eye view and we look back at all the code in this subsection again, everything will start to click.
+- Let's create our first node function.
+- Let's call it adder.
+- It's again still a node.
+- We input the state schema and we return the updated state schema and doc string again.
+- This node adds the two numbers.
+- Easy enough, we just do state final number is equal to state number one plus state number two.
+- And we just return the state.
+- Quite simple, right?
+- And just like what we did with the addition, we need a node for subtraction as well.
+- I already implemented it to not waste time, but this node subtracts the two numbers.
+- It's very similar to the previous node function.
+- It just subtracts these two numbers.
+- Yes, you could be saying what if number one is smaller than number two, it'll give you a negative result.
+- That doesn't matter.
+- The main aim again was to implement the conditional logic, not the inner workings of each node.
+- Now we built another type of node and we initialize it the same way, but this time let's call this node decide_next_node.
+- Let's actually give it a name which actually says what it does.
+- We use state agent state.
+- The doc string will be something like this node will select the next phase of the graph or next node of the graph, I should say.
+- Now we use an if statement, and before I code something let's just try to map how this will work.
+- This specific node will be at the start of our graph.
+- We will have the start node.
+- We will have this specific node, we'll call it the router.
+- This router routes to the next node depending on what the state schema is at that point.
+- We will have the add node and subtract node.
+- We essentially will have the router decide whether we add the two numbers or subtract the two numbers, and obviously this will be decided with the operation attribute.
+- Let's code this up now.
+- If state operation is equal to plus, we need to do a certain thing to pass it to the next node.
+- Your first guess could be, okay, I guess just call this function, right?
+- Not exactly.
+- Not in Langraph.
+- You actually return the edge.
+- We haven't described the edge yet, but for now I will just say the edge's name is addition_operation.
+- Similarly, if it's subtraction, we will do this like so.
+- To reiterate, we will see what the value is at the operation in the state schema.
+- If it's a plus, we will return the edge addition_operation, and if it's subtraction, we will use the subtraction_operation edge.
+- We haven't described or defined these two edges yet.
+- That's what I was saying earlier.
+- When we look at it from the bird's-eye view later on, in a few moments once we've built everything, it will make much more sense.
+- It runs perfect.
+- Now we build the graph.
+- Like normal standard procedure, we use state graph to create the graph framework.
+- graph is equal to that.
+- Let's add these nodes to our graph.
+- graph.add_node router and decide_next_node.
+- I have another confession to make.
+- Lots of conventions.
+- I know this won't work.
+- I know I haven't built the rest of the graph yet, but this eventually will not work.
+- There is a subtle reason why this won't work.
+- It's mainly in this line: add_node router decide_next_node.
+- The problem is with decide_next_node because the doc string appears once we press decide_next_node.
+- The reason this won't work is look closely at these three functions.
+- What are we doing in these two functions that we're not doing in this one?
+- The correct answer is we are returning the updated state in these two, but in this node we're not.
+- We're just returning the edge.
+- Subtle difference, I know, but that's how Langraph works and you will see why they do it like that right now.
+- How do we deal with this?
+- I obviously could have built this graph and then shown you the error, but then things would have just gotten messy.
+- That's why from the get-go I have told you why this wouldn't work.
+- Now that you know why this won't work, how do you fix this?
+- Simple.
+- You use this code lambda state.
+- If you have used lambda functions before, this is quite easy to understand.
+- If you haven't, don't worry.
+- All this is saying is your input state will be your output state.
+- That's it.
+- In even simpler words, think of this as a pass-through function.
+- Your input state will be passed, your state will be inputted, and your output will be the exact same state.
+- Why is it the exact same state?
+- Because you're not changing the state at all.
+- You're comparing stuff here, but you're not assigning anything.
+- There's a difference between comparison and assignment.
+- Even in this one, you're just comparing to see whether the operation is a minus, but no assignment has been made at all.
+- In fact, there's been no changes to this state whatsoever.
+- That's why we can use this as a pass-through function.
+- Hopefully that made sense.
+- Let's continue.
+- We will add the edge.
+- This is just the normal edge we did last time.
+- We will need the start key.
+- Here's how you initialize differently.
+- Remember how we used to do set_entry_point and set_finish_point?
+- We don't do that anymore.
+- We use START because that's what we imported.
+- Make sure to import it if you do it this way.
+- You use START and END.
+- Your start will be a start point.
+- What do you want the start to be connected to?
+- We want it to be connected to the router.
+- Why not add node or subtract node?
+- Think again.
+- Refer back to that diagram which I'll show right here.
+- If we connected the start point to the add node or the subtract node, then what's the point of the router in the first place?
+- The whole point was that the router decides what the inputs are and then from there it branches off to the correct node.
+- That's why the router needs to be the first node we connect our start point to.
+- Perfect.
+- Now we add the main new thing which we are going to learn in this section: graph.add_conditional_edges.
+- The first part is your source, which you can see here as well.
+- So the source will simply be the name of the node.
+- What's the name of the node which we want the conditional edge to be?
+- It's the router node, so that's going to be the source part.
+- It's asking for a path.
+- What's the path you would like it to do?
+- Before we implement the path, we need to tell it what action it needs to do, and that's where this node will come in, the decide_next_node part.
+- We pass that as the second parameter.
+- That's the path.
+- Now we implement something called the path map.
+- We've implemented the source, which is the router.
+- We've implemented the path, which is your decide_next_node function.
+- Don't need to worry about hashable, runnable, any of that stuff.
+- You don't need to overcomplicate it.
+- Now it's time for the path map.
+- Your path map will be in the form of a dictionary.
+- Remember how I said earlier that we had implemented addition_operation and subtraction_operation.
+- These were edges.
+- Now we're about to implement those only.
+- We're about to create two new edges here.
+- What is this code actually saying?
+- This is in a format of edge and node.
+- The starting point of this edge will obviously be this router node, and it's telling us where it will connect to.
+- This will be much easier to visualize when I actually show you the graph.
+- But for now, addition_operation and subtraction_operation are the edges.
+- The two nodes are add_node and subtract_node.
+- Lastly, we're now at the point where we need to create the endpoint.
+- Obviously, if you look back at this diagram, you can see that we need two edges to connect to the endpoint.
+- We need an edge from the add node and we need an edge from the subtract node.
+- We can add two edges like this: graph edge from add_node to endpoint, and similarly subtract_node to endpoint.
+- Then we compile this.
+- No errors.
+- Now here's the most exciting part.
+- Try to visualize what this graph will actually look like.
+- We again have a start point.
+- We have the router.
+- We have our two nodes, add_node and subtract_node.
+- Remember when I said addition_operation and subtraction_operation are the edge names?
+- Here it is.
+- It's telling us which direction to go into.
+- How do we go to add_node?
+- We use the addition_operation.
+- How do we go to subtract_node?
+- We go to the subtraction_operation.
+- Then obviously we create these two edges to connect to the endpoint.
+- We will once again look at it from a bird's-eye view.
+- Let's actually invoke this graph to see what happens.
+- What it's saying is it's defining number_one as 10, operation as minus, and number_two as five.
+- Because we've used subtraction, the final number should be 10 minus 5, which is five.
+- We've printed the results, and the answer is like such: number_one is equal to 10, operation is equal to minus, number_two is equal to 5, and final number is five.
+- Obviously the way I've invoked it is slightly different to what I have done before.
+- This is another way you can invoke.
+- So, not too hard.
+- But let's go through everything one more time to solidify everything.
+- We imported everything.
+- We created the state schema using agent state and a typed dictionary.
+- Then we created our three different nodes: the add node, subtract node, and decide_next_node.
+- Within decide_next_node, if the operation is a plus, it goes to the addition_operation edge, which is this edge.
+- If it's subtraction_operation, it goes to this side.
+- This is how we built the graph.
+- We added the nodes.
+- We added the edge from the start point to the router.
+- Then we added the conditional edge, the new thing which we've learned in this section.
+- We reference router, and we use the edge-node format.
+- The edge will be addition_operation to add_node, then subtraction_operation to subtract_node.
+- Visually speaking, it will be addition_operation to add_node, subtraction_operation to subtract_node.
+- I know this will be quite confusing at first, and don't worry, it took me quite a while to understand this myself as well.
+- Hopefully the exercise I've given you will really be able to help you understand this much better.
+- Let's actually find out what the exercise is for this graph.
+- You need to make this monstrosity.
+- At first glance it looks terrifying, but if you analyze it a little bit closer, all it is is what we just coded twice.
+- So we coded this, and we need to replicate it once more.
+- In essence, you need to actually input four numbers and two operations, and you need to output their final results.
+- For example, number one, number two, number three, number four and the respective operation and the respective results.
+- In this case, we would have to do 10 minus 5, which is 5, and 7 plus 7 plus 2, aka 9, and those two numbers should be outputted.
+- The reason I gave you this exercise is because this will really solidify your understanding about conditional edges, which will really be important for the next few graphs and the next AI agents we make.
+- Once you have completed it by looking and cross-referencing the answer on GitHub, I will see you in the next graph.
+- We're almost at the end of this section, and we're about to build our final graph, aka graph 5.
+- We've learned quite a lot about Langraph and its internal mechanisms.
+- This will really help us in the next section where we finally build the AI agents you were looking for.
+- In this subsection, we're going to be learning an important concept.
+- There's still one more concept we haven't learned, and that's about looping.
+- We're going to be creating a simple looping graph.
+- I kept the objectives quite small here.
+- There aren't that many objectives.
+- It's essentially implementing logic which involves looping to route the flow of data back to the nodes.
+- We're going to be creating a single conditional edge, which you know how to do in the previous section.
+- Regarding the previous section, however, I know the exercise.
+- Please do complete that exercise.
+- That exercise will be probably the hardest exercise you would have done until this point.
+- Don't worry if you didn't get it.
+- If you did, great job.
+- You're doing really, really well.
+- But if you didn't get it, look at the GitHub.
+- Try to compare where you went wrong.
+- Remember, in Langraph, there's more than one way of building the graphs.
+- Make sure the graphs are well built and it actually functions.
+- If you want an extension, try to make it even more robust than it is.
+- But back to this now.
+- Final graph, I promise.
+- The main goal really is to code up the looping logic.
+- With that out of the way, let's build the final code for this section.
+- Final code we have to build for this section.
+- Here we go.
+- I'm going to take a slightly different approach this time.
+- I'm actually going to show you the graph we want to end up building from the get-go.
+- There's a reason I'm going to start that from now so we get in good practice.
+- Once you finish this course and actually start making your own AI agentic systems, you obviously need to plan how it works.
+- You need to see what nodes you need, what edges you need, whether this needs to be a conditional edge, where the start point and end point are going to go, and so on.
+- You can either do that via pen and paper or software like I've used, but the point is you need some sort of blueprint.
+- That's how it really works in the industry as well.
+- You will obviously have a blueprint, and then from there you will code up the graph, similar to how a UI designer renders their UI designs and then sends that off to a software developer who develops the application further.
+- That's the habit I want to start creating with you.
+- This is the graph I want to build in this section.
+- There's obviously going to be a start and end point.
+- This should be mostly familiar except for this loop.
+- We're going to create a simple greeting node and another node called the random node.
+- In the greeting node I want the user to have stated their name, and it should output a simple hi there your name.
+- Then the graph progresses to the random node.
+- In the random node I want to generate five random numbers.
+- Just as a heads up, yes, this graph in industry would be completely useless.
+- I know, but I've deliberately kept it simple again so you know the fundamentals.
+- This loop could have easily been avoided and transferred into a for loop, for example.
+- I could have had a for loop within this node and run it five times to generate the numbers.
+- I get it.
+- But this is kept deliberately simple so you actually understand the concept.
+- Let's use the usual inputs, and the only difference is this time I've also imported random.
+- If you have used Python before quite a lot, you would have come across this library.
+- Let's start with our agent state.
+- class agent state, type dictionary.
+- What's the first thing we're going to need?
+- Let's see.
+- We have the start point.
+- Do we need anything, any keys that no?
+- For greeting node, what did I say?
+- I wanted the user to be able to input their name.
+- So we need a name attribute or a key.
+- And then for the random node, we need some form of a list to actually store the numbers.
+- So we have number and list int.
+- One more thing: look at this loop.
+- How will we actually know when to stop?
+- We need some form of counter.
+- Perfect.
+- When you do go on to make your AI agents and everything, you're not going to know what attributes you need right from the get-go unless you've planned it extremely well.
+- Chances are you won't get it.
+- But don't worry, iteratively you'll obviously be better at speculating what attributes you need through practice.
+- You can obviously do iterative development as well.
+- Now let's actually build these nodes.
+- Let's start off with the greeting node.
+- We define a function like normal.
+- def greeting_node, we obviously need the agent state.
+- The doc string will be useful.
+- Luckily for me, I've already got that here.
+- Now let's update the name key.
+- How do we do that?
+- state name is equal to hi there, state name.
+- What will this do?
+- I input a name, and it'll replace that name with a string of hi there this person.
+- Let's also initialize the counter variable here.
+- Why am I doing that?
+- Let me first write it and think about this.
+- Obviously I'm setting the value, so I will need to have passed in a valid integer when I am invoking the graph.
+- Here's the thing: what if I pass in minus 2 as the counter value?
+- As the initial counter value, if this line wasn't there, it would have just kept on incrementing until it got to five because I want to have five numbers.
+- But if it starts at minus 2, it would end up giving me seven numbers.
+- That's not robust.
+- This basically wipes out whatever rubbish integer the user even inputs.
+- If they had put zero, okay, we replace it with zero.
+- If they put minus 20 because they're greedy or something, then we have made sure to set that back to zero.
+- It's just a way to make it robust.
+- That's all.
+- Return state.
+- Now let's create our second node, which is a random node.
+- We can say random node, state agent state.
+- Doc string again.
+- This generates a random number from 0 to 10.
+- This piece of code here essentially appends the randomly generated number to the number list.
+- What else do we need to do in this node?
+- We need to increment the counter value, so + equals to 1.
+- This will increment the value by one, and then we just return the state.
+- Here's how we're going to implement the looping logic.
+- Just a warning here, and please listen to this.
+- Like in any software development program or programming language too, there's more than one way of coding up an application.
+- Same goes with Langraph as well.
+- There are multiple different ways of coding a looping graph like this.
+- I'm going to be showing you one of them.
+- I obviously can't show you all of them because there's just time constraint.
+- But the way I'm going to show you is pretty efficient as well.
+- You might have speculated that I'm going to create a router node.
+- It's close.
+- I'm not going to create another router node.
+- You can see in the graph the client doesn't want another router node here.
+- How do we go about that?
+- We could create a conditional edge.
+- How do we do that?
+- Let's begin that.
+- Let's write a new function.
+- def should_continue, state agent state.
+- Let's create this block string.
+- Function to decide what to do next.
+- Now here's where we set our looping logic, and this should look quite familiar to you now.
+- If the counter value is less than five, because we're starting with zero, 0, 1, 2, 3, 4, that will be five values.
+- I've also written a print statement so we can keep track of the progress.
+- Whenever I'm writing the code as well, when you're coding with me or doing the exercise, it's really helpful to put print statements everywhere.
+- Or you could also use breakpoints as well, so you know where the code failed if it fails.
+- Here we return the loop edge and the exit edge.
+- We have the loop edge and this will be the exit edge.
+- Everything is going according to plan so far, but so far is the key.
+- You never know.
+- This is how the trajectory should follow.
+- We start at the greeting node.
+- We obviously go from the start to the greeting node.
+- Then we enter the random node.
+- We enter the random node and exit it five times.
+- Why five times?
+- Because we want five random numbers.
+- By then this if statement will not work.
+- It will fail.
+- So we will go to the else statement and return exit.
+- If we return to exit, we'll go to the end node.
+- That's how the general gist is.
+- Let's quickly make this graph.
+- You should know how to initialize a graph.
+- Let's add these nodes.
+- We have our two nodes, greeting and random, which is exactly what we wanted.
+- Now we're going to add an edge between greeting and random.
+- Why?
+- Because I've created this edge, greeting node and random node.
+- I'm going to create the conditional edges, which is done through here, and I've written some comments here as well.
+- There will be the source node, which is the random.
+- So where I want the conditional edge to start from, and then the routing function or this tree.
+- I should have really written action here because it's the action I want to perform, the underlying mechanism or function which is going to determine which edge to use, and that's implemented by the should_continue function.
+- Notice how again these two edges are the same edges here.
+- If the loop is the one which is outputted, then we need to go back into the random node which we've generated, which we put there.
+- If it doesn't, we go to the end part.
+- Then obviously we set the entry point.
+- Again you don't have to set the exit point here or the finish point because we've already done it using end here.
+- Perfect.
+- Then we just compile the graph.
+- It compiled.
+- That's a good sign.
+- Let's see if we have got our graph to be the exact same.
+- We have the start point and the end point.
+- We have the greeting and the random.
+- Then we have our two conditional edges.
+- We have the loop going back into the random node as we wanted, and the exit which you can see.
+- Take a moment and compare and contrast.
+- I have this code.
+- I've given a name, my name, a brand new list, and I've set counter to minus one.
+- As you can see it enters loop one, loop two, loop three, loop four because these are print statements we printed.
+- It says hi there v, which is my name.
+- Number 10, 2, 10, 26, just randomly generated.
+- You can see the counter value is five.
+- Remember what I was saying about the counter.
+- We set the counter value to zero here to make it more robust.
+- If we had not done that, it would have generated six times.
+- Now I can set this to minus 100.
+- It will still obviously give me different random values, but the code is largely the same.
+- That's really the way which I personally use to create loops in Langraph.
+- It's pretty easy.
+- But obviously with practice you might even find some other ways.
+- If you do find other ways, do let me know.
+- There's more than one way.
+- You can send me a message on LinkedIn or Instagram or whatever.
+- So this is finally the code for our final graph of the section.
+- Just complete the graph 5 exercise please, and we should be good to go to make AI agents.
+- Welcome to the exercise for this last graph.
+- You need to implement this graph on the right.
+- You need to implement an automatic higher-or-lower game.
+- For context, you need to set the bounds, which we can guess between 1 to 20, integers of course.
+- The graph has to keep guessing, where the max number of guesses is 7.
+- If the guess is correct, it stops.
+- If not, we keep looping until we hit the max limit of seven.
+- Please note we don't have to pass any inputs.
+- The actual graph should automatically guess by itself.
+- There should be no human in the loop, no human intervention at all.
+- Each time a number is guessed, the hint node, aka this node, should say either higher or lower.
+- The graph should account for this information and guess the next guess accordingly.
+- For example, the input should be something like the player name student.
+- The guess should just be an empty list because we're initializing the list.
+- Attempts should be set to zero.
+- The lower bound and upper bound should be 1 to 20.
+- The reason I've also passed these as inputs is because if you wanted to expand this to maybe 1 to 50 numbers or whatever, you can.
+- It's quite easy to do that.
+- So just as a hint, it will need to adjust its bounds after every guess based on the hint provided by the hint node.
+- Once you've completed this exercise, you would have fully reinforced your understanding about loops in Langraph.
+- Once you've completed this, cross-reference the answers on GitHub.
+- I will see you in the next section where we finally begin AI agents.
+- Welcome back to this brand new section where we actually start learning about AI agents.
+- We finally are upgrading our ability in Langraph.
+- I even upgraded my clothing sense.
+- Not really.
+- But this is exciting times because we actually finally build AI agents.
+- We're going to build a lot of AI agents in this section.
+- Starting off with the first agent, well, technically it's not really an agent, but I just named it that because it sounds cool.
+- Technically it's not though.
+- Let's see what we're going to actually learn in this section in this subsection.
+- We're going to build a simple bot.
+- That's it.
+- These are the objectives.
+- We're going to define a state variable state structure, which is going to have a list of human message objects, and I briefly mentioned what a human message was a long time ago in the course.
+- What it is: it's a message prompt which is given by the human, aka us, to the AI.
+- We're going to initialize the GPT-4o model for this using LangChain's ChatOpenAI library.
+- We're going to send and handle different types of messages.
+- We're going to build and compile the graph of the agent.
+- The main goal really is how we can integrate LLMs into our graphs.
+- What is this sort of graph we're actually going to end up building?
+- It's going to look like this.
+- Yes, this looks exactly like the graph we made in the first ever graph we actually ever made.
+- The functionality will obviously be different because now we're actually integrating the LLM.
+- Exciting stuff.
+- Okay, I will see you at the code then.
+- Coding time.
+- Now we first code up our very first AI agent, aka the simple bot.
+- I've already imported all the necessary libraries we'll need to not waste time.
+- While you're coding these up as well and copying these, I'll also briefly explain what these are so we're at the same level.
+- We've already imported TypedDict and list many times before.
+- The LangChain Core messages import HumanMessage I briefly mentioned this in the intro of this section, of this subsection, what a human message was.
+- This is the library we get it from.
+- Similarly, we're going to be using OpenAI's LLMs, so that's why we're going to use ChatOpenAI from the LangChain OpenAI library.
+- The langgraph.graph.
+- These we were familiar with, and this is the env.
+- Just a few points.
+- You could have been saying, okay wait, hold on, I thought we were about to do Langraph stuff.
+- Why is the LangChain stuff here?
+- You must know that Langraph is built on top of LangChain and LangChain already has the sophisticated libraries.
+- Why not actually use them?
+- That's how Langraph is designed.
+- It's designed to use the robust sophisticated libraries which LangChain offers.
+- No, I'm not a traitor.
+- We're still doing Langraph stuff, but we're also leveraging LangChain's strengths as well.

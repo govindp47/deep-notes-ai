@@ -1,0 +1,148 @@
+{
+    "items": [
+        {
+            "id": "228b8636-5bd0-4a9c-8175-740d43ddf1b5",
+            "summary": "Course on Langraph for building conversational AI workflows. Learn to design, implement, and manage dialogue systems using a graph-based approach. Outcome: ability to create scalable conversational applications leveraging large language models."
+        },
+        {
+            "id": "082e8dd3-90dd-4e2f-8cbe-abea45bf3277",
+            "summary": "Course covers Langraph fundamentals. Assumes prior knowledge of Langraph but no coding experience. Detailed explanations provided; pacing may be slow."
+        },
+        {
+            "id": "7bc7f573-60db-4ebd-9df9-3c6434aa72ed",
+            "summary": "Course involves building graphs and AI agents. Theoretical learning with exercises provided; answers available on GitHub."
+        },
+        {
+            "id": "46192c2d-c707-492f-8d18-dc3e12b65f33",
+            "summary": "Section on type annotations: theoretical overview essential for coding AI agents and graphs in Langraph."
+        },
+        {
+            "id": "9adc9132-f46e-4e11-b31c-2f7a151df74c",
+            "summary": "Dictionaries: a data structure with key-value pairs. Example: `movie` dictionary with keys `name` and `year`."
+        },
+        {
+            "id": "35cbdb75-5db7-43ff-a828-0c8895e60ec8",
+            "summary": "Dictionaries allow efficient data retrieval but can lead to logical errors due to lack of type enforcement. Solution: use type dictionaries."
+        },
+        {
+            "id": "0173360f-4c47-47e0-87b9-e21fe49fed2b",
+            "summary": "TypedDict: a type dictionary to enforce structure in dictionaries. Example: `movie` defined as a class with specific key types (e.g., `name` as string, `year` as integer). Used extensively in Langraph."
+        },
+        {
+            "id": "01ff72a3-103f-4d84-9df4-39bead2b37a5",
+            "summary": "Benefits of TypedDict: 1. Type safety reduces runtime errors. 2. Enhanced readability aids debugging."
+        },
+        {
+            "id": "c8cb21f8-8d83-495d-9c2a-0fc1c6cadbfa",
+            "summary": "`Union` type annotation: specifies a value can be one of several types. Example: function input can be either integer or float."
+        },
+        {
+            "id": "85f08c14-7fa2-4eb7-83c8-7aa00cdf3225",
+            "summary": "`Optional` type annotation: indicates a parameter can be a specific type or `None`. Example: function can accept a name or no input."
+        },
+        {
+            "id": "b9323571-70ce-4a02-9102-9c520d2834fe",
+            "summary": "`Any` type annotation: allows any value. Example: function can accept and print any input."
+        },
+        {
+            "id": "a3409bca-edc3-4995-a90e-adcc8dd16dc0",
+            "summary": "Lambda functions: concise way to create small functions. Example: square function and using lambda with `map`."
+        },
+        {
+            "id": "77ecbfb2-c33f-4f5a-b690-a9ac21d70269",
+            "summary": "Summary of type annotations: powerful tools frequently used in Langraph. High-level overview is sufficient."
+        },
+        {
+            "id": "aef26eda-4812-4c5a-bef1-95da93bd87a6",
+            "summary": "`State` in Langraph: shared data structure holding current application context. Analogy: whiteboard in a meeting."
+        },
+        {
+            "id": "4d1a9e0f-ff7b-43fd-be12-387472632a0a",
+            "summary": "`Node` concept: individual functions in the graph that process input and produce output. Analogy: assembly line station."
+        },
+        {
+            "id": "ee8b7283-acd7-4b69-a0f3-6a768684079d",
+            "summary": "Graph overview: structure mapping task connections and execution flow. Analogy: roadmap with routes."
+        },
+        {
+            "id": "2b6cdfe3-10ab-4f59-800b-410012649222",
+            "summary": "Edges: connections between nodes determining execution flow. Conditional edges decide next node based on current state conditions."
+        },
+        {
+            "id": "eaf12732-3738-4ec2-ac0e-45e9cd388076",
+            "summary": "Start node: virtual entry point of the workflow. End node: signifies workflow conclusion."
+        },
+        {
+            "id": "21b7af2a-864c-4943-81ec-981142e53b70",
+            "summary": "Tools: specialized functions for nodes to perform tasks. Tool nodes run tools and enhance node capabilities."
+        },
+        {
+            "id": "fe5af497-1ce9-4545-a76c-8df433f2d731",
+            "summary": "State graph: compiles graph structure, managing nodes and edges for unified workflow."
+        },
+        {
+            "id": "f49ee36d-57d7-49b6-9a9c-ccf7fa5e5afb",
+            "summary": "State graph and runnables: state graph builds structure; runnables are executable components in workflows."
+        },
+        {
+            "id": "45e235d4-3acf-42cf-9279-8203abe9b9a9",
+            "summary": "Message types in Langraph: 1. Human message, 2. AI message, 3. System message, 4. Tool message, 5. Function message."
+        },
+        {
+            "id": "f2ac82c3-b3db-4ad4-a15f-ab01dcec8b2f",
+            "summary": "Section conclusion."
+        },
+        {
+            "id": "eff31837-ea2c-4115-b0d6-c1ef148eb223",
+            "summary": "Beginning coding in Langraph. First graphs will be built; AI agents will be coded later."
+        },
+        {
+            "id": "e4779de1-76f2-4580-b3d3-51ad992cc8c7",
+            "summary": "Objectives for first coding section: build \"hello world\" graph, understand agent state structure, create node functions, and process data."
+        },
+        {
+            "id": "0b00abe7-fb69-45e7-8cc5-6c40f4f6eeb8",
+            "summary": "Imports for Hello World graph: `dict`, `TypedDict`, `StateGraph`. First step: create agent state."
+        },
+        {
+            "id": "620d887f-46cd-46e1-8463-fa856ddf0311",
+            "summary": "Agent state: shared data structure as a typed dictionary. Define `AgentState` class with input `message` as `str`."
+        },
+        {
+            "id": "0cf95812-bedf-4a18-8d29-c333fe505705",
+            "summary": "Greeting node: standard Python function taking state as input, returning updated state. Docstrings inform function purpose."
+        },
+        {
+            "id": "56456988-c915-480c-b239-91099e337b75",
+            "summary": "Building the graph: use `StateGraph`, add nodes, set entry points, compile graph. Compilation success does not guarantee runtime success."
+        },
+        {
+            "id": "bc3d575a-a69f-4213-b12a-cd115b73cd17",
+            "summary": "Compile and run: compile graph, visualize with IPython. Acknowledge potential logical errors."
+        },
+        {
+            "id": "129ddf09-07f4-4490-89bf-c3ec9f96d69c",
+            "summary": "Running the graph: use `invoke` method, pass `message`, reference `message` attribute for output."
+        },
+        {
+            "id": "c929a83e-715e-41b6-95a8-69de43d2394d",
+            "summary": "Result explanation: reference `message` attribute for output. Function behavior can vary."
+        },
+        {
+            "id": "9a8bb0a8-5956-4490-b27b-efcc3631b166",
+            "summary": "Exercise: build a personalized compliment agent. Objective: output personalized message based on input name."
+        },
+        {
+            "id": "17fc891d-7531-4abe-9134-da621ec741d2",
+            "summary": "Introduction to Graph 2: build a graph with multiple inputs, handle different data types, and process list data."
+        },
+        {
+            "id": "5e61946f-cfb0-442d-b8d7-1f0b3e3d64c9",
+            "summary": "Imports for Graph 2: `TypedDict`, `StateGraph`, and `List`. Define `AgentState` for multiple inputs."
+        },
+        {
+            "id": "5ef3d60f-2617-4398-9ff9-c60adbe45717",
+            "summary": "Processing node for Graph 2: define node to process `values`, `name`, and `result`. Sum integers and concatenate greeting."
+        }
+    ]
+}

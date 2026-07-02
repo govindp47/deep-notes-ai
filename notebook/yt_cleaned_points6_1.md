@@ -1,0 +1,140 @@
+- Welcome to this video course on Langraph, the Python library for building advanced conversational AI workflows.
+- Vbeca will teach how to design, implement, and manage complex dialogue systems using a graph-based approach.
+- By the end, you will be equipped to build robust, scalable conversational applications that leverage large language models.
+- My name is Vava and I am a robotics and AI student.
+- This course covers the fundamentals of Langraph.
+- The course assumes you have heard of Langraph but may have never coded in it.
+- Every concept will be explained in as much detail as possible, which may make the pace slow at times.
+- You can adjust playback speed if you prefer a faster pace.
+- The course will include building many graphs and AI agents, theory, and exercises with answers provided on GitHub.
+- This first section covers type annotations and is theoretical but brief.
+- Type annotations will appear repeatedly when coding AI agents and graphs in Langraph, so prior exposure is important.
+- Dictionaries are a Python data structure with unique keys and corresponding values.
+- Example: a simple dictionary movie with keys name and year and values "Avengers Endgame" and 2019.
+- Dictionaries allow efficient data retrieval based on unique keys and are flexible and easy to implement.
+- A challenge with plain dictionaries is ensuring data conforms to a particular structure and data types.
+- Lack of enforced structure can cause logical errors that are hard to find in large projects.
+- The solution is to use a typed dictionary.
+- A typed dictionary (type dictionary) in Python is implemented as a class that defines keys and their expected data types.
+- Example: define a class with name: str and year: int, then initialize with name="Avengers Endgame", year=2019.
+- Typed dictionaries provide type safety by explicitly defining the data structure, reducing runtime errors.
+- Typed dictionaries also enhance readability and make debugging easier.
+- Another type annotation is Union, which specifies that a value may be one of several types.
+- Example: a function that squares x can accept x: Union[int, float], allowing integers or floats.
+- Passing a string to that function would be invalid; Union helps catch incorrect usage.
+- LangChain and Langraph use Union extensively in their libraries.
+- Optional is similar to Union but typically expresses a type that can be either a given type or None.
+- Example: def nice_message(name: Optional[str]): if name is a string, return a greeting; if None, return a default "hey random person".
+- Optional[name] means the parameter can be a string or None and cannot be other types like int or bool.
+- Any means the value can be any data type.
+- Example: def print_value(value: Any): print(value); any data structure is allowed.
+- Lambda functions are short anonymous functions useful for concise small functions.
+- Example 1: a square function that returns x * x for a number.
+- Example 2: using map with a lambda to square each number in nums and convert to a list: list(map(lambda x: x * x, nums)) produces [1, 4, 9, 16] for nums [1, 2, 3, 4].
+- Lambda functions are a shortcut compared to a for loop and can be more efficient and concise.
+- You do not need to memorize these annotations now; a high-level overview is sufficient.
+- The next section introduces the different elements in Langraph, starting with the state.
+- A state is a shared data structure that holds the current information or context of the entire application.
+- The state is the application's memory that keeps track of variables and data nodes can access and modify as they execute.
+- Analogy: the state is a whiteboard in a meeting room where participants (nodes) write, update, and read information.
+- Nodes are individual functions or operations that perform specific tasks within the graph.
+- Each node receives an input, often the current state, processes it, and produces an output or an updated state.
+- Analogy: machine assembly line stations where each station performs a specific job like attaching a part, painting, or quality inspection; each station is a node.
+- The graph is the overarching structure that maps how nodes are connected and executed.
+- The graph visually represents the workflow, sequence, and conditional paths between operations.
+- Analogy: a road map showing routes connecting cities and intersections offering choices of which path to take.
+- Edges are the connections between nodes and determine the flow of execution.
+- Edges tell the application which node should run next after the current node completes.
+- Analogy: a train track (edge) connecting two stations (nodes); the train acts as the state moving between stations.
+- Conditional edges route execution based on specific conditions or logic applied to the current state.
+- Analogy: traffic lights where green, red, or yellow decide the next action; or an if-else statement.
+- The start node is a virtual entry point marking where graph execution begins and does not perform operations itself.
+- Analogy: the starting line of a race.
+- The end node signifies the conclusion of the workflow and stops graph execution when reached.
+- Analogy: the finish line of a race.
+- Tools are specialized functions or utilities nodes can use to perform tasks, such as fetching data from an API.
+- Tools enhance node capabilities by providing additional functionalities.
+- Difference between tools and nodes: nodes are structural elements of the graph; tools are functionalities used within nodes.
+- Analogy: tools in a toolbox—hammer for nails, screwdriver for screws—each has a distinct purpose.
+- A tool node is a special node whose main job is to run a tool and integrate the tool's output into the state.
+- Analogy: an assembly line operator (tool node) controlling a machine (tool) and feeding results back into the assembly line.
+- The state graph builds and compiles the graph structure and is one of the first elements you interact with.
+- The state graph manages nodes, edges, and the overall state, ensuring unified workflow operation and correct data flow.
+- Analogy: a blueprint that outlines design and connections within a building; the state graph defines the workflow structure and flow.
+- A runnable is a standardized executable component that performs a specific task within an AI workflow and acts as a fundamental building block for modular systems.
+- Difference between a runnable and a node: runnables can represent various operations; nodes typically receive a state, perform an action, and update the state.
+- Analogy: Lego bricks that snap together to build complex structures; runnables combine to create sophisticated AI workflows.
+- Langraph uses five common message types: human message (user input), AI message (responses generated by AI models), system message (instructions or context for the model), tool message (specific to tool usage), and function message (represents a tool or function call).
+- These message types are familiar if you have used large language model APIs like OpenAI's API.
+- The next part transitions to coding in Langraph; this section focuses on coding basic graphs before building AI agents.
+- The course will not build AI agents immediately to avoid complexity and confusion for beginners.
+- The immediate goal is to learn Langraph syntax, how to code graphs, and gain confidence before integrating LLM APIs and tools.
+- The first example graph is a "hello world" graph to understand and define the agent state structure, create simple nodes, process and update state, build the Langraph structure, compile it, and invoke it.
+- The main goal is to understand how data flows through a single node in Langraph.
+- The hello world graph has a start point, one node, and an end point.
+- To code the first graph, import dict, type dict, and state graph.
+- The state graph is a framework that helps design and manage the flow of tasks in your application.
+- The agent state is created as a class that implements the typed dictionary schema.
+- Example: class agent state(TypedDict) with a single field message: str.
+- Nodes are defined as normal Python functions that receive and return the state.
+- Example: def greeting node(state: agent_state) -> agent_state: where state is the input and the return type is the updated agent_state.
+- Docstrings are important in Langraph because they describe what a function does and will be used by LLMs when you build AI agents later.
+- Example docstring: """Simple node that adds a greeting message to the state."""
+- Inside the node, update state.message with concatenation: state.message = "hey " + state.message + " how is your day going".
+- Return the updated state at the end of the node function.
+- To build the graph, initialize it using state_graph with the state schema: graph = state_graph(agent_state).
+- Add a node to the graph using graph.add_node(name, action) where name is a string and action is the function implementing the node.
+- Example: graph.add_node("greeter", greeting_node) adds the greeter node to the graph.
+- Set the entry and finish points using graph.set_entry_point("greeter") and graph.set_finish_point("greeter") to connect the start and end to the node.
+- Compile the graph using graph.compile() and store the compiled graph in a variable.
+- A compiled graph may still contain logical errors even if it compiles without syntax errors.
+- Use IPython utilities to visualize the graph structure if desired.
+- Invoke the compiled graph with an input state using app.invoke(message="Bob") and store the result in a variable.
+- Access the result's attributes with result.message to retrieve the final message.
+- Example final output: "hey Bob how's your day going" because the greeting node concatenated "hey " with the input name and the phrase " how's your day going".
+- You can customize the greeting text arbitrarily; the function defines the exact output format.
+- Exercise: create a personalized compliment agent that takes a name input and outputs "Bob, you're doing an amazing job learning langraph" by concatenating to the state rather than replacing it.
+- The second graph demonstrates handling multiple inputs and different data types.
+- Objectives: build a more complex agent state, create a processing node that operates on list data, set up a graph that processes and outputs computed results, and invoke the graph with structured inputs to retrieve outputs.
+- The main goal is to learn how to handle multiple inputs in the state.
+- Imports include type dictionary, state graph, and list to represent a list data structure.
+- The state schema class agent state(TypedDict) contains multiple keys, for example values: List[int], name: str, result: str.
+- You can name the state class anything, but agent_state is descriptive.
+- The processing node is defined as def process_values(state: agent_state) -> agent_state: with a docstring describing that it handles multiple inputs.
+- The node computes the sum of values using sum(state.values) and sets state.result to an output string concatenating the name and the computed sum.
+- Add the processor node to the graph with graph.add_node("processor", process_values), set entry and finish points, and compile the graph.
+- Important invocation detail: store the compiled graph in a variable (e.g., app) and invoke with app.invoke(values=[1,2,3,4], name="Steve"); invoking a non-compiled graph directly will fail.
+- Example output: values: [1, 2, 3, 4], name: "Steve", result: "Hi there Steve. Your sum is equal to 10."
+- To access only result, reference result.result after invocation.
+- Adding print statements before and after the action demonstrates how the state is updated during execution.
+- If an attribute is omitted from inputs (e.g., result), Langraph initializes it as None by default; be cautious using an attribute that might be None before assigning to it.
+- In the example, assigning state.result works because the code assigns to it rather than reading from it before assignment.
+- Exercise: create a graph that takes a list of integers, a name, and an operation string; if the operation is "+", add elements; if the operation is "*", multiply elements; do this within a single node and output "Hi Jack Sparrow, your answer is 24" for values [1,2,3,4] and multiplication.
+- The third graph covers sequential graphs where multiple nodes sequentially process and update the state.
+- Objectives: create multiple nodes, connect them with edges, invoke the graph, and observe how the state transforms step by step.
+- The state schema can contain multiple string fields like name: str, age: str, final: str for simplicity.
+- Build multiple node functions, each receiving and returning agent_state.
+- Example first node: def first_node(state: agent_state) -> agent_state: set state.final = f"Hi {state.name}" and return the state.
+- Example second node: def second_node(state: agent_state) -> agent_state: set state.final = f"{state.final} you are {state.age} years old" and return the state.
+- Logical error to avoid: replacing state.final in the second node will overwrite content set by the first node; instead, concatenate with state.final + new content to preserve prior updates.
+- Create the graph with graph = state_graph(agent_state), add both nodes with graph.add_node("first_node", first_node) and graph.add_node("second_node", second_node).
+- Set the entry point to "first_node" and the finish point to "second_node".
+- Connect nodes with a directed edge using graph.edge.add_edge("first_node", "second_node") to ensure flow from the first to the second node.
+- Compile the graph and invoke with inputs like name="Charlie" and age=20 to get "Hi Charlie you are 20 years old".
+- Multiple nodes can update the same state keys several times; be mindful to preserve previous content if that is required.
+- Exercise: build three sequential nodes to accept a user's name, age, and list of skills; first node personalizes the name with a greeting, second describes age, third formats and lists skills; combine into a result field and output a combined message like "Linda, welcome to the system. You are 31 years old and you have skills in Python, machine learning, and Langraph."
+- Hint for the exercise: use graph.edge.add_edge twice to connect the three nodes.
+- The fourth graph introduces conditional graphs and routing decisions within the graph structure.
+- Objectives: implement conditional logic to route data to different nodes, use start and end nodes for entry/exit, design nodes for different operations (e.g., addition and subtraction), and create a router node to control graph flow.
+- Imports include type dictionary, state graph, start, and end point variants for initializing graph entry and exit differently.
+- The state schema can include number_one: int, operation: str (e.g., "+" or "-"), number_two: int, final_number: int.
+- Build node functions for specific operations: def adder(state: agent_state) -> agent_state: state.final_number = state.number_one + state.number_two; return state.
+- Build a subtractor node: def subtractor(state: agent_state) -> agent_state: state.final_number = state.number_one - state.number_two; return state.
+- Build a router node that decides the next node based on state.operation.
+- The router node returns the name of an edge to indicate which path the graph should take next.
+- Example router logic: if state.operation == "+", return "addition_operation"; elif state.operation == "-", return "subtraction_operation".
+- Edge names like "addition_operation" and "subtraction_operation" will be defined when adding edges to the graph.
+- Create the graph with graph = state_graph(agent_state) and add the router, adder, and subtractor nodes with graph.add_node.
+- The graph will use conditional edges that route to adder or subtractor based on the router node's returned edge name.
+- Initially the routing logic may not appear to make sense until you view the entire graph structure and how the router, edges, and operation nodes connect.
+- The transcript ends mid-sentence with the instructor acknowledging a missing portion of the graph setup and that more steps remain to complete the example.

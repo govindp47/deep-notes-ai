@@ -1,0 +1,127 @@
+- The email format must be like "abcgmail.com." However, if I pass in "abcd-gmail.com" or something similar, that is not a valid email format anymore, but it is still a string technically. So it would pass through. To resolve this, we use the `annotated` feature. 
+- For example, let's say `email` is equal to `annotated`. I won't create the whole type dictionary to save time, but for the example itself, you first pass in the data type you want it to be. We want `email` to be a string, which is not changing. 
+- In quotation marks, I provide additional information or context, which adds to the metadata of this key or variable. For instance, I can specify that this has to be a valid email format. 
+- To see the metadata, I would write `print(email.metadata)` and then press run. You can see that it states, "this has to be a valid email format," which is the same as what we wrote. 
+- Now, let's discuss `sequence`. `Sequence` is also a type annotation that automatically handles state updates for sequences, such as adding new messages to a chat history. 
+- This means it helps avoid list manipulation with graph nodes. When using graphs and nodes and updating states, there is a lot of list manipulation involved, which `sequence` helps manage. 
+- You don't need to worry about it too much. 
+- Next, we have `env` imported from `loadenv`. From last time, we know that this is used to store our API keys, and I've done that here. This will load the API keys. 
+- Now, we are importing some new message types: `base message`, `tool message`, and `system message`. 
+- Starting with the `tool message`, it is a type of message where the data is passed back to the language model (LM) after the tool has been called. The information passed includes the content itself and the tool call ID. 
+- A `system message` is used to provide instructions to the LLM. For example, if you've used LLM APIs before, you might have written, "You are a helpful assistant." That's exactly what a system message is. 
+- Don't worry; we will code this up as well, so you'll see what they are. 
+- The `base message` is the foundational class for all message types in Langraph. Think of the class hierarchy: the base message is the parent class, and the AI message, human message, tool message, system message, and other message types are the child classes that inherit all the properties of the base message. 
+- Each child class, like the tool message, has its own properties, such as content and tool call ID. 
+- Now, we have imported `chat` from `openAI`, and we have `state`, `graph`, and `M`, which we are familiar with. 
+- We have also imported `tool` and `tool nodes`, which we will cover in the second chapter of this course. These are different elements we will be using in Langraph. 
+- The line `from langraph.dosage import add_messages` is a bit different. The `add_messages` function is a reducer function. 
+- If this is the first time you're hearing about reducer functions, don't panic; it's not that hard. A reducer function is essentially a rule that controls how updates from nodes are combined with the existing state. 
+- In simpler terms, it tells us how to merge new data into the current state. Without a reducer function, updates would completely replace the existing value or state. 
+- For example, if I had a state with one attribute, `messages`, set to "hi," and I received an update that says "nice to meet you," without a reducer function, it would overwrite the existing state. 
+- In previous graphs and agents we've created, we appended messages, but now that we're using many different messages and tool calls, we can't always append everything; it would become too complicated. 
+- That's why we need to leverage a reducer function. If we didn't use a reducer function, it would overwrite the state completely. However, with it, we can append messages, so "hi" becomes "hi nice to meet you." 
+- In summary, the reducer function aggregates the data in the state. The reducer function we are discussing is `add_messages`, which allows us to append everything into the state without overwriting it, preserving the state. 
+- Now, let's code this react agent. 
+- I've cleared the screen, and let's begin with the creation of our state agent. 
+- We will only have one key in this example, which is just `messages`. 
+- Let's use the new type annotations we've learned: `sequence`, `base message`, and the reducer function `add_messages`. 
+- This piece of code indicates that we want to preserve the state by appending it rather than overwriting it, which is what the reducer function does. 
+- The sequence of base messages is the data type, and this provides the metadata, which is why we have the `annotated` keyword here. 
+- Now, let's create our first tool. Some of you who have come from Langchain might know how to do this already. We use a decorator and define it like this. 
+- This decorator tells Python that this function is special because it is a tool we will use. Let's define our tool as `def add(a: int, b: int)`. This function will add two numbers. 
+- In the docstring, I will say, "This is an addition function that adds two numbers together." 
+- We will return `a + b`, which is simple. 
+- Now, how can we infuse these tools into our large language model? First, let's create a list called `tools`. 
+- At this moment, I only have one tool, but soon we will have multiple tools, which is why I'm adding this list for now. 
+- Let's create our model: `model = chat.openAI`. The model is set to `GPT-4`. I am using GPT-4 because I have never had a problem with it. 
+- To tell our GPT-4 large language model that these are the tools it can use, we can use the built-in Python function called `bind_tools`. We pass in the list of tools we have. 
+- Now, the large language model will have access to all of our tools. 
+- Next, we need to create a node that acts as the agent within our graph. Let's create a simple function called `def model_call(state: agent_state)`. It needs to return the agent state. 
+- I will quickly copy this piece of code. 
+- This code invokes the model, running it with the system message we are asking. We explicitly tell the large language model that it is our system and to answer our query to the best of its ability. 
+- If we want to get technical, we could have written it differently. We could have said `system_prompt`. 
+- The system message is this line: "You are my AI system. Please answer my query to the best of your ability." 
+- Either way would work, but I think this way is better because it is more readable. 
+- This is just another way of writing the updated state. Instead of writing `state['messages'] = something`, we can write it more compactly. 
+- We return `messages_response`, updating the messages with the response. 
+- The `add_messages` reducer function handles the appending for us, so it doesn't overwrite the state. 
+- If I ran this code and built the graph, would it work? No, because when we invoked the model and stored the response, we didn't pass in the query. 
+- To add the query, I need to add `state['messages'] = human_message`. The human message will be stored in the messages attribute. 
+- Now that we've passed that into our model, we can invoke it, and this should work. 
+- Now we define the conditional edge. Why do we need the conditional edge here? 
+- The looping part in the graph we created earlier used a conditional edge, and now it will come into play here. 
+- Let's define the conditional edge: `def should_continue(state)`. We pass in the state and return `continue`. 
+- When I pass in the query and invoke the model, we will create a list of tools. We will get the last message and see if there are any more tools needed to run. 
+- If there are, we will go into the continue edge, select the tool, and perform the actions before coming back. If there are no more tool calls left, we will just end the graph. 
+- Now, let's define the graph. We initialize the graph through `state_graph` and call the node `R_agent`. The action will be the model call function. 
+- We create a tool node, which contains all the different tools. We only have one tool, which is `add`. 
+- We set our entry point and point it to `R_agent`. Now, we add our conditional edge. 
+- If it goes to the end, we end it. If it goes to tools, we go to the tool node. 
+- We also need to add an edge that goes back from our tool to our agent to create a circular connection. 
+- The conditional edge provides a one-way directed edge from the agent to the tool node or the endpoint. We need another edge that goes back from the tool node to the agent. 
+- Lastly, we compile it with `app = graph.compile()`. 
+- I created a new helper function that is not part of Langraph. This code will make the tool calling and everything output in a much better way. 
+- Now we can begin. Let's say the input is "add 3 + 4." This line of code streams the data. 
+- Let's run this. When we write "add 3 + 4," it calls the tool and knows which tool to pick, returning the result. 
+- The tool message shows the result as 7, and the final AI message states, "The sum of three and four is seven." 
+- Let's try something more complex: "add 34 + 21." The result is 55, as expected. 
+- If I remove the docstring by commenting it out, I will get an error because the function must have a docstring. 
+- The docstring is necessary; otherwise, the graph won't work. It tells the LLM what the tool is for. 
+- Now, let's try executing both commands: "add 34 + 21" and "add 3 + 4." 
+- The results show that the tool was called twice, demonstrating the power of the loop we created. 
+- Let's make it even more complicated by adding more tools: `subtract` and `multiply`. 
+- We only need to include `subtract` and `multiply` in the tools list. 
+- Now, let's run the same command and see if it gets confused with the different tools. 
+- The results show that it correctly handles the operations without confusion. 
+- Let's try a more complex command: "add 40 + 12 and then multiply the result by 6." 
+- The LLM first uses the add tool and then the multiply tool, returning the final answer of 312. 
+- Now, let's add a command that doesn't require a tool: "tell me a joke." 
+- The LLM handles this gracefully, providing a joke after performing the calculations. 
+- This demonstrates the robustness of Langraph; it can handle queries that don't require a tool. 
+- After all of this, we now know how to create a react agent. 
+- It was a simple react agent, but the concepts remain the same. You can create your own external tools and graphs. 
+- That was the goal of this course: to understand how to create these tools and use them. 
+- Now, I will see you in the next subsection. 
+- We have made great progress so far, so well done. 
+- In this next section, we will create a fourth AI agent, and this time we will do things slightly differently. 
+- We will be working on a mini project called "Drafter." 
+- Picture this: we are working in a company together, and our boss has a problem. 
+- The problem is that our company is not working efficiently; we spend too much time drafting documents, and this needs to be fixed. 
+- The orders are to create an AI agentic system that can speed up drafting documents and emails. 
+- The AI agentic system should allow human-AI collaboration, meaning the human can provide continuous feedback, and the AI agent should stop when the human is satisfied with the draft. 
+- The system should also be fast and able to save drafts. 
+- We will use Langraph and come up with a sketch for our graph. 
+- The sketch will have a start and an endpoint, with our agent having access to tools, including a save tool. 
+- The save tool will save the draft, and once it is saved, the process should end. 
+- This is different from the react agent, where tools always return to the AI agent. 
+- Now, let's code this drafter project together. 
+- I have already done all the imports and loaded my environment file. 
+- All of these imports are ones you have encountered before, so there is no need to go over them again. 
+- The first thing I will do is define a global variable. 
+- Defining global variables is a bit odd, but it will become clear as we go through the code. 
+- The reason for the global variable is to pass in a state in tools correctly. 
+- The proper way to do this in Langraph is through something called injected state, which is beyond the scope of this course. 
+- As a workaround, we will use a global variable, and any updates made will update this variable. 
+- When we save, the save tool will use the contents of this global variable to save into a text file. 
+- Now, let's define our agent state, which is done the same way as last time: `class agent_state(messages: annotated[sequence[base_message]], add_messages: reducer_function)`. 
+- We will have two tools: the update tool and the save tool. 
+- Let's start with the update tool. I will use the decorator and create `def update(content)`. 
+- The content parameter will be provided by the LLM in the background, so you don't need to worry about that. 
+- The docstring will state that this updates the document with the provided content. 
+- We will interact with the global variable and update the document content with the current content, returning a statement to the LLM that the document has been updated successfully. 
+- Now, let's define the save tool. Again, we will use the decorator and request a file name from the LLM. 
+- The save tool will handle all the save logic. The docstring will state that it saves the current document to a text file and finishes the process. 
+- The arguments will include the file name, which should end with ".txt." 
+- If it doesn't, we will append ".txt" to ensure robustness. 
+- We will call the global variable again. 
+- The next piece of code is not part of Langraph; it simply saves the contents of the global variable under the specified file name. 
+- I have also added an exception for debugging purposes to identify any errors. 
+- Now, we create a list of tools, which will include the update and save tools. 
+- Next, we call the model. Is this it for the model definition? No, we need to bind the tools. 
+- Now, we initialize the agent, which will be a node in our graph. 
+- The function behind the agent will be defined as `def r_agent(state: agent_state)`. 
+- We need to pass in a system message to our LLM. 
+- The system prompt will be quite large, so get ready. 
+- In this system prompt, I specify that this is a system message and that the content is: "You are Drafter, a helpful writing assistant. You will help the user update and modify documents." 
+- I also include instructions on how to use the update and save tools and to always show the current document after modifications. 
+- Now, let's add some robustness measures. When we first initialize the agent, we will ensure everything is set up correctly.

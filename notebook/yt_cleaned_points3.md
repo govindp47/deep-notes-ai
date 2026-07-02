@@ -1,0 +1,128 @@
+- Welcome to this video course on Langraph, a powerful Python library for building advanced conversational AI workflows.
+- In this course, Vbeca will teach you how to design, implement, and manage complex dialogue systems using a graph-based approach.
+- By the end, you'll be equipped to build robust, scalable conversational applications that leverage the full potential of large language models.
+- My name is Vava, and I'm a robotics and AI student.
+- In this course, we will learn the fundamentals of Langraph.
+- I assume you've heard of Langraph before, which is why you clicked on this course, but I also assume you have never coded in Langraph before.
+- Because of this assumption, I have explained everything in as much detail as possible, which may mean I will go slow at times.
+- If you want, you can always speed me up.
+- We will start by building a lot of graphs and AI agents, learning about the theory, and I have provided exercises throughout the course, with all answers available on GitHub.
+- If you're ready to start this journey with me, let's go to our first section.
+- In this section, we will cover type annotations.
+- This will be a theoretical section, but it will be short and brief.
+- I included this section because when we eventually code our AI agents and graphs in Langraph, type annotations will start popping up everywhere.
+- I want you to be familiar with them before you start coding.
+- Let's begin with dictionaries, which are a data structure in Python.
+- I have described a simple dictionary called `movie`, which has two keys: `name` and `year`, with values `Avengers Endgame` and `2019`.
+- Dictionaries allow for efficient data retrieval based on unique keys, and they are flexible and easy to implement.
+- However, a potential problem with dictionaries is ensuring that the data has a particular structure, which can lead to logical errors in larger projects.
+- The solution to this problem is a type dictionary.
+- A type dictionary is easy to implement and is used extensively in Langraph to define states.
+- A type dictionary is implemented as a class, where you define the actual data types of the keys.
+- For example, the `name` key is a string, and the `year` key is an integer.
+- There are two main benefits of using a type dictionary: type safety, which reduces runtime errors, and enhanced readability, which makes debugging easier.
+- Now, let's move on to another type of annotation called `Union`.
+- Union allows a value to be either one type or another.
+- For example, in a function that squares a value, the input can be either an integer or a float.
+- If a string is passed, it will fail, which helps catch incorrect usage.
+- Another type annotation is `Optional`, which indicates that a parameter can be a specific type or `None`.
+- For example, a function that greets a person can accept a name or nothing at all.
+- If nothing is passed, it will greet a random person.
+- The `Any` type annotation allows a value to be of any data type.
+- For example, a function can take any input and print it.
+- Lastly, we have lambda functions, which are useful for creating small functions quickly.
+- For example, a lambda function can square each number in a list.
+- Type annotations are powerful and will be used throughout this course.
+- You don't need to memorize them; just have a high-level overview of what they are.
+- Now, let's move on to the next section.
+- In this section, we will look at the different elements in Langraph, starting with the state.
+- A state is a shared data structure that holds the current information or context of the entire application.
+- It acts like the application's memory, keeping track of variables and data that nodes can access and modify as they execute.
+- Think of the state as a whiteboard in a meeting room where participants can write and update information.
+- Next, we have nodes, which are individual functions or operations that perform specific tasks within the graph.
+- Each node receives an input, often the current state, processes it, and produces an output or an updated state.
+- An analogy for nodes is assembly line stations, where each station performs a specific job.
+- To connect nodes, we use edges, which determine the flow of execution.
+- Edges tell the application which node should be executed next after the current one completes its task.
+- A good analogy for edges is train tracks connecting stations in a specific direction.
+- There are also conditional edges, which decide the next node to be executed based on specific conditions applied to the current state.
+- An analogy for conditional edges is traffic lights, where the color indicates the next action.
+- The start node is a virtual entry point in Langraph that marks where the workflow begins.
+- It does not perform any operations itself but serves as the designated starting position for the graph's execution.
+- The end node signifies the conclusion of the workflow in Langraph, indicating that all intended processes have been completed.
+- Tools are specialized functions or utilities that nodes can utilize to perform specific tasks, such as fetching data from an API.
+- The difference between a tool and a node is that a node is part of the graph structure, while tools provide additional functionalities used within nodes.
+- A tool node is a special kind of node whose main job is to run a tool and connect its output back into the state for other nodes to use.
+- The state graph is an important element that manages the nodes, edges, and overall state, ensuring the workflow operates in a unified way.
+- A runnable in Langraph is a standardized executable component that performs a specific task within an AI workflow, allowing for the creation of modular systems.
+- The difference between a runnable and a node is that a runnable can represent various operations, while a node typically receives a state, performs an action, and updates the state.
+- Now, let's look at the different types of messages in Langraph.
+- The human message represents input from a user, while the AI message represents responses generated by AI models.
+- The system message provides instructions or context to the model, and the tool message is specific to tool usage.
+- The function message represents the tool of a function call.
+- This concludes this section, and I will see you in the next section.
+- We are about to start coding in Langraph for the first time.
+- In this section, we will build our first graph, called the "Hello World" graph, which is the most basic form of a graph in Langraph.
+- The objectives are to understand and define the agent state structure, create simple node functions, and process and update the state.
+- We will build the basic Langraph structure and understand how to compile, invoke, and process it.
+- The main goal is to understand how data flows through a single node in Langraph.
+- Let's code this first graph.
+- I have imported three main elements: `dict`, `TypedDict`, and `StateGraph`.
+- The `StateGraph` is a framework that helps design and manage the flow of tasks in your application.
+- The first thing we will do is create the state of our agent, called `agent_state`.
+- The state needs to be in the form of a typed dictionary, so we will define a class for it.
+- Let's pass in one input called `message`, which will be a string.
+- Now, we will define our first node, which is a standard Python function.
+- The input type of a node needs to be the state, and the output type also has to be the state.
+- We will create a greeting message in the function and return the updated state.
+- Now, let's build the graph using the `StateGraph` framework.
+- We will add our node to the graph and set the entry and finish points.
+- Finally, we will compile the graph and visualize it.
+- To run the graph, we will use the `invoke` method and pass in a message.
+- The result will show the greeting message based on the input.
+- Now, let's move on to the exercise for this graph.
+- For the exercise, create a personalized compliment agent that outputs a message based on the input name.
+- Now, let's build our second graph, which will handle multiple inputs.
+- We will create a more complicated agent state and a processing node that performs operations on list data.
+- The main goal is to learn how to handle multiple inputs.
+- Let's code this second graph.
+- We will define the state schema with multiple keys, including a list of integers and a name.
+- We will create a processing node that sums the values and concatenates the name.
+- The graph will be built similarly to the first graph, with an entry point and finish point.
+- We will invoke the graph and print the results.
+- Now, let's move on to the exercise for this graph.
+- For the exercise, create a graph that performs addition or multiplication based on the input operation.
+- Now, let's build our third graph, which will create a sequential graph with multiple nodes.
+- We will learn how to connect nodes together in a graph.
+- Let's code this third graph.
+- We will define the state schema with three attributes: name, age, and final.
+- We will create two node functions that manipulate the final attribute.
+- The graph will be built with an entry point, finish point, and edges connecting the nodes.
+- We will invoke the graph and print the results.
+- Now, let's move on to the exercise for this graph.
+- For the exercise, build a graph with three nodes that outputs a personalized message based on the user's name, age, and skills.
+- Now, let's build our fourth graph, which will implement conditional logic.
+- We will create a router node to handle decision-making in the graph.
+- Let's code this fourth graph.
+- We will define the state schema with two numbers and an operation.
+- We will create nodes for addition and subtraction, as well as a node to decide the next node based on the operation.
+- The graph will be built with conditional edges connecting the nodes.
+- We will invoke the graph and print the results.
+- Now, let's move on to the exercise for this graph.
+- For the exercise, replicate the graph with additional numbers and operations.
+- Finally, let's build our fifth graph, which will implement looping logic.
+- We will create a greeting node and a random node that generates random numbers.
+- Let's code this fifth graph.
+- We will define the state schema with a name, a list for random numbers, and a counter.
+- The greeting node will update the name and initialize the counter.
+- The random node will generate random numbers and increment the counter.
+- We will implement looping logic to continue generating numbers until the counter reaches a limit.
+- The graph will be built with edges connecting the nodes and conditional edges for looping.
+- We will invoke the graph and print the results.
+- Now, let's move on to the exercise for this graph.
+- For the exercise, implement a higher or lower game that guesses numbers based on user feedback.
+- Now, we will start learning about AI agents.
+- We will build a simple bot that integrates LLMs into our graphs.
+- The objectives include defining a state variable for human messages and initializing the OpenAI model.
+- We will send and handle different types of messages and compile the graph of the agent.
+- The final graph will look similar to the first graph but with integrated LLM functionality.

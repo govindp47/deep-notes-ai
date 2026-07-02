@@ -1,0 +1,1203 @@
+- okay and now this env file is okay if you have not ever encountered a file before. Essentially, it is just a file used to store secret stuff like API keys or configuration values. So, it is really there for security purposes.
+- I have my own file stored in my folder structure so that you do not see my API key because if you do, then I would go bankrupt. So that is why.
+- You might also be wondering why we need an API key here. We need the API key because we are doing calls to an external LLM.
+- If we were using our own LLM, like through Ollama, then we would not have an API key. We would just use the Ollama library integration with LangChain.
+- Because we are using charges, we need an API to communicate with the LLM in their cloud servers.
+- To load our API, we just use a simple Python code load.env.
+- So now that we are at the same level, let us actually code up our AI agent.
+- Let us define the state like we always do.
+- This time, class agent state type dictionary.
+- What are the attributes we need in this section, in this state?
+- Really just one: the messages part.
+- What form will it be in?
+- It will be in the form of a list of human messages.
+- Why?
+- Because when we invoke the graph, we are inputting human messages.
+- To tell the large language model that this is a human message, that is, this is a message from me, the user, aka human, we need to actually mention human message, that it is a human message type.
+- Now we actually initialize the large language model.
+- We just write lm is equal to chat openai.
+- Now we specify what model we want.
+- I am going for GPD4er.
+- There is also chat anthropic.
+- I think there is chat oama.
+- There are a lot of in-built libraries which LangChain offers, which is great.
+- Personally, I have used chat openai a lot.
+- I have also used chat anthropic a lot as well.
+- Personally, I like chat openai because it is just really simple to use.
+- I have also tried to use chat oama before, but there is some difficulty in integrating it with Lang.
+- That is why I have opted for openi.
+- If you are worried about financial cost, do not worry, it is extremely cheap.
+- If you want, you could also go for the GPD 40 mini model as well if that is a concern.
+- The input tokens, output tokens are like in the tens of pennies for like a thousand tokens.
+- So really, really cheap.
+- Let us actually define our node through our function.
+- So process, and we obviously define the state and then return the state like so.
+- How do we actually call the lm?
+- LangChain and the LangGraph team really like using the word invoke.
+- You might have noticed that to call a graph or to make the graph run, we have used invoke.
+- Similarly, to run the lm, we use invoke as well.
+- So we store the response we get in a variable.
+- lm.invoke.
+- What do we invoke?
+- From the hints here, it requires an input of language model input.
+- Basically, that is saying what do you want the LM to do?
+- What is your question?
+- That is in the messages.
+- So we write state messages.
+- What will happen here is as soon as I have written state messages, let us say I have written hi or whatever, we will pass this to the LLM through the invoke method.
+- The LLM will then generate a response from its cloud server through our API, and it will give us back its response, and then we will store it in the response variable.
+- Let us actually print this like so and return the state like such.
+- Done.
+- Now we obviously need to create the graph like such.
+- It is saying that we have created a node process, where the action is the process function.
+- We have added an edge from the start to the end node endpoint, and we have compiled the graph.
+- So let us now ask for the user input.
+- User input is equal to input.
+- We will say enter something.
+- Now we will invoke the agent because we need to invoke the agent of course, because we are creating a graph, and the graph is the agent in this case.
+- Let us actually run this code now.
+- Python agentbot.py.
+- Enter.
+- Let us say hi.
+- The AI message was hello, how can I assist you today?
+- I can reassure you I did not pre-code this or hardcode this.
+- This is the actual LM.
+- Let us run it one more time.
+- Let us come up with a different message like who are you, and it will say I am an AI language model created by open AAI called chat GBT.
+- So this basically pretty much confirms that yes, this is GBT in the background.
+- Why just stick to one message?
+- Why not be able to run multiple messages, like asking multiple messages, kind of like a chatbot?
+- This is the code which does this, and I will walk you through what is happening here as well.
+- Like before, we input our query, and now we basically say keep iterating through.
+- As soon as the user has said exit or something, then you exit the while loop, and that basically signifies that you do not want to talk to the AI LM anymore.
+- Let us have get run this.
+- So python agentbot.py.
+- Let us say hi again.
+- Hello how are you?
+- But now we can run it again.
+- It is just a simple while loop.
+- It is nothing groundbreaking.
+- So like who made you?
+- Perfect.
+- What is 2 + 2?
+- 2 + 2 equals 4.
+- Let us say now hi, I am Bob.
+- Now watch this carefully.
+- I am about to ask what did I just, or I should say what is my name?
+- I am sorry, but I do not have the ability to know your name or any personal information about you.
+- Why is that?
+- Why did it not know what my name is?
+- Even though I clearly specified it.
+- So let us quickly exit.
+- Now this is important.
+- Nowhere in the code have we actually created some sort of memory.
+- That is why I called this subsection simple bot.
+- And that is why I kept on saying AI agent because it is not even an agent yet.
+- It is just the most basic LLM wrapper you can possibly have.
+- But at least now you know how to actually integrate LLMs in your graphs.
+- It is pretty straightforward.
+- You just embed them within your functions, and then your functions obviously act as the actions in your nodes.
+- And that is it.
+- It is quite an easy piece of code.
+- It is only what, 29 lines or 25 lines, give or take.
+- I do not think there will be any exercise for this because there really is not much to do with this.
+- I will see you in the introduction for the second AI agent we are going to build.
+- We are now going to build our second AI system.
+- We are going to try to fix the problems we faced in the last AI system we built.
+- What was the problem?
+- The problem was it does not remember what we had said before.
+- Why?
+- Because we were calling separate API calls.
+- So now we are going to try to create a chatbot with some sort of memory.
+- That is why I included the brain emoji here.
+- Let me walk through the objectives for this subsection.
+- We are going to use different message types, in particular the human message and the AI message.
+- We are going to maintain a full conversation history using both of these message types.
+- We are going to particularly use the GPD4 model again using the LangChain chat OpenAI library.
+- Overall, we are going to create a sophisticated conversation loop.
+- What is the main goal of this subsection?
+- It is really to create a form of memory for our agent.
+- If you are ready, let us go to the code.
+- Awesome people, let us begin coding our simple chatbot then.
+- Like last time, I have already imported all of the necessary libraries, and it is largely this exact same except now I have added two more things.
+- The first is the AI message, and I explained this in the introduction of this subsection, why we need the AI message.
+- I have also imported the union type annotation.
+- The union type annotation is something we covered in the first chapter.
+- If this is the first time you are looking at it or hearing about it, I would recommend you going to the first chapter, really understanding and watching the first two chapters.
+- They are quite short to be honest, and then coming back.
+- That being said, let us actually begin the coding then.
+- Like always, we define the state.
+- So class agent state typed dictionary.
+- Last time, what did we define this as?
+- Again, we are only going to have messages again, but last time we had list human message.
+- That was what we had defined as our agent state previously.
+- This time, we also want to include the AI message as well.
+- We are building a more sophisticated chatbot.
+- How do we do that?
+- One way, or the naive way, is to really have it as messages AI list AI message or something like that.
+- Something like that.
+- Do not get me wrong, this is still a valid approach.
+- You can still build your graph and everything like that, but I think it is a bit longer.
+- Let me tell you another way, which would actually be better.
+- Remove this.
+- Instead, let us use the type annotation union like this.
+- Union like so.
+- And let us include AI message.
+- Essentially, let me first tell you about human message and AI message.
+- Human message and AI messages, and all of these different structures, are actually data types in LangGraph and LangChain.
+- That is what the developers of these libraries have got them to be.
+- When I write union human message AI message, that basically allows me to store either human messages or AI messages in this key in the state, the messages.
+- That is what that literally means in a nutshell.
+- One important thing which I want to mention is this.
+- All of these AI agentic libraries like LangChain, LangGraph, CrewAI, AutoGen, they are all great.
+- But you really can make your own AI agentic system by writing just Python functions.
+- You do not even need to use a library.
+- That being said, I would still recommend using these libraries, especially LangGraph.
+- LangGraph really allows you to control much more than other libraries would.
+- Obviously, not as much control as if you were writing the Python functions yourself and everything, but I think it is a good balance of how much control you have and how much unnecessary jargon you need to write.
+- Think about how much of this unnecessary code you would have had to write otherwise.
+- LangGraph and LangChain support that.
+- That is why I highly recommend using these libraries and everything.
+- Again, human message and AI message are data types, inbuilt data types within LangGraph and LangChain.
+- Now let us again initialize the large language model as we did last time.
+- Again, we are only using GP4.
+- Now we are going to create our node.
+- Again, it is going to be the exact same graph structure, by the way.
+- State agent state, but obviously the actions we perform will be slightly different.
+- Let us write a doc string.
+- This node will solve the request you input something.
+- Doc strings are not really needed for this AI agent or this subsection because we are not going to use them.
+- But again, good habit.
+- Let us invoke this.
+- What have I done here?
+- This is exactly the same code which we did in the previous subsection.
+- We invoke the LM with the state messages.
+- What are the state messages?
+- Well, it can be either a human message or an AI message.
+- It is a list of those.
+- State messages.append AI message content equal to response.content.
+- What on earth is happening there?
+- Let us break this down.
+- Response is just extracting only the content part of the response, that is, the response being the answer or the result after we make the API call from the large language model.
+- It only extracts the content.
+- So it only extracts the important stuff.
+- It removes all the unnecessary jargon which comes with it like the amount of tokens you use and all that.
+- It removes that, and that gets stored, gets converted to an AI message, and that is appended to our state messages in the state.
+- Simple.
+- Now obviously to make it look pretty in the terminal, we are going to print this and then we are going to return the state.
+- That is how simple it was.
+- So now we are going to create this exact same graph.
+- That is why I have just copied and pasted it because it is a time waste of me rewriting the code in front of you again and again.
+- We can just reuse the same code because it is the exact same graph structure as the previous subsection.
+- Now we are going to start working differently.
+- See, last time we did not have the conversation history.
+- Really, this is what is going to be our memory in this setup.
+- So we have now initialized conversation history.
+- Again, we are going to ask the user what they want, right?
+- What is their request?
+- So now we use this while loop, and this while loop was the exact same loop we had in the previous subsection as well.
+- It only exits if the user has inputted exit, obviously.
+- But now look at this.
+- The conversation history is appended with the human message, and the human message is obviously the user input.
+- The reason I have kept on writing content is because that is the parameter in human message, as you can see here.
+- We have invoked the agent.
+- What is the agent?
+- The agent is the compiled version of the graph, the compiled graph, with the entire conversation history.
+- This is important.
+- The entire conversation history is sent, not just the current human message.
+- This will make more sense.
+- Do not worry, I am trying my best to explain it right now, but obviously it will make much, much more sense as soon as I start running it.
+- Bear with me if you did not fully understand that.
+- Do not worry.
+- Let us remove that for now.
+- Then we replace the conversation history completely, wipe it, with the result messages.
+- Why?
+- Do not worry, it is going to make sense as soon as I run it.
+- I think we should be able to run this now.
+- So let us write python memory agent.py, which is the name of the file.
+- Let me just quickly write a hi just to see if the API is working.
+- It is perfect.
+- Hello. How can I assist you today?
+- Now I will say, hi, my name is Steve.
+- Hi Steve, it is great to meet you. How can I help you today?
+- Remember from last time.
+- Last time, if I asked it, hey, who am I, it did not know.
+- Do you think it will know now?
+- Think about it.
+- It does.
+- You are Steve, or at least that is the name you have chosen to share with me.
+- So it does know about what I have said, but just looking at this code, I guess you can try to pick out how does it work and why everything works like that.
+- But I think we can add print statements and everything.
+- So let us try to add print statements now and see how this is actually working.
+- So let us exit the program.
+- Let us add a print statement here.
+- Let me include this.
+- What is this saying?
+- This print statement actually kind of, think of it like a snapshot of what the current state is.
+- So as soon as it goes into a process node, just before it is about to finish by returning the state, we also print the current state as well.
+- This will literally just output whatever is stored in the messages attribute within our state.
+- So let us clear.
+- There we go.
+- Let us run this again.
+- So hi, nice to meet you, something like that.
+- Now take a look at the current state.
+- See it outputed hello, nice to meet you. How can I see you today?
+- Why did it output that?
+- Because in our process function, we formatted it in a way so it says hey AI, which is this part, and the response or content is this part.
+- This response or content is also what was stored, remember how I said it is stored in a nice manner and was appended to our state messages.
+- Was it appended to the state messages?
+- Yes.
+- How do you know that?
+- Because look at the human message.
+- The human message was what I wrote, which was hi nice to meet you.
+- Forget the additional keyword arguments and response metadata because I did not provide any.
+- You do not need to worry about that.
+- The main part is this part, the content.
+- And then look at the AI message part.
+- The content is equal to hello nice to meet you. How can I see you today?
+- Notice how it is the exact same thing as it was here.
+- Now we are going to go one step ahead and I am going to ask it to say my name is Steve again.
+- Think about how will this current state change?
+- Pause the video and try to think about this like that.
+- So now the second message I sent was my name is Steve.
+- Its response for the second message was hi Steve. How can I help you today?
+- Now look at the current state.
+- It still begins with hi, nice to meet you, which was the first ever message I inputted into this conversation, and then its respective AI message.
+- And then that gets appended.
+- Why appended?
+- Because we had appended the AI message and appended the human message.
+- So that is why.
+- You can see the human message is my name is Steve, which is the most recent message which I put, and then the AI message which is hi Steve how can I help you today.
+- Perfect.
+- We can just keep going and going and going.
+- For now, I will exit.
+- Now here is the thing.
+- This works relatively well, right?
+- We have got it like as a chatbot, which is what we wanted.
+- It has some recollection of memory or of what we are, who we are, and everything, and it works great.
+- But there are two big problems here.
+- Let us start with the first massive problem, which is this.
+- You know how I have exited the program right now?
+- I am going to run the exact same program again.
+- Now I told it that my name is Steve.
+- What is my name?
+- It says I am sorry I do not have access to your personal data.
+- Look at the current state, completely wiped out.
+- That is pretty self-explanatory as to why you exited the program, and that is why obviously all the data was stored in the variables, right?
+- The state was stored in the variables, completely got wiped away.
+- So what is the solution?
+- Think about it.
+- Well, obviously one potential solution would be to store it in a database, like a large database, or a vector database if you are trying to do some RAG applications.
+- For now, I am just going to store it in a very simple text file.
+- Why?
+- Because it is really easy.
+- I have got the code as well.
+- Usually, honestly, I just store it in a text file when I am prototyping.
+- Now, yes, obviously, storing it in a vector database or a database is much more robust and sophisticated, and that is what you should do.
+- But when you are prototyping and you want to build it quickly and fast, I just tend to use a text file.
+- It still works great and everything.
+- What is the code for the text file?
+- It is here.
+- Essentially, it is saying create me a text file called logging as a text file, you see in write mode, and a file.
+- Write your conversation log.
+- This is just to make it look better and more aesthetic.
+- But this is the main part of the code which you should actually try and understand for every single message in the conversation history.
+- Note the conversation history was this variable which we had initialized.
+- The conversation history stores the AI messages and the human messages.
+- So that is where all of the information outside the graph actually is.
+- The state is locked in within the graph now, and the conversation history is just another, I guess you can say, duplicate version of the state.
+- We have appended the exact same human messages and AI messages and kept on updating it through this line.
+- What it says is that for every single message in the conversation history, by the way, a conversation is the duration between my first message and the last message I sent.
+- That entire thing is a conversation.
+- A conversation is not just a single API call.
+- It is the entire length.
+- So, just to be mindful of that.
+- It first checks if it is a human message.
+- It writes that as you and then extracts that content.
+- If it is the AI message, it puts it under the AI stuff.
+- So, let us run this again.
+- Let us exit this.
+- Clear this.
+- Who?
+- Let us say hi, I am Steve.
+- Again, I am using Steve because a Minecraft movie just came out, so that is why.
+- Now I am going to intentionally make a spelling mistake here.
+- Good morning.
+- It should obviously have been spelled right, but I am doing that for a reason.
+- It gets no problem.
+- Let us say tell me a joke.
+- Just another random thing.
+- Sure. Why don't skeletons fight each other? They don't have the guts.
+- Really rubbish.
+- My point is it works.
+- Now I will exit the program.
+- And now it says conversation saved to login.xt.
+- This is the conversation log.
+- The first message I ever sent was, Hi, I am Steve.
+- There, it is response.
+- Now, good morning.
+- Why did I spell it wrong?
+- Because I wanted to show you that this is the actual human message, my message being stored unaltered.
+- So whatever I pass in the state as a human message, that stays there.
+- So it is unaltered.
+- The AI message cannot change the previous human messages at all.
+- And you can see tell me a joke, sure, its rubbish joke is after that.
+- And that is the end of the login.xt file.
+- So that is a really fast efficient way, not the most robust way of course, but it is a fast efficient way to be able to store your data outside the application if it stops.
+- What was the second problem that I was mentioning?
+- It is this.
+- Look at how I initially say, Hi, I am Steve.
+- I do not know why I printed twice there.
+- Weird, but whatever.
+- Look at the current state length.
+- Then I pass in another message, it becomes longer.
+- I pass in another message, it gets longer.
+- It keeps getting longer and longer and longer.
+- That is a problem because think about it, you will use these large language models whether it is for your own AI agentic startup or your own mini Javas or your own projects or whatever it is.
+- You would obviously want to minimize cost, right?
+- But using so many tokens, especially input tokens, will really eat away the amount of money you will spend.
+- It will drastically increase it, and that is a huge problem.
+- We want to try to be conservative a bit about our money and our finances.
+- What is a way to solve this?
+- Right off the bat, I can give you an easy solution to implement within the code.
+- Write some code where if the number of human messages exceeds five or something like that, then you remove the first human message in your history.
+- Why remove the first and not the latest?
+- Because the latest is most likely to be more relevant.
+- The first message is most likely to be the one where it is not needed, or it could have been less of an impact to have been removed.
+- Why did I pick five?
+- Five is just a random number I thought of.
+- You could do 10, 15, 20, 25, 3, whatever.
+- That is a really easy solution to do.
+- We learned quite a lot there.
+- We learned how to integrate human message and AI message within a thing.
+- And now we have created somewhat of a sophisticated chatbot.
+- It has a memory.
+- It still talks to us.
+- If we define, if we write who we are, it remembers that and everything, and it works great.
+- Obviously, it has its flaws, but for now, it is pretty good.
+- Now we are going to build our third AI agent.
+- This is going to be a special type of AI agent.
+- The technical term for this type of agent is called a react agent, and react stands for reasoning and acting.
+- This is a quite common type of AI agent which you will build.
+- How does it look like?
+- It looks something like this.
+- There is a start point and then there is an end point obviously.
+- Then you have your agent, and then we use a loop where we attach it to tools.
+- This could be one tool, two tools, a lot of tools.
+- It is the agent's job, or the LLM in the background, to be able to decide which tool to select.
+- But not only that, it is also its job to be able to decide when there is no more tool calling left to do.
+- When that happens, it goes to the end part.
+- So that is the general gist of what a react agent is.
+- It is a very common and famous type of agent to make in LangGraph.
+- That is exactly what we are going to be building in this subsection.
+- The objectives are to learn how to create tools in LangGraph.
+- We are going to be creating a react graph.
+- We are going to be working with different types of messages such as tool messages.
+- Last subsection we covered AI messages and human messages, but now we are going to look at a lot more types of messages.
+- For example, tool messages, system messages, base messages, and we are obviously going to test the robustness of our graph.
+- The main goal is to create a robust React agent.
+- If you are excited, I will see you at the code.
+- Okay people, let us code up the React agent.
+- Just a heads up, this is going to be quite a long subsection.
+- You can see it is going to be long because of how many imports I have done.
+- Because I have done so many new imports, I actually want to take some time off and really explain each line so that we are all on the same page.
+- The first line is from typing import annotated sequence and type dictionary.
+- We obviously know what a type dictionary is, but we have not come across annotated or sequence yet.
+- These are also type annotations.
+- I will start off by explaining what annotated is.
+- Annotated is a type annotation which provides additional context to your variable or your key without actually affecting the type itself, the data type itself.
+- Let me give you an example.
+- Let us say I am trying to create a type dictionary where there is an email key in it.
+- Obviously an email is string.
+- So if I was to create a type dictionary, I would have written email colon string.
+- That is how we have been doing it.
+- But here is the thing with certain keys like email, they have to be a certain format.
+- For example, it has to be like abcgmail.com.
+- But if I pass in abcd-gmail.com or something like that, that is not a valid email format anymore, but it is still a string technically.
+- So it would pass through.
+- How do we resolve that?
+- That is where annotated comes in.
+- Let me give you an example here.
+- Let us say email is equal to annotated.
+- I am not going to create the whole type dictionary to save time, but for the example itself, you first pass in what data type you want it to be.
+- So we want email to be a string.
+- That is not changing.
+- But here in quotation marks, I provide some more additional information, additional context.
+- This is basically adding onto the metadata of this key or variable.
+- For example, let us say this has to be a valid email format.
+- I should do it in more detail, but that is how, for now, that is fine.
+- How can I actually see the metadata?
+- If I want to, I would write print email metadata like that.
+- Then I would press run.
+- Here we go.
+- You can see this has to be a valid email format.
+- That is the exact same thing which we wrote here.
+- That is annotated done.
+- But what about sequence?
+- What does sequence mean?
+- Sequence is also a type annotation.
+- The way I have described it is here.
+- It basically automatically handles the state updates for sequences such as by adding new messages to a chat history.
+- What does that mean?
+- It is really just there to avoid any list manipulation to the graph nodes.
+- Obviously, when we are using graphs and nodes and all of that stuff and updating the states, there is a lot of list manipulations which we will have to do.
+- Sequence really handles a lot of that.
+- That is really what it is there for.
+- You do not really need to worry about it too much.
+- From loadenv, we know that this is just to store our API keys, and I have done that here.
+- That will load the API keys.
+- You will see now these three imports.
+- We are importing some new message types here.
+- We are importing base message, tool message, and system message.
+- I will start off with the tool message.
+- It is essentially a type of message where the data is passed back to the LM after the tool has been called, and the information which is passed is the content itself, the tool call ID.
+- That is what tool messages are.
+- It is pretty self-explanatory.
+- A system message is a message for providing instructions to the LLM.
+- For example, if you have used LLM APIs before, you might have written you are a helpful assistant.
+- That is exactly what a system message is.
+- Do not worry, we are going to code this up as well, so you will actually see what they are.
+- What is a base message?
+- In the comments, you can see that I have written the foundational class for all message types in LangGraph.
+- Think about the class hierarchy.
+- You know how you have a parent class and then you have child classes as well.
+- Well, the base message would be the parent class and these AI message, human message, tool message, system message, and all these other types of message will be like the child classes and they will inherit all the properties of the base message because that is the parent one.
+- You can say the all father or something, but the AI message, human message, and all these child classes obviously they will have their own properties, right?
+- For example, the tool message has its own content and tool call ID and all that stuff.
+- So that is what the base message is.
+- It is really the foundational class for all the message types in LangGraph.
+- If we continue, you can see we have imported chat openAI.
+- We have done state graph and M.
+- These we have come across, we know what they are.
+- We have imported tool and tool nodes, which we covered in the second chapter or second section of this course.
+- These are different elements which we are going to be using in LangGraph.
+- What about this line from langgraph dossage import add messages.
+- This is a little bit different.
+- Add messages is a reducer function.
+- A reducer function is essentially just a rule that controls how updates from nodes are combined with the existing state.
+- In simpler words, it really just tells us how to merge new data into the current state.
+- If we did not have some sort of a reducer function, updates would have just replaced the existing value or state entirely.
+- Let us say I had a state where it was just high.
+- I had one attribute messages and high.
+- What if I had an update which says nice to meet you?
+- If I did not have a reducer function, that would completely overwrite it.
+- In the previous graphs and agents we have made, we have appended it, but now that we are using so many different messages and calls and tool calling and whatever, we cannot really always append everything because it will get far too complicated.
+- That is why we need to leverage reducer function.
+- If we did not use a reducer function, it would just overwrite it completely.
+- But if we did like hi nice to meet you, it would append it.
+- That is the key.
+- In a nutshell, the reducer function really just aggregates the data in the state.
+- This reducer function, and the reducer function which I am talking about is add messages.
+- Once again, add messages is a reducer function that will really just allow us to append everything into the state without any overwriting happening because we want to preserve the state.
+- Now let us actually code this react agent.
+- Okay, I have cleared the screen now and let us actually begin like how we always begin with the creation of our state of our agent.
+- Type dictionary like such.
+- We will only have one key in this example, which is just messages.
+- Now let us use the new type annotations we have learned.
+- Sequence base message and reducer function add messages.
+- This piece of code is saying to preserve the state by actually appending it rather than overwriting.
+- That is what this reducer function does.
+- Oh, and the sequence of base messages is the data type and this provides the metadata.
+- That is why we have the annotated keyword here.
+- That is really it.
+- Now let us create our first ever tool.
+- How do we do this?
+- Some of you who have come from LangChain might know how to do this already.
+- We use a decorator and we define like this.
+- This decorator basically tells Python that this function is quite special.
+- It does something, and well it is special because it is a tool which we are going to use.
+- Let us define our tool as def.
+- Let us create a simple addition tool.
+- So we will say a integer b integer.
+- It is basically going to add two numbers.
+- This is where doc strings actually come in now.
+- For now, let us say this is an addition function that adds two numbers together.
+- We just return a plus b.
+- Simple.
+- How can we actually infuse these tools into our large language model?
+- First let us create a list.
+- Add like such.
+- Yes, at this current moment, I only have one tool, but in a few moments, we will have multiple tools.
+- That is why I am adding this list for now.
+- Let us actually create our model.
+- Model is equal to chat openai.
+- Model is equal to GPT40.
+- I am using GPD40 because I have never had a problem with it to be honest.
+- How can we tell our GPD40 large language model that these are the tools you can use?
+- We can use this inbuilt Python function called bind tools.
+- We pass in the list of tools we have.
+- So that is tools.
+- Pretty simple, right?
+- Now large language model will have access to all of our tools.
+- Now we need to create a node which actually acts as the agent within our graph.
+- How do we do that?
+- Let me create just a simple function like def model call.
+- We pass in the state agent state.
+- Again, it needs to return the agent state.
+- I am going to quickly copy this piece of code.
+- What is this code doing?
+- You can see that we are invoking the model, that is, running the model, and this is the system message which we are asking.
+- So we are explicitly saying the large language model that you are my system, please answer my query to the best of your ability.
+- That is what the large language model's task is to do.
+- If we want to get technical here, you could have written it in a slightly different way, and that way is through this.
+- Remove this.
+- We could have said system prompt.
+- What is going on here?
+- Remember how I said system message is also something which we imported.
+- The system message, like I said, is this line of text: you are my system, please answer my query to the best of your ability.
+- Either way would have worked if I had just straight up passed this string into here.
+- That would have worked as well.
+- Personally, I think this way is better.
+- Even though they achieve the exact same thing, I think this way is better because it is more readable.
+- And you are only adding just one more import.
+- I would prefer you to, I would really recommend you doing like this so even the large language model knows that this is a system message.
+- This is just another way of writing the updated state.
+- You know how we have been writing state brackets messages is equal to something something something.
+- This is a more compact way of updating the state as well.
+- Return messages response.
+- So we update the messages with the response.
+- No plus equal to this this this or adding something.
+- We can simply just write it with the updated state.
+- Why?
+- Because the add messages, aka the reducer function, handles the appending for us.
+- It does not overwrite it.
+- Now, if I ran this code and I built the graph and everything, would it work?
+- No.
+- Why would it not work?
+- Because think about it, the response when we have invoked the model and we store it in the response, when we actually invoked it, we did not actually pass in the query.
+- How do we pass in the query?
+- Think about it.
+- All I passed is my system message.
+- Where does the query go?
+- So to be able to add the query, I actually have to add like this.
+- So state messages.
+- The query will be in the form of a human message.
+- The human message will be stored in the messages attribute, right?
+- Now that we have passed that into our model as well and we can invoke it, now this should work.
+- Now we define the conditional edge.
+- Why do we need the conditional edge here?
+- I will put the picture of the react agent.
+- Again, here you can see that the looping part, even like in the last one in the graph when we made the loops for the first time, you saw that it was a conditional edge which we had to use, and now that is actually going to come in play here.
+- That is why I took so time to build those graphs because now the concept is coming.
+- How do we define the conditional edge?
+- def should continue.
+- Like always, we pass in the state, and let us do it like this.
+- Else return continue.
+- As you know, continue and end will be edges which I will define later in the graph.
+- What is going on here?
+- Essentially, when I pass in the query, when we have invoked the actual model, you will know that we will create a list of tools.
+- What we are going to be doing is we are going to be getting the last message and we are going to see if there is any more tools needed to be run.
+- If there are, then we will go into the continue edge, that is, we will go to the tool node and we will select the tool and we will do all these actions and then come back.
+- If there is no more tool calling left, we will just end and we will just exit the graph and that will be the case.
+- You will understand more of what I mean when we have actually tested and are running the graph.
+- Now let us just define the graph.
+- Like always we create the graph, we initialize the graph through the state graph and let us call the node R agent.
+- So the action will be the model call, that is, the underlying function will be this.
+- Now we create something called a tool node, which is also what we covered in the previous, in the second section or second chapter in this course.
+- The tool node essentially is just a singular node which contains all of the different tools.
+- So we only have one tool.
+- If you see what this variable is, tools, we only have one tool, which is add.
+- Do not worry, we will add some more tools like subtract and multiply in a bit.
+- But I just want to really solidify your concept of how we can add these tools and how the graph will work.
+- We obviously set our entry point and point it to the R agent.
+- Now let us add our conditional edge.
+- Remember how I said there are two edges, continue and end.
+- Continue and end, and if it goes to the end we end it.
+- If it goes to tools then we go to tool node, which is tools.
+- This is pretty straightforward still, right?
+- Now we also need to add an edge which goes back from our tool to our agent because that is how we are going to create a circular connection.
+- The conditional edge only provides a one-way directed edge from either the agent to the tool node or the agent to the endpoint.
+- But we need another edge which will go back from the tool node back to the agent.
+- That is what this edge does.
+- Lastly, we need to obviously compile it.
+- So we will just say app is equal to graph dompile.
+- Perfect.
+- That is it.
+- I have just created a new helper function here.
+- This is not part of LangGraph.
+- I have just written this code because it will make the tool calling and everything output in a much better way.
+- You will see what I mean in just one second.
+- Now we actually can begin.
+- Let us say the input is something like this.
+- Let us say I want to add 3 + 4.
+- Simple.
+- This line of code basically streams the data.
+- That is all it does.
+- Let us actually run this.
+- Clear.
+- And let us do it.
+- Remember we wrote add 3+4.
+- Wow, look at that.
+- We have added 3+4.
+- It calls the tool and it even knows what tool to pick.
+- Add.
+- It gives us the result.
+- The tool message, as you can see, is seven, and the AI message, the final AI message, is the sum of three and four is seven.
+- Let us try something harder now.
+- Let us write add 34 + 21.
+- If we run this, you can see 55 because 34 + 21 is 55.
+- You can also see again all the tool calls and everything that is done.
+- I want to show you one or two more things actually before we add some more tools.
+- If I remove this doc string here by commenting out for now.
+- Let us clear and let us run that again.
+- Error.
+- Why?
+- Because the function must have a doc string if description is not provided.
+- The doc string is necessary.
+- That is why it is included, otherwise the graph will not work.
+- It tells the LM what that tool is for.
+- Now that we have that there, let us try this as well.
+- Add 3+4.
+- Again, this time I want both of them to be executed.
+- Let us clear now.
+- Do you think this will work?
+- Let us see.
+- Add 34 + 21.
+- Add 3+4.
+- Perfect.
+- Brilliant.
+- You can see the result of adding 34 + 21 is 55.
+- The result of adding 3+4 is 7.
+- You can see how the tool was called twice this time and that is the power of the loop which we created.
+- Remember we created the conditional edge and then we also created that directed edge back from the tool node to the agent.
+- Let us try to make it even more complicated.
+- Let us say add 12 + 12 something.
+- Let me clear this.
+- Clear.
+- Let us see what happens.
+- Wow, look at this.
+- If I press enter, sorry, I messed up there.
+- But you can see the results of the addition as well as 34 + 21 is 55, 7, 24.
+- You can also see that I called the tool, sorry, the AI called the tool three times.
+- These tool calls are also an indication that the LLM did not use its own inbuilt information which it was trained on to come up with an answer.
+- Remember an LLM does not know how to do maths.
+- It just guesses the next output through probability.
+- But through this we were able to actually add the two numbers.
+- An important concept here is the LLM actually decides what should be passed as the arguments to each tool.
+- So 3 + 4, if I said add 3 + 4, it will actually create, it will actually input the numbers 3 and 4 and then this tool will handle the information, return it, and it will go back to the agent, and then the AI agent will decide what is the answer and everything.
+- So that is how it works.
+- Awesome.
+- Now let us make this even more complicated.
+- Let us add some more tools.
+- Let us add subtract and multiply.
+- The only change we have to do is instead of this one line we just now include subtract and multiply as well.
+- That is it.
+- Otherwise, this line of code largely stays the same.
+- Now let us actually run this same command and see if it gets confused with the different tools it has access to.
+- Let us see.
+- Okay.
+- You can see again that 55 724.
+- It did not get confused.
+- Perfect.
+- Let us now give it a different command.
+- Let us say something like this.
+- One second.
+- Add 40 + 12 and then multiply the result by 6.
+- Now it has to make use of two different tools.
+- Let us see if it gets that.
+- Wow, brilliant.
+- So it first used the add tool and then used the multiplication tool.
+- You can see all the queries or all the tool call and everything, and the final answer is 312.
+- So 52 * 6, yes, it is 312.
+- Now let us make it even more complicated.
+- Let us add some more tools.
+- Let us say also tell me a joke please.
+- What do you think will happen?
+- Do you think this will break?
+- Let us see.
+- If I play this and run this, let us see.
+- Wow, look at this.
+- The result of 40 adding 14 and 12 is 52, multiplying that by 6 is 312.
+- And here is a joke for you.
+- Why don't skeletons fight each other?
+- They don't have the gun.
+- I swear to God, it is always the same dead joke.
+- But you get the point.
+- This is so robust.
+- It can handle even queries where it does not even need a tool, and that, ladies and gentlemen, is the power of LangGraph.
+- It is so robust even if we do not need to use a tool it will still give us an answer.
+- The reason it was able to do that is once all the tool calling is done it passes it to the agent.
+- The agent checks again, oh I need to tell the user a joke as well, and adds that to the final information and then ends it.
+- That is the power of LangGraph.
+- After all of that, we finally now know how to create a React agent.
+- Yes, it was a simple React agent, but the concepts are the same.
+- You can create your own external tools from now onwards and you can create your own graph.
+- That was the whole point of this course, for you to actually understand how we can create these, how we can use different tools and then the rest is up to you.
+- It is up to your imagination.
+- Perfect.
+- Now I will see you at the next subsection.
+- Okay people, we have made great progress so far.
+- So well done on that.
+- But now we make a fourth AI agent.
+- This time we will do things again slightly differently.
+- We will be making a mini project together.
+- The project's name is going to be called Drafter.
+- Picture this.
+- Me and you are working in a company together.
+- Our boss comes up to us and she has a problem and some orders for us.
+- The problem is this.
+- Our company is not working efficiently.
+- We spend way too much time drafting documents and this needs to be fixed.
+- What are her orders?
+- She says you need to create an AI agentic system that can speed up drafting documents, emails, etc.
+- The AI agentic system should have human AI collaboration, meaning the human should be able to provide continuous feedback and the AI agent should stop when the human is happy with the draft.
+- The system should also be fast and be able to save the drafts.
+- Then me and you start discussing and we are going to use LangGraph obviously and we come up with a sketch.
+- The sketch of our graph is something like this.
+- It is obviously going to have a start and an end point and it is going to have our agent and the agent will have access to tools, aka the tool node.
+- This looks similar to a React agent which we covered in the last subsection.
+- But there is a reason we have not chosen to do that.
+- We realize that one of the tools is the save tool.
+- It will save the draft.
+- That was one of our requirements.
+- But obviously when we once have saved it, the process should end.
+- If you remember from a React agent, the tools always goes back to the AI agent, not directly to the endpoint.
+- We do not want that anymore.
+- So as soon as the save tool is used, because the save tool will be within tools, it ends.
+- That is the structure we have chosen to go with.
+- The only thing left is to actually code this graph.
+- So let us code this together then.
+- Let us actually code up this Drafter project then.
+- You can see I have already done all the imports and I have loaded up my env file.
+- All of these imports are imports which you have already encountered before.
+- There is no point in looking at them again.
+- But the first thing which I am going to do is I am going to be defining a global variable.
+- This global variable is a bit odd.
+- There is a reason I have done it, and this will become more apparent as I go through the code.
+- The reason I have defined a global variable in this case is to actually pass in a state in tools.
+- The correct way to do it in LangGraph is through something called injected state.
+- Injected state is beyond the scope of this course.
+- So the workaround is to use a global variable.
+- What will happen is our tools will update the global variable, and then when we go on to save it, the save tool will use the contents in this global variable and save that into a text file.
+- So that is why this is included.
+- So now let us define our agent state again.
+- The way that is done is the exact same way we did last time.
+- Class agent state messages annotated sequence base message as the reducer function.
+- So now we define the tools and there will be two tools for this.
+- The first tool will be the update tool and the second tool will be the save tool.
+- So let us start off with the update tool and I will obviously use the decorator and then create def update and then we need to pass in a parameter content.
+- Whatever parameters you pass or you request, who actually gets those parameters?
+- Well, the LLM or your model in the background, that is what will automatically pass the parameters for this model, for this tool.
+- So in this case the content parameter will be provided by the LM in the background.
+- So you do not need to worry about that.
+- Now we need the doc string obviously.
+- I have just created a simple doc string which just updates the document with the provided content because that is exactly what it does.
+- So now we define, to interact with the global variable in Python, you obviously need to define it.
+- You need to code it like this and then you need to update your document content, aka the global variable, with your current content and then you just return again a statement to the large language model telling it that we have successfully updated it.
+- I have written document has been updated successfully. The current content is this, which is the content which we store in the thing.
+- So now we define our second tool, which is the save tool.
+- Again, same decorator we use like this.
+- Now we request the LLM to give us a file name as well.
+- It should give us a suitable file name for the text file, and this save tool will automatically handle all the save logic.
+- As a doc string I pass like this.
+- Saves the current document to a text file and finishes the process.
+- The arguments are file name, which is the name for the text file.
+- I have specifically mentioned that we are going to be using a text file so that the LLM knows that the file name which it needs to pass has to have a txt in the end of it.
+- If it does not, to make the graph more robust, I have also written this if statement such that if this file name does not end with a txt, just put a txt there as a robustness measure.
+- Now again we need to call the global variable again.
+- The next bit of code is not LangGraph.
+- This is just whatever you put in the tool.
+- It does not have to be LangGraph related.
+- This piece of code is just some code which allows you to save the contents stored in the global variable under the file name and as a text file.
+- I have also added this exception, which is a good thing for debugging purposes, where if there is an error it will tell me exactly what the error is and then we can fix it.
+- Hopefully there will not be any errors.
+- Now we create a list of tools, which again will be update and save because we only have two tools.
+- Now we actually call the model.
+- How do we call the model?
+- Like such.
+- Let me ask you a question.
+- Is this it for the model definition or do we need something else?
+- We forgot to do bind tools.
+- So bind tools and tools.
+- That will do.
+- Now we actually initialize the agent itself, or the function which will, because remember the agent will be a node in our graph.
+- What will be the function behind that?
+- It will be this function which we are about to define.
+- So let us write this as def r agent.
+- Again we need to pass in the state, the agent state, and it will return the agent state.
+- So now this doc, not doc string, we need to pass in a system message to our LLM.
+- This system prompt will be quite large, so get ready.
+- In this system prompt I have specifically said this is a system message and the content is this.
+- You are drafter, a helpful writing assistant.
+- You are going to help the user, aka us, to update and modify documents.
+- I have also written some more stuff about what to do if the user wants to update.
+- We use the update tool.
+- We need to use the save tool to save it and to always show the current document after modifications and all that stuff.
+- Oops.
+- There we go.
+- Now it is time for some robustness measures.
+- When we are first initializing the graph, like when it is the first message we are writing, obviously we are not going to straight up say how would you like to change the document, right, because we have not passed in a document yet.
+- So if messages, if there is nothing in it, we will have to say something like an introduction message.
+- This is how you can do that.
+- We can say if not state messages, that is, if there is nothing in the state messages, then we can say I am ready to help you update a document. What would you like to create?
+- It then collects the user input and passes it as a, stores it as a human message in this user message variable.
+- What if I have already passed in a message, or we are on the process of updating our draft or drafting it?
+- Well, to do that we need this else statement.
+- What does this say?
+- It says what would you like to do with the document?
+- This assumes that there is already stuff in the messages key in the state.
+- How do you want to update it further?
+- We also print it under this emoji in the terminal so the user can also see what they have inputted, and then this is also stored in the user message.
+- Now we combine all of these, all messages, aka the system prompt, which was the system message, and we create a list of the state messages and the user message, the new message which we want, aka the update, and then we just invoke the model.
+- How do we invoke the model?
+- You just use the model invoke.
+- Pretty basic code so far.
+- There is nothing hard or nothing extraordinary or something we have not seen before.
+- All of this we have seen before.
+- Now the rest of this function is just a print statement which I have included.
+- This print statement is just for making things look prettier on the terminal.
+- That is all it is.
+- You can see the true print statements.
+- There is the AI response which will be printed and then there will be the tools, whatever the tool messages are, that is also printed.
+- That is the whole point of it.
+- There is nothing to really talk about here.
+- We also need to obviously return the updated state.
+- Remember last time I showed you that this is also a really convenient concise way to update the states.
+- From now onwards we are only going to update the states like this.
+- Now we create our conditional edge function, or the function behind the conditional edge, because remember the conditional edge which I am talking about will be this conditional edge.
+- So there, from tools there will be either the choice of going back to the agent or the choice of ending it.
+- We need to create the underlying function behind that.
+- So let us create that now under this.
+- Should continue.
+- We have done this many times before.
+- It will determine if we should continue or end the conversation.
+- Now we do this.
+- So we get the messages and if there is nothing in the messages, obviously we will need to continue.
+- This is just as a robustness measure to be honest.
+- This piece of code is basically saying look at the most recent tool message or the recent tool we have used and we need to check if this tool has used the save tool.
+- Why?
+- Remember how we have two tools: we have either the update tool or the save tool.
+- If we use the update tool, we will obviously need to use the continue branch.
+- But if we use the save tool, after you have saved it, there is nothing else to do, right?
+- You finished your draft, you finished everything, so might as well end the program.
+- That is why this end tool.
+- For the continue, if to go to the continue edge, we have to use the update tool.
+- And to go to the end edge, you need to use the save tool.
+- It should make sense now, but do not worry if it does not.
+- We will do some more print statements so you see the workflow.
+- Lastly we need to obviously return continue because by default it is checked here that it has used the save tool.
+- The only other tool left is the right tool and, sorry, the update tool.
+- And the update tool means that we have to go to the continue edge, right?
+- And that function is done as well.
+- Pretty easy still.
+- This next function is again only coded to make the print statements in a more readable message format when we print them on the terminal.
+- You will see where this comes into play when we actually start invoking the graph and seeing how our process is going.
+- Now we actually create the graph.
+- How do we create the graph?
+- We have done this many times.
+- We will initialize it through a state graph.
+- Now we will add the nodes.
+- So agent and tools.
+- And the tools will be a tool node.
+- Again, if you notice back, we had one node, two node: the agent node and the tools node.
+- I am reflecting back and forth between this diagram and the code so I can show you exactly what we are coding.
+- Again, agent and tools node.
+- Now we will set the entry point at agent, which is the start point, and now we are going to add an edge between agent and tools.
+- We need to obviously create this edge because the agent needs to go to the tools, and then this edge, this directed edge and this conditional edge, creates the loop which will allow for the human AI collaboration.
+- Now we add the conditional edge, and that is the conditional edge which I was talking about: the continue and the end, that is, this conditional edge from tools.
+- Now the last thing we need to do is just compile it because we have finished the graph completely, right?
+- There is nothing left.
+- We have done the start point, we have done the end point, the end, this conditional edge is done, the nodes are done, and then this directed edge is done, and the start point is obviously done because we have created a directed.
+- So you can see the entire graph we have created just like that.
+- So again, nothing too hard.
+- Now we actually run the program.
+- And to run it, I have just written this function so that everything is in a more compact way.
+- This is just to invoke the graph.
+- That was the entire code.
+- This code will allow for human AI collaboration.
+- Yes, we used a global variable.
+- Again, there is nothing wrong with using a global variable.
+- I know some of you might frown upon it, but again, there is nothing wrong with it.
+- If we wanted to use more complicated stuff from LangGraph, like the injected state or even using something like commands and interrupts, we would have to write the code slightly differently.
+- But because this is a beginner level course, we have just disregarded that completely and we found another way of performing human AI collaboration.
+- Awesome.
+- So let us actually run this now.
+- So let us write python draft.py and you should be able to see all of the things.
+- I made my face cam slightly smaller so you can hopefully see everything.
+- Perfect.
+- So you currently have an empty document.
+- Could you let me know what you like to add or create in the document?
+- So what would you like?
+- Let us say we are writing an email to our colleague Tom saying that we cannot make it to the meeting.
+- So let us say write me an email.
+- Let us say write me an email to Tom saying we cannot make it to the meeting.
+- Let us see what it says.
+- So it says hi Tom I hope this message find you well.
+- Please let me know.
+- Okay, let us now give it some feedback on how we can improve.
+- You can also see that it has used the update tool as well.
+- Perfect.
+- So let us say make sure to also have specified that the meeting was supposed to be at 1000 a.m. at some random negation. Canary Wolf.
+- Let us see the updated thing.
+- Hi, Tom.
+- You can see message meeting at 10.
+- Can I wolf due to unforeseen circumstances?
+- Let us, I do not like this your name part though.
+- So let us say my name is V and it will update that as you can see.
+- Perfect.
+- What else do we want to change?
+- We can also say something like let us say but tell him that I can make it at 12 p.m. in New York, some random location.
+- Okay, I am making this up, but you get the plan.
+- The next day.
+- So, let us see.
+- And perfect.
+- It has updated it.
+- However, I am available to meet at 12:00 p.m. in New York the next day.
+- Obviously, it is complete rubbish like the timings of the location I have written.
+- But you can see how we can just use human AI collaboration here.
+- One more thing which I do not like is this part.
+- I do not like the fact that it is not a new line.
+- I mean, I am being a bit picky here.
+- We can say something like put the I hope this message finds you well.
+- Awesome.
+- And as you can see that is done as well.
+- So now let us say I like it.
+- Save it please.
+- And what happens?
+- You can see that it used the save tool.
+- The tool results is document has been updated successfully.
+- The current content is this and the document has been saved to unable to attend meeting email.
+- Now remember we never passed in the file name at all.
+- That was all generated by the agent itself.
+- And to check we need to go on unable to attend meeting.
+- So let us see, here it is.
+- And you can see it is the exact same meeting, exact same email we said.
+- So subject, oops, best regards me.
+- All the exact same content.
+- Perfect.
+- We do not even need to make it so that we are drafting emails.
+- We can even drop short stories.
+- We can drop whatever we want.
+- In fact, we can also pass in a previous message.
+- The reason it started off like with nothing is because we pass in an empty list.
+- But if you wanted to, we could have written something over here with our previous or already existing email or already existing document and then the model, the agentic system, would know that this is what the content is, the current content, how would you like to change that.
+- That is exactly how we will be able to operate on our existing ones.
+- You can see that this is quite a robust thing.
+- If we want another example, for example, python drafter.py.
+- Now watch this as well.
+- Look how robust this is.
+- If I say something like write an email, it actually gives back questions.
+- So sure, what would you like the email to say?
+- So remember, it did not even go through any tool here.
+- Using LangGraph we can really make the agents quite robust.
+- That is the thing which I wanted to show you.
+- It does not always have to pick a tool because the LLM itself, the agent node has an LLM in the background backend.
+- The bind tools function increases the scope of it by providing some tools, but that does not mean it has to use those tools.
+- If it does not feel like the need to use the tools, it will not.
+- In this case it wanted to ask us more questions about it.
+- It would say what would you like this email to say because to be fair I only wrote three words.
+- That was what I was trying to show you.
+- So let us just clear this now because we do not need to.
+- You can see it perfectly works human AI collaboration in LangGraph and this is actually somewhat useful as well.
+- Of course you can use GPT4 canvas and all of that stuff, but this is how you would do it in LangGraph.
+- If you would like an extension to this, what you could do is add a voice feature as well.
+- Maybe you could use OpenAI Whisper for speech to text conversion or add 11 laps for text to speech conversion and maybe you can make it voice based because right now I am giving it text mode.
+- What about voice mode?
+- You could also include a GUI to this.
+- There is a lot of stuff which you can do.
+- You can even have your own knowledge base as well and include that.
+- So a lot of potential with this if you want homework for this specific project, there you go.
+- So that is the end of this subsection.
+- Awesome.
+- So now let us build our fifth AI agent.
+- Some of you might have been looking forward to this.
+- It is retrieval augmented generation, RAG.
+- What will the graph look like?
+- It will look something like this.
+- Again, start point, end point, really similar to what a React agent was, right?
+- But we have two agents in this case.
+- We have a retriever agent and we have our main agent LLM, right?
+- It will have obviously a conditional edge, a loop, and everything.
+- Again, we are bringing everything we have learned so far and merging them into one.
+- We are also going to be learning about a little bit about RAG.
+- I will assume you know what RAG is.
+- I am not going to go too much in detail into the nitty-gritty of it.
+- But again, on the surface level, I will obviously explain what RAG is about and everything.
+- If you are excited, let us jump to the code.
+- Now you can see that I have already done all of the imports which we will need.
+- You will notice how there are these four imports which we have not come across yet.
+- Rather than explain them from the get-go, I will explain them as they come because it will make more sense, it will make more intuitive sense that way.
+- Now I am going to be loading our ENV file which contains all the API keys.
+- This time I am going to be initializing our LLM differently.
+- Well, slightly differently.
+- It is the same LLM, but why did I say differently?
+- Because I have passed in a new parameter called temperature.
+- For those of you who do not know what temperature is, it is essentially a parameter which depicts how stochastic the model outputs, how stochastic you want the model outputs to be.
+- Because I have set it to be zero, temperature equal to zero makes the model output more deterministic.
+- Similarly, if I had set the temperature to be one, the model output would have been more stochastic.
+- So now we create the embedding model.
+- The embedding model is what is going to convert our text into vector embeddings.
+- This will be the layout for it.
+- Please note one important thing, which is the embedding model has to be compatible with the LLM we are using.
+- You can use whatever LLM you want, but make sure the embedding model is compatible with it.
+- For example, let us say we are using GBD40, an open model, but the embedding model we are using is from Ollama, some random model.
+- They most likely are not going to be compatible.
+- Why?
+- Because there are so many differences between them.
+- One potential difference could be the vector dimension.
+- So just a rule of thumb: make sure the LLM and the embedding model is compatible.
+- So now we are going to specify the PDF part.
+- This is the stock market performance 2024 PDF.
+- Essentially this is just a document which I created which contains a lot about the stock market performance.
+- I can show you that right now actually.
+- This contains nine pages and is just a document containing some stock market details in 2024.
+- So now, in case you have specified the PDF in a wrong directory or if it cannot find it, this error will pop up.
+- I have just put this for debugging purposes if you use the code which I provided on GitHub.
+- This will load the PDF.
+- You can see PyPDFLoader is one of the imports which we made here.
+- Again, it is in the name and the comment.
+- It just simply loads the PDF.
+- This try and except command just checks if the PDF is there.
+- Pages is equal to PDF loader.load.
+- This essentially says how many pages are there in the document.
+- So you can see there are nine pages in our document.
+- If I run this command, if I run this, so clear python rag agent.py py it should say nine pages.
+- So there we go.
+- PDF has been loaded and has nine pages as expected.
+- It is time for the chunking process.
+- What is chunking?
+- First look at this.
+- There are two parameters which I have specified.
+- Chunk size, which is a thousand, and chunk overlap, which is 200.
+- Let us break this down a bit.
+- Going back to our document, chunk size was a thousand tokens.
+- Let us say that this was a chunk for example.
+- Obviously that is not going to be a thousand tokens, but just as demonstration purposes, let us assume it is.
+- This is saying as soon as you have reached a thousand tokens, you create a new chunk.
+- Let us say a thousand tokens ended here.
+- So this would be the start of a new chunk like such.
+- You keep going and going and going until the end of the document.
+- But what about the second parameter?
+- The second parameter is specified overlap and that is essentially saying your consecutive chunks should have some tokens which exist in both.
+- For example, because it was 200, the second chunk is not going to start from here.
+- It is actually going to start something like this.
+- They are obviously going to be the same length in terms of tokens, but they will have some tokens which will be in both chunks.
+- For example, this part will be in both because that is the overlap.
+- 200 tokens to be precise.
+- That was just a brief overview of what chunks are in RAG.
+- This recursive character text splitter is one of the imports we did.
+- This text splitter chunking process, we now apply it to all of the pages, all of our nine pages in our document.
+- This piece of code is essentially saying this: the Chroma vector database.
+- We are going to be using a Chroma vector database to store all of our vector embeddings, by the way.
+- But the place where we want our Chroma vector database to be will be specified in this file path.
+- The collection's name will be called stock market.
+- You can specify it wherever you want obviously, but I have just specified it to be in the same folder.
+- This is just an if statement to make sure that if this is the first time we are running this command, if we are running this file, if this collection does not exist we will create the collection in the specified directory.
+- Again, not too hard yet.
+- Now here comes a try except command, try except block.
+- This is where we actually create the vector embedding, where we create the Chroma vector database, and these are just parameters which I specify.
+- For example, how I want the pages to be split, what embeddings to use, where to store it, and the collection name.
+- The collection name being stock market, right?
+- If there is an error, it will throw an error and if it is successful, it will print on the terminal.
+- So now we create something called a retriever.
+- The retriever is quite important in RAG.
+- It is the first part of RAG: retrieval augmented generation.
+- So the retriever is what actually retrieves the chunks, the most similar chunks.
+- The search type which we are going to use is similarity.
+- It is just the default anyway.
+- You do not really need to know how that works to be honest.
+- But what you do need to know is this part.
+- In this code I have made sure that every time the amount of chunks it outputs back is five.
+- Why?
+- Because k here is the amount of chunks to be returned.
+- So I have set it as five.
+- I am pretty sure if we go to the actual documents here the default is four.
+- This is just a parameter which you can set.
+- Now you do not want it to be too high of course or too low.
+- So you want a good middle ground, and 4 or 5 is a good middle ground in my opinion.
+- So now let us create our tool.
+- Again we use decorator tool.
+- The tool's name is going to be this retriever tool.
+- It will take in a query and it will output a string.
+- So the doc string is as follows.
+- This tool searches and returns the information from our document.
+- Self-explanatory.
+- Obviously we need to invoke it to the retriever.
+- So whatever query we ask, for example what was Apple's performance in 2024, that will be the query and that will be passed to our retriever, which will grab all the chunks, the top five most similar chunks.
+- If we do not find anything similar, for example if I say something like who is Bob the builder, obviously Bob the builder is not in this document, so it will return as I found no relevant information in the document, and this will be passed to our LLM agent.
+- If it does find it though, what we will do is we will create an empty list and we will store all of the similarity, all of the chunks which it found, and then return those results through this.
+- It is quite easy still.
+- This piece of code we have already come across.
+- There is only one tool.
+- So we just bind that tool to our LLM.
+- This code we have also done many times.
+- It is the creation of the agent state.
+- Again, we are using our add messages reducer function.
+- All of this we have covered many times, so you should be quite familiar with it.
+- So now we create the should continue function and the should continue function is going to be the underlying function behind our conditional edge.
+- It will check if the last message contains any tool calls.
+- If it does then we proceed.
+- If it does not then we will just end.
+- So now we specify the system prompt.
+- This system prompt is going to be quite big.
+- Let me copy and paste it here.
+- The reason it is quite big is I want to specify as much information to the LLM so that it knows what to do.
+- I have just said you are an intelligent AI assistant who answers questions about the document loaded into your knowledge base.
+- You can read the rest if you would like.
+- But I have also written this: please always cite the specific parts of the document you use in your answers.
+- This is really just to make sure it is not hallucinating.
+- Because as we know hallucination is quite a big problem with LLMs.
+- So this is just to make sure hallucinations are kept to a bare minimum.
+- So now we create a dictionary of our tools and we now create the underlying function which will be our LLM agent.
+- So this function will call the LLM with the current state, and you can see it converts the messages to a list, passes the system messages, and passes it to our LLM which is defined like this, and it will just return the messages, aka the updated state.
+- This should be like such.
+- Awesome.
+- So now we create our second agent which will be the retriever agent, which you saw in the graph I showed you in the introduction.
+- The retriever agent executes the tool calls from the LLM response.
+- What is this code actually saying?
+- Well, all in all, this massive piece of code really just says if there is a tool, if the tool name is within the specified tool, aka if it is retriever tool, then actually run it.
+- If it is not, then we will output the result as input in incorrect tool name. Please retry and select the tool from list of available tools.
+- It is just for checking if the tool which is decided from the LLM is valid or not.
+- So that is all what this is doing.
+- If it is valid, it will invoke it and we will store the results like this and we will return that.
+- Again, this should be agent state like such.
+- So we have created all of our two AI agents now and now we are going to create the graph itself.
+- Like how we have done, initialize it through state graph and then we are going to add our two AI agents as nodes with their respective actions and we are now going to add the conditional edge.
+- So which will be llm, which will be start from llm and the should continue function is the function which will be the underlying function, and this is a true false statement and this is the edge, the set entry point, all of this we have covered many times so again should be quite familiar to you.
+- Last but not least, compile the graph and store it in a ragation.
+- One last thing though, I have created this function and this function is just a function which allows us to keep asking questions to our graph and keep receiving answers back.
+- If you want to exit, we can write either exit or quit.
+- It is just a simple while loop.
+- That is all it is.
+- It prints the answer.
+- So that is the actual code complete.
+- Now we are going to test it and see if this is reliable or not.
+- Let us actually test this now by doing python rag agent.py py.
+- Let us run this.
+- PDF has been loaded and has nine pages.
+- Created Chroma vector database vector store.
+- Where is this stored?
+- You can see that this will all be on GitHub as well.
+- But this is the Chroma database and its respective bin files.
+- Because this has been created, this is a good sign that everything is working.
+- Let us ask a simple question.
+- Let us ask something like how was the S&P 500 performing in 2024?
+- Enter.
+- So it is calling the retriever tool with the query this.
+- Its result then puts that complete back to the model and the model has given us this.
+- In 2024, the S&P 500 delivered a total return of this with a 23% increase late 1990s and all of that stuff, magnificent 7, and has given us the respective citations as well.
+- How can we verify this is correct?
+- Let us see.
+- Notice how if you remember this part, the total return of approximately 25%.
+- The reason I asked it for this is because that is exactly what over here it stated, the benchmark roughly at 25%, 23%.
+- Remember this late 1990s part, that is exactly what this is saying here as well, and this was correctly defined in the first document.
+- So this is clearly working now, right?
+- It cannot have made up this information.
+- So that means our RAG is successfully set up.
+- Now I can ask as many questions as I want.
+- But now let us see if there is something which is not included in the RAG.
+- For example, we can say something like how did OpenAI perform in 2024?
+- Retrieve a tool called back to the model.
+- Okay, now look at this.
+- If I do it like that, the documents do not provide specific information about OpenAI stock performance, which is true because OpenAI is not a publicly traded company.
+- It got that correct.
+- So no hallucination there.
+- You can clearly see that this is working completely fine.
+- And that, ladies and gentlemen, is how you create a retrieval augmented generation graph in LangGraph.
+- That brings us to the end of this course and I hope you liked it and I hope you learned a lot about LangGraph.
+- Although this course is finishing here, your journey in LangGraph is just beginning.
+- Just think about how many cool AI projects, AI agent systems you can make now.
+- Maybe your own Javis as well.
+- If you have any further questions related to the course material or just things in general or just want to say hi, you can always message me on LinkedIn.
+- With that being said, thank you so much for watching this course and I hope to see you in another course.
+- Take care.
