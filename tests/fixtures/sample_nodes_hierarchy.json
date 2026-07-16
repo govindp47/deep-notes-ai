@@ -1,0 +1,26 @@
+[
+  {
+    "type": "topic",
+    "name": "LangGraph Fundamentals",
+    "subtopics": [
+      {
+        "type": "content",
+        "id": "aaaaaaaa-0000-0000-0000-000000000001"
+      },
+      {
+        "type": "content",
+        "id": "bbbbbbbb-0000-0000-0000-000000000002"
+      }
+    ]
+  },
+  {
+    "type": "topic",
+    "name": "Graph Execution",
+    "subtopics": [
+      {
+        "type": "content",
+        "id": "cccccccc-0000-0000-0000-000000000003"
+      }
+    ]
+  }
+]

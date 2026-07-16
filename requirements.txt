@@ -4,6 +4,7 @@ langchain-core
 langchain-openai
 langchain_nvidia_ai_endpoints
 youtube-transcript-api
+yt-dlp
 qdrant-client
 neo4j
 tiktoken

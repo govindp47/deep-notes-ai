@@ -1,0 +1,14 @@
+{
+  "aaaaaaaa-0000-0000-0000-000000000001": {
+    "content": "## LangGraph Fundamentals\n\n- TypedDict defines state shape.\n- State is passed to nodes.\n- Nodes update state.",
+    "summary": "LangGraph uses TypedDict for state, passed through nodes."
+  },
+  "bbbbbbbb-0000-0000-0000-000000000002": {
+    "content": "## State Management\n\n- Nodes never mutate state directly.\n- All fields are optional in total=False.",
+    "summary": "Nodes return new state dicts; fields are optional."
+  },
+  "cccccccc-0000-0000-0000-000000000003": {
+    "content": "## Graph Execution\n\n- START connects to the first node.\n- Edges define execution order.\n- Conditional edges route on state values.\n- END terminates the graph.\n- Checkpointer persists state between runs.",
+    "summary": "Graph execution flows from START to END via edges and conditional routing."
+  }
+}

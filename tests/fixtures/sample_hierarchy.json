@@ -1,0 +1,36 @@
+{
+  "hierarchy": [
+    {
+      "name": "LangGraph Fundamentals",
+      "start_point": 1,
+      "end_point": 5,
+      "children": [
+        {
+          "name": "CONTENT",
+          "start_point": 1,
+          "end_point": 3,
+          "children": []
+        },
+        {
+          "name": "CONTENT",
+          "start_point": 4,
+          "end_point": 5,
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Graph Execution",
+      "start_point": 6,
+      "end_point": 10,
+      "children": [
+        {
+          "name": "CONTENT",
+          "start_point": 6,
+          "end_point": 10,
+          "children": []
+        }
+      ]
+    }
+  ]
+}

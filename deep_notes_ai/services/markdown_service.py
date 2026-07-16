@@ -1,0 +1,195 @@
+"""
+deep_notes_ai/services/markdown_service.py
+
+MarkdownService — render complete markdown from Node hierarchy and content store.
+"""
+from __future__ import annotations
+
+import logging
+from datetime import datetime
+
+from deep_notes_ai.domain.models import (
+    ContentNode,
+    ContentStoreItem,
+    Node,
+    TitleNode,
+)
+
+logger = logging.getLogger(__name__)
+
+
+class MarkdownService:
+    """
+    Render the complete markdown document from a Node hierarchy and content store.
+
+    Pure function — no I/O. The caller (render_markdown node) handles saving.
+    Heading levels increment with nesting depth.
+    """
+
+    def build_document(
+        self,
+        content_title: str,
+        hierarchy: list[Node],
+        content_store: dict[str, ContentStoreItem],
+        summary: bool = False,
+    ) -> str:
+        """
+        Build the complete markdown document.
+
+        Args:
+            content_title: The document title (rendered as H1).
+            hierarchy:        List of root Node objects.
+            content_store:    UUID → ContentStoreItem mapping.
+            summary:          If True, use ContentStoreItem.summary;
+                              otherwise use ContentStoreItem.content.
+
+        Returns:
+            Complete markdown string ending with a newline.
+        """
+        lines: list[str] = [f"# {content_title}"]
+
+        for node in hierarchy:
+            rendered = self._render_node(
+                node=node,
+                content_store=content_store,
+                summary=summary,
+                heading_level=2,
+            )
+            if rendered:
+                lines.append(rendered)
+
+        document = "\n\n".join(lines)
+        # Ensure final newline, strip trailing whitespace from document
+        document = document.rstrip() + "\n"
+        return document
+
+    def _render_node(
+        self,
+        node: Node,
+        content_store: dict[str, ContentStoreItem],
+        summary: bool,
+        heading_level: int,
+    ) -> str:
+        """
+        Recursively render a Node to a markdown string.
+
+        Args:
+            node:          The node to render.
+            content_store: UUID → ContentStoreItem mapping.
+            summary:       Flag — use summary or content.
+            heading_level: Current heading depth (2 = ##, 3 = ###, ...).
+
+        Returns:
+            Rendered markdown string for this node and all descendants.
+        """
+        if isinstance(node, TitleNode):
+            heading = "#" * heading_level + " " + node.name
+            child_parts: list[str] = []
+
+            for child in node.subtopics:
+                rendered_child = self._render_node(
+                    node=child,
+                    content_store=content_store,
+                    summary=summary,
+                    heading_level=heading_level + 1,
+                )
+                if rendered_child:
+                    child_parts.append(rendered_child)
+
+            parts = [heading] + child_parts
+            return "\n\n".join(parts)
+
+        if isinstance(node, ContentNode):
+            item = content_store.get(node.id)
+            if item is None:
+                logger.warning("ContentNode id=%s not found in content_store.", node.id)
+                return ""
+
+            text = item.summary if summary else item.content
+            return text.strip() if text else ""
+
+        logger.warning("Unknown node type: %s", type(node).__name__)
+        return ""
+    
+
+    def build_readme(
+        self,
+        content_title: str,
+        content_id: str,
+        author_name: str | None,
+        upload_date: str | None,
+        content_url: str,
+        hierarchy: list[Node],
+    ) -> str:
+        """
+        Build the README.md for a single content source.
+
+        This document serves as an index and metadata page,
+        linking to the generated content.md and summary.md files.
+        """
+
+        lines: list[str] = [
+            f"# {content_title}",
+            "",
+            "## Metadata",
+            "",
+            f"- **Content ID:** `{content_id}`",
+            f"- **Author:** {author_name or 'Unknown'}",
+            f"- **Upload Date:** {upload_date or 'Unknown'}",
+            f"- **Source:** {content_url}",
+            "",
+            "## Generated Notes",
+            "",
+            "- [📘 Full Structured Notes](content.md)",
+            "- [📝 Summary Notes](summary.md)",
+            "",
+            "## Table of Contents",
+            "",
+        ]
+
+        for node in hierarchy:
+            rendered = self._render_toc(node, depth=0)
+            if rendered:
+                lines.extend(rendered)
+        
+        generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+
+        lines.extend(
+            [
+                "",
+                "---",
+                "",
+                f"*This document was automatically generated by Deep Notes AI on {generated_at}*",
+            ]
+        )
+
+        return "\n".join(lines).rstrip() + "\n"
+    
+
+    def _render_toc(
+        self,
+        node: Node,
+        depth: int,
+    ) -> list[str]:
+        """
+        Render only the heading hierarchy as a nested markdown list.
+        """
+
+        if isinstance(node, ContentNode):
+            return []
+
+        indent = "  " * depth
+
+        lines = [
+            f"{indent}- {node.name}"
+        ]
+
+        for child in node.subtopics:
+            lines.extend(
+                self._render_toc(
+                    child,
+                    depth + 1,
+                )
+            )
+
+        return lines
