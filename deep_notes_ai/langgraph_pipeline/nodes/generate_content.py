@@ -80,7 +80,7 @@ def make_generate_content_node(
 
         PAYLOAD_METADATA_AVERAGE_TOKENS = 60
 
-        artifact_path = current_run_dir / "artifacts" / "nodes_content.json"
+        artifact_path = current_run_dir / "nodes_content.json"
 
         is_complete = True
         for expected_uuid in nodes_content:

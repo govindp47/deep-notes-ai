@@ -91,7 +91,6 @@ celerybeat.pid
 
 # Environments
 .env
-.env.*
 .venv
 env/
 venv/
@@ -141,3 +140,5 @@ Thumbs.db
 
 # Playground
 playground/
+logs/
+pipeline_crash_logs/

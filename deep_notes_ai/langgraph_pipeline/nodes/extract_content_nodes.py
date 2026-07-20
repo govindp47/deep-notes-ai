@@ -25,9 +25,6 @@ from typing import TYPE_CHECKING
 from deep_notes_ai.domain.algorithms import build_content_payloads, rebuild_content_payloads
 from deep_notes_ai.domain.models import (
     ContentNodeCountMismatchError,
-    ContentPayload,
-    ContentStoreItem,
-    Node,
     TranscriptHierarchy,
 )
 from deep_notes_ai.langgraph_pipeline.state import PipelineState
@@ -70,8 +67,8 @@ def make_extract_content_nodes(
         current_run_dir: Path = state["current_run_dir"]
         content_node_count: int = state["content_node_count"]
 
-        nodes_hierarchy_path = current_run_dir / "artifacts" / "nodes_hierarchy.json"
-        nodes_content_path = current_run_dir / "artifacts" / "nodes_content.json"
+        nodes_hierarchy_path = current_run_dir / "nodes_hierarchy.json"
+        nodes_content_path = current_run_dir / "nodes_content.json"
 
         if persistence_service.exists(nodes_hierarchy_path) and persistence_service.exists(nodes_content_path):
             logger.info("nodes_hierarchy.json and nodes_content.json exist, loading from persistence")

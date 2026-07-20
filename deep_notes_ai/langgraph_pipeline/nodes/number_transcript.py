@@ -80,7 +80,7 @@ def make_number_transcript_node(
 
         logger.info("cleaned content numbering")
 
-        content_points_path = current_run_dir / "artifacts" / "content_points.txt"
+        content_points_path = current_run_dir / "content_points.txt"
 
         if persistence_service.exists(content_points_path):
             content_points_txt = persistence_service.load_text(content_points_path)

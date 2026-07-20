@@ -1,28 +1,32 @@
 """
 deep_notes_ai/langgraph_pipeline/nodes/render_markdown.py
 
-Node 10: render_markdown
+Node: render_markdown
 
-Responsibility: Render the two final markdown documents (full content and
-revision summaries).
+Responsibility:
+Load the processed transcript artefacts (single-part or multi-part), merge
+them into one logical transcript, render the final markdown documents, and
+persist them.
 
 Reads from state:
-  - content_title: str
-  - nodes_hierarchy: list[Node]
-  - nodes_content: dict[str, ContentStoreItem]
-  - current_run_dir: Path
-  - content_id: str
+    metadata
+    processing_context
+    content_base_dir
+
 Calls:
-  - MarkdownService.build_document(..., summary=False) → content_md
-  - MarkdownService.build_document(..., summary=True) → summary_md
-  - PersistenceService.save_markdown(content_path, content_md)
-  - PersistenceService.save_markdown(summary_path, summary_md)
+    TranscriptMergeService.merge(...)
+    MarkdownService.build_document(...)
+    MarkdownService.build_readme(...)
+    PersistenceService.save_markdown(...)
+
 Returns:
-  {
-    "content_md_path": Path,
-    "summary_md_path": Path,
-    "pipeline_complete": True,
-  }
+    {
+        "pipeline_complete": True,
+    }
+
+Error handling:
+    Any merge/persistence failure is translated into PersistenceError and
+    allowed to propagate to the graph-level error handling.
 """
 from __future__ import annotations
 
@@ -30,10 +34,17 @@ import logging
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from deep_notes_ai.domain.models import ContentStoreItem, Node
+from deep_notes_ai.domain.models import (
+    ContentMetadata,
+    PersistenceError,
+    ProcessingContext,
+)
 from deep_notes_ai.langgraph_pipeline.state import PipelineState
 from deep_notes_ai.services.markdown_service import MarkdownService
 from deep_notes_ai.services.persistence_service import PersistenceService
+from deep_notes_ai.services.transcript_merge_service import (
+    TranscriptMergeService,
+)
 
 if TYPE_CHECKING:
     from deep_notes_ai.services.progress_service import ProgressService
@@ -46,100 +57,165 @@ _STAGE = "Rendering Markdown"
 
 def make_render_markdown_node(
     markdown_service: MarkdownService,
+    transcript_merge_service: TranscriptMergeService,
     persistence_service: PersistenceService,
     progress_service: "ProgressService | None" = None,
 ):
     """
-    Factory that returns a render_markdown node bound to the given services.
+    Factory that returns a render_markdown node.
 
     Args:
-        markdown_service:    MarkdownService for building the documents.
-        persistence_service: PersistenceService for saving the files.
-        progress_service:    Optional ProgressService for user-facing progress.
+        markdown_service:
+            Markdown renderer.
+
+        transcript_merge_service:
+            Service responsible for merging transcript-part artefacts.
+
+        persistence_service:
+            PersistenceService used for saving markdown files.
+
+        progress_service:
+            Optional ProgressService.
 
     Returns:
-        A callable compatible with LangGraph node interface.
+        LangGraph-compatible node callable.
     """
 
     def render_markdown(state: PipelineState) -> dict:
         """
-        Render content and summary markdown documents, then save to disk.
+        Render the final markdown documents.
 
         Reads:
-            state["content_title"]: str
-            state["nodes_hierarchy"]: list[Node]
-            state["nodes_content"]: dict[str, ContentStoreItem]
-            state["current_run_dir"]: Path
-            state["content_id"]: str
+            state["metadata"]
+            state["processing_context"]
+            state["content_base_dir"]
 
         Returns:
             {
-                "content_md_path": Path,
-                "summary_md_path": Path,
                 "pipeline_complete": True,
             }
 
         Raises:
-            PersistenceError: if file writing fails.
+            PersistenceError:
+                If transcript artefacts cannot be loaded or markdown files
+                cannot be written.
         """
-        content_title: str = state["content_title"]
-        content_id: str = state["content_id"]
-        author_name: str | None = state.get("author_name")
-        upload_date: str | None = state.get("upload_date")
-        content_url: str = state["content_url"]
-        nodes_hierarchy: list[Node] = state["nodes_hierarchy"]
-        nodes_content: dict[str, ContentStoreItem] = state["nodes_content"]
-        run_dir: Path = state["current_run_dir"]
+        metadata: ContentMetadata = state["metadata"]
+        processing_context: ProcessingContext = state["processing_context"]
+        content_base_dir: Path = state["content_base_dir"]
 
-        logger.info("Rendering markdown documents.")
+        logger.info("Rendering final markdown documents.")
 
         if progress_service is not None:
-            progress_service.emit_start(node_name=_NODE, stage=_STAGE)
+            progress_service.emit_start(
+                node_name=_NODE,
+                stage=_STAGE,
+            )
 
-        # Render full content document (summary=False).
-        content_md = markdown_service.build_document(
-            content_title=content_title,
-            hierarchy=nodes_hierarchy,
-            content_store=nodes_content,
+        # Merge transcript artefacts.
+        logger.info("Loading processed transcript artefacts.")
+
+        try:
+            merged = transcript_merge_service.merge(
+                processing_context=processing_context,
+                content_base_dir=content_base_dir,
+            )
+        except Exception as exc:
+            raise PersistenceError(
+                f"Failed to merge transcript artefacts: {exc}"
+            ) from exc
+
+        logger.info(
+            "Merged transcript successfully "
+            "(hierarchy_nodes=%d, content_nodes=%d).",
+            len(merged.hierarchy),
+            len(merged.content_store),
+        )
+
+        # Render full content.
+        logger.info("Rendering content markdown.")
+
+        content_markdown = markdown_service.build_document(
+            content_title=metadata.title,
+            hierarchy=merged.hierarchy,
+            content_store=merged.content_store,
             summary=False,
         )
-        content_md_path = run_dir / "content.md"
-        persistence_service.save_markdown(content_md_path, content_md)
-        logger.info("Saved content markdown to %s", content_md_path)
 
-        # Render revision summary document (summary=True).
-        summary_md = markdown_service.build_document(
-            content_title=content_title,
-            hierarchy=nodes_hierarchy,
-            content_store=nodes_content,
+        content_path = content_base_dir / "content.md"
+
+        persistence_service.save_markdown(
+            content_path,
+            content_markdown,
+        )
+
+        logger.info(
+            "Saved content markdown to %s",
+            content_path,
+        )
+
+        # Render summaries.
+        logger.info("Rendering summary markdown.")
+
+        summary_markdown = markdown_service.build_document(
+            content_title=metadata.title,
+            hierarchy=merged.hierarchy,
+            content_store=merged.content_store,
             summary=True,
         )
-        summary_md_path = run_dir / "summary.md"
-        persistence_service.save_markdown(summary_md_path, summary_md)
-        logger.info("Saved summary markdown to %s", summary_md_path)
 
-        # Render README document.
-        readme_md = markdown_service.build_readme(
-            content_title=content_title,
-            content_id=content_id,
-            author_name=author_name,
-            upload_date=upload_date,
-            content_url=content_url,
-            hierarchy=nodes_hierarchy,
+        summary_path = content_base_dir / "summary.md"
+
+        persistence_service.save_markdown(
+            summary_path,
+            summary_markdown,
         )
 
-        readme_path = run_dir / "README.md"
-        persistence_service.save_markdown(readme_path, readme_md)
-        logger.info("Saved README markdown to %s", readme_path)
+        logger.info(
+            "Saved summary markdown to %s",
+            summary_path,
+        )
+
+        # Render README.
+        logger.info("Rendering README.")
+
+        readme_markdown = markdown_service.build_readme(
+            content_title=metadata.title,
+            content_id=metadata.id,
+            author_name=metadata.author,
+            upload_date=metadata.upload_date,
+            content_url=metadata.url,
+            hierarchy=merged.hierarchy,
+        )
+
+        readme_path = content_base_dir / "README.md"
+
+        persistence_service.save_markdown(
+            readme_path,
+            readme_markdown,
+        )
+
+        logger.info(
+            "Saved README markdown to %s",
+            readme_path,
+        )
 
         if progress_service is not None:
-            progress_service.emit_completed(node_name=_NODE, stage=_STAGE)
+            progress_service.emit_completed(
+                node_name=_NODE,
+                stage=_STAGE,
+            )
+
             progress_service.emit_info(
                 node_name=_NODE,
                 stage="Pipeline",
-                message="Pipeline finished — notes ready",
+                message="Pipeline finished — notes ready.",
             )
 
-        return {"pipeline_complete": True}
+        logger.info("Markdown rendering completed successfully.")
+
+        return {
+            "pipeline_complete": True,
+        }
 
     return render_markdown

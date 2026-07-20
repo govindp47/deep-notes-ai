@@ -66,29 +66,9 @@ def make_route_source_node(base_dir: Path):
         # Validation logic specific to type could go here if needed, 
         # but basic validation is enough for the router.
         
-        current_run_dir = base_dir / source_type.value
+        content_base_dir = base_dir / source_type.value
         
-        return {"current_run_dir": current_run_dir}
+        return {"content_base_dir": content_base_dir}
 
     return route_source
 
-
-def determine_source_route(state: PipelineState) -> str:
-    """
-    Determine the next node based on source_type.
-    """
-    source_type = state.get("source_type")
-    
-    if source_type == SourceType.YOUTUBE:
-        return "extract_video_metadata"
-    elif source_type == SourceType.ARTICLE:
-        return "ingest_article"
-    elif source_type == SourceType.DOCUMENTATION:
-        return "ingest_documentation"
-    elif source_type == SourceType.BOOK:
-        return "ingest_book"
-    elif source_type == SourceType.PRESENTATION:
-        return "ingest_presentation"
-    
-    # Fallback, though route_source node should have caught this.
-    raise UnsupportedSourceTypeError(f"Unsupported route for source type: {source_type}")

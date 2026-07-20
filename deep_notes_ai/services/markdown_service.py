@@ -26,6 +26,8 @@ class MarkdownService:
     Heading levels increment with nesting depth.
     """
 
+    _MAX_HEADING_LEVEL = 6
+
     def build_document(
         self,
         content_title: str,
@@ -83,7 +85,7 @@ class MarkdownService:
             Rendered markdown string for this node and all descendants.
         """
         if isinstance(node, TitleNode):
-            heading = "#" * heading_level + " " + node.name
+            heading = f"{self._heading_prefix(heading_level)} {node.name}"
             child_parts: list[str] = []
 
             for child in node.subtopics:
@@ -193,3 +195,13 @@ class MarkdownService:
             )
 
         return lines
+    
+    def _heading_prefix(self, level: int) -> str:
+        """
+        Return a valid Markdown heading prefix.
+
+        Markdown supports heading levels from H1 to H6. Any requested level
+        greater than H6 is clamped to H6.
+        """
+        level = min(level, self._MAX_HEADING_LEVEL)
+        return "#" * level

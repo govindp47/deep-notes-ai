@@ -10,6 +10,7 @@ Categories:
 """
 from __future__ import annotations
 
+from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import StrEnum
@@ -42,6 +43,12 @@ class TranscriptFetchError(Exception):
     """Raised when a YouTube transcript cannot be fetched."""
 
 
+class EmptyTranscriptError(TranscriptFetchError):
+    """
+    Raised when YouTube returns an empty or whitespace-only transcript.
+    """
+
+
 class UnsupportedLLMProviderError(Exception):
     """Raised when an unsupported LLM provider is requested."""
 
@@ -57,6 +64,13 @@ class PromptNotFoundError(Exception):
 class PersistenceError(Exception):
     """Raised on any file I/O failure."""
 
+
+class InvalidProcessingContextError(Exception):
+    """
+    Raised when the current pipeline processing context is invalid or inconsistent.
+    Indicates that execution cannot safely continue with the available state.
+    """
+    
 
 class AlgorithmError(Exception):
     """Raised when a domain algorithm detects invalid input."""
@@ -139,6 +153,28 @@ class SummaryGenerationError(Exception):
     """Raised when summary generation cannot complete after fallback."""
 
 
+class TranscriptTooLargeError(Exception):
+    """
+    Raised when a transcript exceeds the configured token limit and no
+    timestamp chapters are available for partitioning.
+    """
+
+
+class TimestampExtractionError(Exception):
+    """Raised when timestamp chapter extraction fails unexpectedly."""
+
+
+class InvalidBreakpointSelectionError(Exception):
+    """Raised when user-selected breakpoints fail validation."""
+
+
+class TranscriptPartitionError(Exception):
+    """
+    Raised when splitting the transcript produces a part that exceeds
+    the configured per-part token limit.
+    """
+
+
 # ============================================================================
 # ENUMS
 # ============================================================================
@@ -154,9 +190,112 @@ class SourceType(StrEnum):
     PRESENTATION = "presentation"
 
 
+class TranscriptProcessingMode(StrEnum):
+    """
+    Processing mode determined after token calculation.
+
+    SINGLE     — transcript fits within the per-part limit; processed in one pass.
+    MULTI_PART — transcript exceeds the limit; requires user-selected breakpoints.
+    """
+    SINGLE     = "single"
+    MULTI_PART = "multi_part"
+
+
 # ============================================================================
 # DATACLASSES
 # ============================================================================
+
+@dataclass(slots=True)
+class TimestampChapter:
+    """
+    One timestamp chapter parsed from a YouTube video description.
+
+    Attributes:
+        title:             Human-readable chapter name.
+        timestamp_seconds: Chapter start offset in seconds from the beginning.
+        display:           Formatted timestamp string exactly as it appeared
+                           in the description (e.g. "01:23:45" or "04:32").
+    """
+    title: str
+    timestamp_seconds: int
+    display: str
+
+
+@dataclass(slots=True)
+class ChapterTranscript:
+    """
+    Transcript segment corresponding to a single chapter.
+
+    Attributes:
+        title:
+            Human-readable chapter title.
+
+        display:
+            Formatted timestamp string indicating the chapter's starting
+            position (e.g. "01:23:45" or "04:32").
+
+        transcript:
+            Transcript text belonging to this chapter.
+
+        tokens:
+            Total number of tokens in ``transcript`` as calculated by the
+            project's TokenizerService.
+    """
+    title: str
+    display: str
+    transcript: str
+    tokens: int
+
+
+@dataclass(slots=True)
+class ContentPart:
+    """
+    A logical transcript partition processed independently by the pipeline.
+
+    Each part represents a contiguous section of the original transcript,
+    bounded by two chapter timestamps (or the end of the transcript for the
+    final part).
+
+    Attributes:
+        part_title:
+            Filesystem-safe identifier describing the transcript range covered
+            by this part.
+
+            The title is derived from the starting timestamp of this part and
+            the starting timestamp of the following part.
+
+            Examples:
+                "00-00_to_08-35"
+                "08-35_to_15-42"
+                "15-42_to_27-10"
+                "27-10_to_END"
+
+            This value is intended for use as a directory name and therefore
+            must contain only filesystem-safe characters.
+
+        content:
+            The raw transcript text belonging exclusively to this part. This
+            content is passed through the existing processing pipeline
+            (cleaning, hierarchy generation, content generation, summaries,
+            etc.) independently of the other parts.
+
+        tokens:
+            Total number of tokens.
+    """
+    part_title: str
+    content: str
+    tokens: int
+
+@dataclass(slots=True)
+class ProcessingContext:
+    """
+    Holds the current execution state for transcript processing, including the
+    selected processing mode and the content parts being processed.
+    """
+    processing_mode: TranscriptProcessingMode
+    current_part: int
+    total_parts: int
+    content_parts: list[ContentPart]
 
 @dataclass(slots=True)
 class ContentStoreItem:
@@ -257,6 +396,23 @@ class PayloadResult:
 
 
 @dataclass(slots=True)
+class MergedTranscript:
+    """
+    Result of merging one or more processed transcript parts.
+
+    Attributes:
+        hierarchy:
+            Combined hierarchy preserving the original transcript order.
+
+        content_store:
+            Combined UUID → ContentStoreItem mapping.
+    """
+
+    hierarchy: list[Node]
+    content_store: dict[str, ContentStoreItem]
+
+
+@dataclass(slots=True)
 class LLMCallRecord:
     """
     Immutable record of a single LLM invocation.
@@ -344,6 +500,29 @@ class ProgressEvent:
 # ============================================================================
 # PYDANTIC MODELS
 # ============================================================================
+
+class ContentMetadata(BaseModel, ABC):
+    """
+    Generic metadata shared across all supported content sources.
+
+    This model is intended to be extended by source-specific metadata models
+    (e.g. YouTube videos, PDFs, websites, documents).
+    """
+
+    id: str = Field(...)
+    url: str = Field(...)
+    title: str = Field(...)
+    description: str = Field(default="")
+    upload_date: str = Field(default="")
+    author: str = Field(default="")
+
+
+class VideoMetadata(ContentMetadata):
+    """
+    Metadata specific to video-based content.
+    """
+
+    chapters: list[TimestampChapter] = Field(default_factory=list)
 
 class TopicNode(BaseModel):
     """

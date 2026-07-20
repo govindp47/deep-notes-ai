@@ -84,7 +84,7 @@ def make_generate_hierarchy_node(
         content_points: list[str] = state["content_points"]
         current_run_dir: Path = state["current_run_dir"]
 
-        artifact_path = current_run_dir / "artifacts" / "raw_hierarchy.json"
+        artifact_path = current_run_dir / "raw_hierarchy.json"
 
         if persistence_service.exists(artifact_path):
             raw_hierarchy = persistence_service.load_hierarchy(artifact_path)

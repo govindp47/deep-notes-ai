@@ -126,8 +126,8 @@ class LLMMonitorService:
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        json_path = run_dir / "artifacts" / f"llm_usage_{timestamp}.json"
-        md_path = run_dir / "artifacts" / f"llm_usage_{timestamp}.md"
+        json_path = run_dir / f"llm_usage_{timestamp}.json"
+        md_path = run_dir / f"llm_usage_{timestamp}.md"
 
         self._persistence_service.save_json(json_path, self._build_json_report(calls, summary))
         logger.info("LLM usage JSON report saved to %s", json_path)

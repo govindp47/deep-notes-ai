@@ -99,11 +99,10 @@ def make_clean_transcript_node(
         raw_content: str = state["raw_content"]
         current_run_dir: Path = state["current_run_dir"]
 
-        artifacts_dir = current_run_dir / "artifacts"
-        canonical_path = artifacts_dir / "cleaned_content.txt"
+        artifacts_path = current_run_dir / "cleaned_content.txt"
 
-        if persistence_service.exists(canonical_path):
-            cleaned = persistence_service.load_text(canonical_path)
+        if persistence_service.exists(artifacts_path):
+            cleaned = persistence_service.load_text(artifacts_path)
             logger.info("Found existing cleaned content. Restoring state from disk.")
             if progress_service is not None:
                 progress_service.emit_info(
@@ -138,7 +137,7 @@ def make_clean_transcript_node(
                     )
                 raise
             logger.info("Content cleaned, output_chars=%d", len(cleaned))
-            persistence_service.save_text(canonical_path, cleaned)
+            persistence_service.save_text(artifacts_path, cleaned)
             if progress_service is not None:
                 progress_service.emit_completed(node_name=_NODE, stage=_STAGE)
             return {"cleaned_content": cleaned}
@@ -152,7 +151,7 @@ def make_clean_transcript_node(
 
         for i, _chunk in enumerate(chunks):
             chunk_num = i + 1
-            part_path = artifacts_dir / f"cleaned_content_part_{chunk_num:03d}_{chunk_count:03d}.txt"
+            part_path = current_run_dir / f"cleaned_content_part_{chunk_num:03d}_{chunk_count:03d}.txt"
 
             if persistence_service.exists(part_path):
                 cleaned_parts[i] = persistence_service.load_text(part_path)
@@ -192,7 +191,7 @@ def make_clean_transcript_node(
                 chunk_num = idx + 1
                 cleaned_part = _normalise_llm_result(result)
                 cleaned_parts[idx] = cleaned_part
-                part_path = artifacts_dir / f"cleaned_content_part_{chunk_num:03d}_{chunk_count:03d}.txt"
+                part_path = current_run_dir / f"cleaned_content_part_{chunk_num:03d}_{chunk_count:03d}.txt"
 
                 persistence_service.save_text(part_path, cleaned_part)
 
@@ -211,12 +210,12 @@ def make_clean_transcript_node(
         logger.info("Joining cleaned transcript from %d chunks.", chunk_count)
         cleaned = "\n".join(cleaned_parts)
 
-        persistence_service.save_text(canonical_path, cleaned)
+        persistence_service.save_text(artifacts_path, cleaned)
 
         # ── Remove temporary chunk artifacts ──────────────────────────────────
         for i in range(chunk_count):
             chunk_num = i + 1
-            part_path = artifacts_dir / f"cleaned_content_part_{chunk_num:03d}_{chunk_count:03d}.txt"
+            part_path = current_run_dir / f"cleaned_content_part_{chunk_num:03d}_{chunk_count:03d}.txt"
             if persistence_service.exists(part_path):
                 try:
                     part_path.unlink()

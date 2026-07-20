@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     openai_api_key: str = Field(..., alias="OPENAI_API_KEY")
     nvidia_api_key: str = Field(default="", alias="NVIDIA_API_KEY")
 
+    # ── Multi-Part Processing ─────────────────────────────────────────────────────
+    transcript_max_tokens_per_part: int = Field(default=50_000, alias="TRANSCRIPT_MAX_TOKENS_PER_PART")
+
     # ── LLM Model Configuration ───────────────────────────────────────────────
     cleaning_model_provider: str = Field(default="openai", alias="CLEANING_MODEL_PROVIDER")
     cleaning_model_name: str = Field(default="gpt-4o-mini", alias="CLEANING_MODEL_NAME")
@@ -50,14 +53,7 @@ class Settings(BaseSettings):
     logs_dir: Path = Field(default=Path("logs"), alias="LOGS_DIR")
     checkpoints_db: Path = Field(default=Path("artefacts/checkpoints.db"), alias="CHECKPOINTS_DB")
 
-    # ── YouTube Configuration ─────────────────────────────────────────────────
-    youtube_request_timeout: int = Field(default=10, alias="YOUTUBE_REQUEST_TIMEOUT")
-    youtube_user_agent: str = Field(
-        default="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        alias="YOUTUBE_USER_AGENT"
-    )
-
-    # ── Feature Flags ─────────────────────────────────────────────────────────
+    # ── Feature Flags ─────────────────────────────────────────────────────────────
     use_sqlite_checkpointer: bool = Field(default=True, alias="USE_SQLITE_CHECKPOINTER")
     enable_structured_logging: bool = Field(default=True, alias="ENABLE_STRUCTURED_LOGGING")
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")

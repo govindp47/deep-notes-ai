@@ -14,6 +14,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Callable
 
+from deep_notes_ai.domain.models import InvalidYoutubeUrlError, VideoMetadataError
 from deep_notes_ai.langgraph_pipeline.state import PipelineState
 from deep_notes_ai.services.video_metadata_service import VideoMetadataService
 
@@ -54,9 +55,8 @@ def make_extract_video_metadata_node(
             progress_service.emit_start(node_name=_NODE, stage=_STAGE)
 
         try:
-            content_id = service.extract_content_id(youtube_url)
-            metadata = service.fetch_video_metadata(content_id)
-        except Exception:
+            metadata = service.fetch_metadata(youtube_url)
+        except (InvalidYoutubeUrlError, VideoMetadataError):
             if progress_service is not None:
                 progress_service.emit_failed(
                     node_name=_NODE,
@@ -65,21 +65,17 @@ def make_extract_video_metadata_node(
                 )
             raise
 
-        base_dir = state.get("current_run_dir")
-        current_run_dir = base_dir / content_id
+        base_dir = state["content_base_dir"]
+        content_base_dir = base_dir / metadata.id
 
-        result = {
-            "current_run_dir": current_run_dir,
-            "content_id": content_id,
-            "content_url": service.normalize_url(content_id),
-            **metadata,
-        }
-
-        logger.info("Metadata extraction complete for content_id=%s", content_id)
+        logger.info("Metadata extraction complete for content_id=%s", metadata.id)
 
         if progress_service is not None:
             progress_service.emit_completed(node_name=_NODE, stage=_STAGE)
 
-        return result
+        return {
+            "metadata": metadata,
+            "content_base_dir": content_base_dir,
+        }
 
     return extract_video_metadata
