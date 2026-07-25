@@ -26,6 +26,8 @@ from langgraph.graph import END, START, StateGraph
 
 from deep_notes_ai.domain.models import SourceType, TranscriptProcessingMode, UnsupportedSourceTypeError
 from deep_notes_ai.langgraph_pipeline.nodes.advance_transcript_part import make_advance_transcript_part_node
+from deep_notes_ai.langgraph_pipeline.nodes.article.extract_article import make_extract_article_node
+from deep_notes_ai.langgraph_pipeline.nodes.article.extract_article_metadata import make_extract_article_metadata_node
 from deep_notes_ai.langgraph_pipeline.nodes.complete_transcript_part import make_complete_transcript_part_node
 from deep_notes_ai.langgraph_pipeline.state import PipelineState
 from deep_notes_ai.langgraph_pipeline.nodes.extract_video_metadata import (
@@ -65,11 +67,14 @@ from deep_notes_ai.langgraph_pipeline.nodes.route_source import (
     make_route_source_node,
 )
 from deep_notes_ai.langgraph_pipeline.nodes.ingest_placeholders import (
-    ingest_article,
     ingest_documentation,
     ingest_book,
     ingest_presentation,
 )
+from deep_notes_ai.services.article.article_download_service import ArticleDownloadService
+from deep_notes_ai.services.article.article_extraction_service import ArticleExtractionService
+from deep_notes_ai.services.article.article_metadata_service import ArticleMetadataService
+from deep_notes_ai.services.article.markdown_structure_service import MarkdownStructureService
 from deep_notes_ai.services.chapter_selection_service import ChapterSelectionService
 from deep_notes_ai.services.transcript_merge_service import TranscriptMergeService
 from deep_notes_ai.services.transcript_service import TranscriptService
@@ -99,24 +104,32 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 NODE_ROUTE_SOURCE = "route_source"
-NODE_INGEST_ARTICLE = "ingest_article"
+
+NODE_EXTRACT_VIDEO_METADATA = "extract_video_metadata"
+NODE_EXTRACT_TRANSCRIPT = "extract_transcript"
+
+NODE_EXTRACT_ARTICLE_METADATA = "extract_article_metadata"
+NODE_EXTRACT_ARTICLE = "extract_article"
+
 NODE_INGEST_DOCUMENTATION = "ingest_documentation"
 NODE_INGEST_BOOK = "ingest_book"
 NODE_INGEST_PRESENTATION = "ingest_presentation"
 
-NODE_EXTRACT_VIDEO_METADATA = "extract_video_metadata"
-NODE_EXTRACT_TRANSCRIPT = "extract_transcript"
 NODE_DETERMINE_PROCESSING_MODE = "determine_processing_mode"
-NODE_ADVANCE_TRANSCRIPT_PART = "advance_transcript_part"
-NODE_COMPLETE_TRANSCRIPT_PART = "complete_transcript_part"
 NODE_SELECT_TRANSCRIPT_BREAKPOINTS = "select_transcript_breakpoints"
+NODE_ADVANCE_TRANSCRIPT_PART = "advance_transcript_part"
+
 NODE_CLEAN_TRANSCRIPT = "clean_transcript"
+NODE_CLEAN_ARTICLE = "clean_article"
 NODE_NUMBER_TRANSCRIPT = "number_transcript"
 NODE_GENERATE_HIERARCHY = "generate_hierarchy"
 NODE_EXTRACT_CONTENT_NODES = "extract_content_nodes"
 NODE_GENERATE_CONTENT = "generate_content"
 NODE_GENERATE_SUMMARIES = "generate_summaries"
+
+NODE_COMPLETE_TRANSCRIPT_PART = "complete_transcript_part"
 NODE_RENDER_MARKDOWN = "render_markdown"
+
 NODE_HIERARCHY_VALIDATION_FAILED = "hierarchy_validation_failed"
 NODE_INVALID_TRANSCRIPT_BREAKDOWN = "invalid_transcript_breakdown"
 
@@ -201,7 +214,7 @@ def determine_source_route(state: PipelineState) -> str:
     if source_type == SourceType.YOUTUBE:
         return NODE_EXTRACT_VIDEO_METADATA
     elif source_type == SourceType.ARTICLE:
-        return NODE_INGEST_ARTICLE
+        return NODE_EXTRACT_ARTICLE_METADATA
     elif source_type == SourceType.DOCUMENTATION:
         return NODE_INGEST_DOCUMENTATION
     elif source_type == SourceType.BOOK:
@@ -273,6 +286,19 @@ def route_after_complete_transcript_part(state: PipelineState) -> str:
 
     return NODE_ADVANCE_TRANSCRIPT_PART
 
+def route_after_advance_transcript_part(state: PipelineState) -> str:
+    """
+    Route to the appropriate cleaner based on the source type.
+    """
+    source_type: SourceType = state.get("source_type")
+
+    if source_type == SourceType.YOUTUBE:
+        return NODE_CLEAN_TRANSCRIPT
+    elif source_type == SourceType.ARTICLE:
+        return NODE_CLEAN_ARTICLE
+
+    raise ValueError(f"Unsupported source_type: {source_type!r}")
+
 def route_after_validation(state: PipelineState) -> str:
     """
     Route based on hierarchy_valid flag.
@@ -314,12 +340,13 @@ def build_graph(settings: "Settings") -> tuple:
     video_metadata_service = VideoMetadataService()
     prompt_service = PromptService(settings.prompts_dir)
     partition_service = PartitionService()
-    cleaning_tokenizer_service = TokenizerService(settings.cleaning_model_name)
+    transcript_cleaning_tokenizer_service = TokenizerService(settings.transcript_cleaning_model_name)
+    article_cleaning_tokenizer_service = TokenizerService(settings.article_cleaning_model_name)
     hierarchy_tokenizer_service = TokenizerService(settings.hierarchy_model_name)
     content_tokenizer_service = TokenizerService(settings.content_model_name)
     summary_tokenizer_service = TokenizerService(settings.summary_model_name)
     # Reuse the cleaning tokenizer as the canonical transcript size counter.
-    transcript_tokenizer_service = cleaning_tokenizer_service
+    transcript_tokenizer_service = transcript_cleaning_tokenizer_service
     transcript_service = TranscriptService(
         tokenizer_service=transcript_tokenizer_service
     )
@@ -329,6 +356,14 @@ def build_graph(settings: "Settings") -> tuple:
     partition_service_transcript = TranscriptPartitionService(max_tokens_per_part=settings.transcript_max_tokens_per_part)
     chapter_selection_service = ChapterSelectionService(max_tokens_per_part=settings.transcript_max_tokens_per_part)
     transcript_merge_service = TranscriptMergeService(persistence_service=persistence_service)
+    article_download_service = ArticleDownloadService(settings=settings)
+    article_metadata_service = ArticleMetadataService()
+    markdown_structure_service = MarkdownStructureService()
+    article_tokenizer_service = article_cleaning_tokenizer_service
+    article_extraction_service = ArticleExtractionService(
+        markdown_structure_service=markdown_structure_service,
+        tokenizer_service=article_tokenizer_service
+    )
 
     # ── Monitoring & Progress services ───────────────────────────────────────
     pricing_service = PricingService()
@@ -349,15 +384,25 @@ def build_graph(settings: "Settings") -> tuple:
 
     # ── LLM chains ──────────────────────────────────────────────────────────
     # Node 2: cleaning chain
-    cleaning_prompt = prompt_service.load("yt_transcript_cleaner")
-    cleaning_model = llm_service.get_chat_model(
-        provider=settings.cleaning_model_provider,
-        model=settings.cleaning_model_name,
-        temperature=settings.cleaning_model_temperature,
+    transcript_cleaning_prompt = prompt_service.load("yt_transcript_cleaner")
+    transcript_cleaning_model = llm_service.get_chat_model(
+        provider=settings.transcript_cleaning_model_provider,
+        model=settings.transcript_cleaning_model_name,
+        temperature=settings.transcript_cleaning_model_temperature,
         node_name=NODE_CLEAN_TRANSCRIPT,
         operation_name="Transcript Cleaning",
     )
-    cleaning_chain: Runnable = cleaning_prompt | cleaning_model
+    transcript_cleaning_chain: Runnable = transcript_cleaning_prompt | transcript_cleaning_model
+
+    article_cleaning_prompt = prompt_service.load("article_cleaner")
+    article_cleaning_model = llm_service.get_chat_model(
+        provider=settings.article_cleaning_model_provider,
+        model=settings.article_cleaning_model_name,
+        temperature=settings.article_cleaning_model_temperature,
+        node_name=NODE_CLEAN_ARTICLE,
+        operation_name="Article Cleaning",
+    )
+    article_cleaning_chain: Runnable = article_cleaning_prompt | article_cleaning_model
 
     # Node 4: hierarchy chain (structured output)
     from deep_notes_ai.domain.models import TranscriptHierarchy
@@ -417,10 +462,20 @@ def build_graph(settings: "Settings") -> tuple:
     # ── Node callables ───────────────────────────────────────────────────────
     route_source_node = make_route_source_node(settings.output_base_dir)
     extract_video_metadata_node = make_extract_video_metadata_node(
-        video_metadata_service, progress_service
+        service=video_metadata_service, 
+        progress_service=progress_service,
     )
     extract_transcript_node = make_extract_transcript_node(
         transcript_service=transcript_service,
+        progress_service=progress_service,
+    )
+    extract_article_metadata_node = make_extract_article_metadata_node(
+        article_download_service=article_download_service,
+        article_metadata_service=article_metadata_service,
+        progress_service=progress_service,
+    )
+    extract_article_node = make_extract_article_node(
+        article_extraction_service=article_extraction_service,
         progress_service=progress_service,
     )
     determine_processing_mode_node = make_determine_processing_mode_node(
@@ -437,11 +492,19 @@ def build_graph(settings: "Settings") -> tuple:
         progress_service=progress_service
     )
     clean_transcript_node = make_clean_transcript_node(
-        llm_chain=cleaning_chain,
+        llm_chain=transcript_cleaning_chain,
         persistence_service=persistence_service,
-        tokenizer_service=cleaning_tokenizer_service,
-        chunk_tokens=settings.cleaning_chunk_tokens,
-        overlap_chars=settings.cleaning_chunk_overlap_chars,
+        tokenizer_service=transcript_cleaning_tokenizer_service,
+        chunk_tokens=settings.transcript_cleaning_chunk_tokens,
+        overlap_chars=settings.transcript_cleaning_chunk_overlap_chars,
+        progress_service=progress_service,
+    )
+    clean_article_node = make_clean_transcript_node(
+        llm_chain=article_cleaning_chain,
+        persistence_service=persistence_service,
+        tokenizer_service=article_cleaning_tokenizer_service,
+        chunk_tokens=settings.article_cleaning_chunk_tokens,
+        overlap_chars=settings.article_cleaning_chunk_overlap_chars,
         progress_service=progress_service,
     )
     number_transcript_node = make_number_transcript_node(persistence_service, progress_service)
@@ -484,24 +547,32 @@ def build_graph(settings: "Settings") -> tuple:
 
     # Register nodes
     graph.add_node(NODE_ROUTE_SOURCE, route_source_node)
-    graph.add_node(NODE_INGEST_ARTICLE, ingest_article)
+
+    graph.add_node(NODE_EXTRACT_VIDEO_METADATA, extract_video_metadata_node)
+    graph.add_node(NODE_EXTRACT_TRANSCRIPT, extract_transcript_node)
+
+    graph.add_node(NODE_EXTRACT_ARTICLE_METADATA, extract_article_metadata_node)
+    graph.add_node(NODE_EXTRACT_ARTICLE, extract_article_node)
+
     graph.add_node(NODE_INGEST_DOCUMENTATION, ingest_documentation)
     graph.add_node(NODE_INGEST_BOOK, ingest_book)
     graph.add_node(NODE_INGEST_PRESENTATION, ingest_presentation)
 
-    graph.add_node(NODE_EXTRACT_VIDEO_METADATA, extract_video_metadata_node)
-    graph.add_node(NODE_EXTRACT_TRANSCRIPT, extract_transcript_node)
     graph.add_node(NODE_DETERMINE_PROCESSING_MODE, determine_processing_mode_node)
     graph.add_node(NODE_SELECT_TRANSCRIPT_BREAKPOINTS, select_transcript_breakpoints_node)
     graph.add_node(NODE_ADVANCE_TRANSCRIPT_PART, advance_transcript_part_node)
+
     graph.add_node(NODE_CLEAN_TRANSCRIPT, clean_transcript_node)
+    graph.add_node(NODE_CLEAN_ARTICLE, clean_article_node)
     graph.add_node(NODE_NUMBER_TRANSCRIPT, number_transcript_node)
     graph.add_node(NODE_GENERATE_HIERARCHY, generate_hierarchy_node)
     graph.add_node(NODE_EXTRACT_CONTENT_NODES, extract_content_nodes)
     graph.add_node(NODE_GENERATE_CONTENT, generate_content_node)
     graph.add_node(NODE_GENERATE_SUMMARIES, generate_summaries_node)
+
     graph.add_node(NODE_COMPLETE_TRANSCRIPT_PART, complete_transcript_part_node)
     graph.add_node(NODE_RENDER_MARKDOWN, render_markdown_node)
+
     graph.add_node(NODE_HIERARCHY_VALIDATION_FAILED, hierarchy_validation_failed_node)
     graph.add_node(NODE_INVALID_TRANSCRIPT_BREAKDOWN, invalid_transcript_breakdown_node)
 
@@ -513,7 +584,7 @@ def build_graph(settings: "Settings") -> tuple:
         determine_source_route,
         {
             NODE_EXTRACT_VIDEO_METADATA: NODE_EXTRACT_VIDEO_METADATA,
-            NODE_INGEST_ARTICLE: NODE_INGEST_ARTICLE,
+            NODE_EXTRACT_ARTICLE_METADATA: NODE_EXTRACT_ARTICLE_METADATA,
             NODE_INGEST_DOCUMENTATION: NODE_INGEST_DOCUMENTATION,
             NODE_INGEST_BOOK: NODE_INGEST_BOOK,
             NODE_INGEST_PRESENTATION: NODE_INGEST_PRESENTATION,
@@ -521,7 +592,6 @@ def build_graph(settings: "Settings") -> tuple:
     )
 
     # Ingestion branches converging on END
-    graph.add_edge(NODE_INGEST_ARTICLE, END)
     graph.add_edge(NODE_INGEST_DOCUMENTATION, END)
     graph.add_edge(NODE_INGEST_BOOK, END)
     graph.add_edge(NODE_INGEST_PRESENTATION, END)
@@ -529,6 +599,10 @@ def build_graph(settings: "Settings") -> tuple:
     # ── YouTube path: metadata → transcript → token count → mode decision ────
     graph.add_edge(NODE_EXTRACT_VIDEO_METADATA, NODE_EXTRACT_TRANSCRIPT)
     graph.add_edge(NODE_EXTRACT_TRANSCRIPT, NODE_DETERMINE_PROCESSING_MODE)
+
+    # ── Article path ────
+    graph.add_edge(NODE_EXTRACT_ARTICLE_METADATA, NODE_EXTRACT_ARTICLE)
+    graph.add_edge(NODE_EXTRACT_ARTICLE, NODE_DETERMINE_PROCESSING_MODE)
 
     # After mode determination
     graph.add_conditional_edges(
@@ -548,8 +622,16 @@ def build_graph(settings: "Settings") -> tuple:
         },
     )
 
-    graph.add_edge(NODE_ADVANCE_TRANSCRIPT_PART, NODE_CLEAN_TRANSCRIPT)
+    graph.add_conditional_edges(
+        NODE_ADVANCE_TRANSCRIPT_PART,
+        route_after_advance_transcript_part,
+        {
+            NODE_CLEAN_TRANSCRIPT: NODE_CLEAN_TRANSCRIPT,
+            NODE_CLEAN_ARTICLE: NODE_CLEAN_ARTICLE,
+        },
+    )
     graph.add_edge(NODE_CLEAN_TRANSCRIPT, NODE_NUMBER_TRANSCRIPT)
+    graph.add_edge(NODE_CLEAN_ARTICLE, NODE_NUMBER_TRANSCRIPT)
     graph.add_edge(NODE_NUMBER_TRANSCRIPT, NODE_GENERATE_HIERARCHY)
     graph.add_conditional_edges(
         NODE_GENERATE_HIERARCHY,

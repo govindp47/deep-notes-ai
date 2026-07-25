@@ -49,7 +49,7 @@ def make_extract_video_metadata_node(
             InvalidYoutubeUrlError: if the URL is invalid.
         """
         youtube_url: str = state["source"]
-        logger.info("Extracting metadata for URL: %s", youtube_url)
+        logger.info("Extracting video metadata for URL: %s", youtube_url)
 
         if progress_service is not None:
             progress_service.emit_start(node_name=_NODE, stage=_STAGE)
@@ -68,7 +68,7 @@ def make_extract_video_metadata_node(
         base_dir = state["content_base_dir"]
         content_base_dir = base_dir / metadata.id
 
-        logger.info("Metadata extraction complete for content_id=%s", metadata.id)
+        logger.info("Video metadata extraction complete for content_id=%s", metadata.id)
 
         if progress_service is not None:
             progress_service.emit_completed(node_name=_NODE, stage=_STAGE)

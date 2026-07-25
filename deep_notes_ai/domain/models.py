@@ -163,7 +163,6 @@ class TranscriptTooLargeError(Exception):
 class TimestampExtractionError(Exception):
     """Raised when timestamp chapter extraction fails unexpectedly."""
 
-
 class InvalidBreakpointSelectionError(Exception):
     """Raised when user-selected breakpoints fail validation."""
 
@@ -172,6 +171,50 @@ class TranscriptPartitionError(Exception):
     """
     Raised when splitting the transcript produces a part that exceeds
     the configured per-part token limit.
+    """
+
+
+class ArticleDownloadError(Exception):
+    """
+    Raised when an article cannot be downloaded.
+
+    Typical causes include:
+        - Invalid URL
+        - Network timeout
+        - DNS failure
+        - HTTP error
+        - Redirect limit exceeded
+    """
+
+
+class ArticleExtractionError(Exception):
+    """
+    Raised when the downloaded HTML cannot be converted into readable content.
+
+    Typical causes include:
+        - Unsupported page structure
+        - Extraction library failure
+        - Empty extracted content
+    """
+
+
+class NoChaptersFoundError(ArticleExtractionError):
+    """
+    Raised when no valid chapter structure can be extracted from the article.
+    Indicates that the downloaded content could not be organized into chapters.
+    """
+
+
+class ArticleMetadataError(Exception):
+    """
+    Raised when article metadata cannot be extracted or normalized.
+    """
+
+
+class ArticleStructureError(Exception):
+    """
+    Raised when extracted markdown cannot be converted into a valid document
+    structure.
     """
 
 
@@ -219,6 +262,51 @@ class TimestampChapter:
     title: str
     timestamp_seconds: int
     display: str
+
+
+@dataclass(slots=True)
+class DocumentSection:
+    """
+    Represents a logical section extracted from an article.
+
+    The MarkdownStructureService converts extracted markdown into a sequence of
+    DocumentSection objects. These sections are later transformed into
+    ChapterTranscript objects so the remaining LangGraph pipeline can remain
+    completely source-agnostic.
+
+    Attributes:
+        heading:
+            Human-readable section heading.
+
+        level:
+            Markdown heading level.
+
+        content:
+            Plain markdown/text belonging to this section only.
+            Child sections are represented by separate DocumentSection objects.
+    """
+
+    heading: str
+    level: int
+    content: str
+
+    def __post_init__(self) -> None:
+        self.heading = self.heading.strip()
+        self.content = self.content.strip()
+
+        if not self.heading:
+            raise ValueError("DocumentSection.heading must not be empty.")
+
+        if self.level < 1:
+            raise ValueError("DocumentSection.level must be >= 1.")
+
+        first_line = self.content.split("\n", 1)[0].strip()
+
+        if first_line.startswith("#"):
+            raise ValueError(
+                "DocumentSection.content must not include a markdown heading. "
+                "The heading must be stored only in DocumentSection.heading."
+            )
 
 
 @dataclass(slots=True)
@@ -523,6 +611,20 @@ class VideoMetadata(ContentMetadata):
     """
 
     chapters: list[TimestampChapter] = Field(default_factory=list)
+
+
+class ArticleMetadata(ContentMetadata):
+    """
+    Metadata specific to article-like sources.
+
+    This model extends the generic ContentMetadata while remaining compatible
+    with the existing PipelineState. The processing pipeline only depends on
+    ContentMetadata fields, while article ingestion may use the additional
+    attributes during extraction and diagnostics.
+    """
+
+    raw_html: str = Field(...)
+
 
 class TopicNode(BaseModel):
     """

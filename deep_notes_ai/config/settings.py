@@ -20,11 +20,17 @@ class Settings(BaseSettings):
     transcript_max_tokens_per_part: int = Field(default=50_000, alias="TRANSCRIPT_MAX_TOKENS_PER_PART")
 
     # ── LLM Model Configuration ───────────────────────────────────────────────
-    cleaning_model_provider: str = Field(default="openai", alias="CLEANING_MODEL_PROVIDER")
-    cleaning_model_name: str = Field(default="gpt-4o-mini", alias="CLEANING_MODEL_NAME")
-    cleaning_model_temperature: float = Field(default=0.0, alias="CLEANING_MODEL_TEMPERATURE")
-    cleaning_chunk_tokens: int = Field(default=6000, alias="CLEANING_CHUNK_TOKENS")
-    cleaning_chunk_overlap_chars: int = Field(default=500, alias="CLEANING_CHUNK_OVERLAP_CHARS")
+    transcript_cleaning_model_provider: str = Field(default="openai", alias="TRANSCRIPT_CLEANING_MODEL_PROVIDER")
+    transcript_cleaning_model_name: str = Field(default="gpt-4o-mini", alias="TRANSCRIPT_CLEANING_MODEL_NAME")
+    transcript_cleaning_model_temperature: float = Field(default=0.0, alias="TRANSCRIPT_CLEANING_MODEL_TEMPERATURE")
+    transcript_cleaning_chunk_tokens: int = Field(default=6000, alias="TRANSCRIPT_CLEANING_CHUNK_TOKENS")
+    transcript_cleaning_chunk_overlap_chars: int = Field(default=500, alias="TRANSCRIPT_CLEANING_CHUNK_OVERLAP_CHARS")
+
+    article_cleaning_model_provider: str = Field(default="openai", alias="ARTICLE_CLEANING_MODEL_PROVIDER")
+    article_cleaning_model_name: str = Field(default="gpt-5-mini", alias="ARTICLE_CLEANING_MODEL_NAME")
+    article_cleaning_model_temperature: float = Field(default=0.0, alias="ARTICLE_CLEANING_MODEL_TEMPERATURE")
+    article_cleaning_chunk_tokens: int = Field(default=12000, alias="ARTICLE_CLEANING_CHUNK_TOKENS")
+    article_cleaning_chunk_overlap_chars: int = Field(default=500, alias="ARTICLE_CLEANING_CHUNK_OVERLAP_CHARS")
 
     hierarchy_model_provider: str = Field(default="openai", alias="HIERARCHY_MODEL_PROVIDER")
     hierarchy_model_name: str = Field(default="gpt-5-mini", alias="HIERARCHY_MODEL_NAME")
@@ -45,6 +51,20 @@ class Settings(BaseSettings):
 
     # ── Retry Configuration ───────────────────────────────────────────────────
     max_retries: int = Field(default=1, alias="MAX_RETRIES")
+
+    # ── Article Ingestion ────────────────────────────────────────────────────
+    article_request_timeout: float = Field(default=10.0, alias="ARTICLE_REQUEST_TIMEOUT")
+    article_max_redirects: int = Field(default=5, ge=0, alias="ARTICLE_MAX_REDIRECTS")
+    article_follow_redirects: bool = Field(default=True, alias="ARTICLE_FOLLOW_REDIRECTS")
+    article_verify_ssl: bool = Field(default=True, alias="ARTICLE_VERIFY_SSL")
+    article_user_agent: str = Field(
+        default=(
+            "Mozilla/5.0 (X11; Linux x86_64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/137.0.0.0 Safari/537.36"
+        ),
+        alias="ARTICLE_USER_AGENT",
+    )
 
     # ── Path Configuration ────────────────────────────────────────────────────
     output_base_dir: Path = Field(default=Path("output"), alias="OUTPUT_BASE_DIR")
