@@ -29,6 +29,8 @@ from deep_notes_ai.langgraph_pipeline.nodes.advance_transcript_part import make_
 from deep_notes_ai.langgraph_pipeline.nodes.article.extract_article import make_extract_article_node
 from deep_notes_ai.langgraph_pipeline.nodes.article.extract_article_metadata import make_extract_article_metadata_node
 from deep_notes_ai.langgraph_pipeline.nodes.complete_transcript_part import make_complete_transcript_part_node
+from deep_notes_ai.langgraph_pipeline.nodes.markdown.load_markdown import make_load_markdown_node
+from deep_notes_ai.langgraph_pipeline.nodes.markdown.parse_markdown import make_parse_markdown_node
 from deep_notes_ai.langgraph_pipeline.state import PipelineState
 from deep_notes_ai.langgraph_pipeline.nodes.extract_video_metadata import (
     make_extract_video_metadata_node,
@@ -76,6 +78,9 @@ from deep_notes_ai.services.article.article_extraction_service import ArticleExt
 from deep_notes_ai.services.article.article_metadata_service import ArticleMetadataService
 from deep_notes_ai.services.article.markdown_structure_service import MarkdownStructureService
 from deep_notes_ai.services.chapter_selection_service import ChapterSelectionService
+from deep_notes_ai.services.markdown.markdown_loader_service import MarkdownLoaderService
+from deep_notes_ai.services.markdown.markdown_metadata_service import MarkdownMetadataService
+from deep_notes_ai.services.markdown.markdown_parser_service import MarkdownParserService
 from deep_notes_ai.services.transcript_merge_service import TranscriptMergeService
 from deep_notes_ai.services.transcript_service import TranscriptService
 from deep_notes_ai.services.video_metadata_service import VideoMetadataService
@@ -110,6 +115,10 @@ NODE_EXTRACT_TRANSCRIPT = "extract_transcript"
 
 NODE_EXTRACT_ARTICLE_METADATA = "extract_article_metadata"
 NODE_EXTRACT_ARTICLE = "extract_article"
+
+NODE_LOAD_MARKDOWN = "node_load_markdown"
+NODE_PARSE_MARKDOWN = "node_parse_markdown"
+NODE_GENERATE_MARKDOWN_SUMMARIES = "generate_markdown_summaries"
 
 NODE_INGEST_DOCUMENTATION = "ingest_documentation"
 NODE_INGEST_BOOK = "ingest_book"
@@ -215,6 +224,8 @@ def determine_source_route(state: PipelineState) -> str:
         return NODE_EXTRACT_VIDEO_METADATA
     elif source_type == SourceType.ARTICLE:
         return NODE_EXTRACT_ARTICLE_METADATA
+    elif source_type == SourceType.MARKDOWN:
+        return NODE_LOAD_MARKDOWN
     elif source_type == SourceType.DOCUMENTATION:
         return NODE_INGEST_DOCUMENTATION
     elif source_type == SourceType.BOOK:
@@ -364,6 +375,9 @@ def build_graph(settings: "Settings") -> tuple:
         markdown_structure_service=markdown_structure_service,
         tokenizer_service=article_tokenizer_service
     )
+    markdown_loader_service = MarkdownLoaderService(persistence_service=persistence_service)
+    markdown_metadata_service = MarkdownMetadataService()
+    markdown_parser_service = MarkdownParserService()
 
     # ── Monitoring & Progress services ───────────────────────────────────────
     pricing_service = PricingService()
@@ -478,6 +492,17 @@ def build_graph(settings: "Settings") -> tuple:
         article_extraction_service=article_extraction_service,
         progress_service=progress_service,
     )
+    load_markdown_node = make_load_markdown_node(
+        markdown_loader_service=markdown_loader_service,
+        markdown_metadata_service=markdown_metadata_service,
+        persistence_service=persistence_service,
+        progress_service=progress_service,
+    )
+    parse_markdown_node = make_parse_markdown_node(
+        markdown_parser_service=markdown_parser_service,
+        persistence_service=persistence_service,
+        progress_service=progress_service,
+    )
     determine_processing_mode_node = make_determine_processing_mode_node(
         max_tokens_per_part=settings.transcript_max_tokens_per_part,
         progress_service=progress_service,
@@ -532,6 +557,7 @@ def build_graph(settings: "Settings") -> tuple:
         input_tokens_fallback=settings.summary_input_tokens_fallback,
         progress_service=progress_service
     )
+    generate_markdown_summaries_node = generate_summaries_node
     complete_transcript_part_node = make_complete_transcript_part_node(progress_service=progress_service)
     render_markdown_node = make_render_markdown_node(
         markdown_service=markdown_service,
@@ -553,6 +579,10 @@ def build_graph(settings: "Settings") -> tuple:
 
     graph.add_node(NODE_EXTRACT_ARTICLE_METADATA, extract_article_metadata_node)
     graph.add_node(NODE_EXTRACT_ARTICLE, extract_article_node)
+
+    graph.add_node(NODE_LOAD_MARKDOWN, load_markdown_node)
+    graph.add_node(NODE_PARSE_MARKDOWN, parse_markdown_node)
+    graph.add_node(NODE_GENERATE_MARKDOWN_SUMMARIES, generate_markdown_summaries_node)
 
     graph.add_node(NODE_INGEST_DOCUMENTATION, ingest_documentation)
     graph.add_node(NODE_INGEST_BOOK, ingest_book)
@@ -585,6 +615,7 @@ def build_graph(settings: "Settings") -> tuple:
         {
             NODE_EXTRACT_VIDEO_METADATA: NODE_EXTRACT_VIDEO_METADATA,
             NODE_EXTRACT_ARTICLE_METADATA: NODE_EXTRACT_ARTICLE_METADATA,
+            NODE_LOAD_MARKDOWN: NODE_LOAD_MARKDOWN,
             NODE_INGEST_DOCUMENTATION: NODE_INGEST_DOCUMENTATION,
             NODE_INGEST_BOOK: NODE_INGEST_BOOK,
             NODE_INGEST_PRESENTATION: NODE_INGEST_PRESENTATION,
@@ -603,6 +634,11 @@ def build_graph(settings: "Settings") -> tuple:
     # ── Article path ────
     graph.add_edge(NODE_EXTRACT_ARTICLE_METADATA, NODE_EXTRACT_ARTICLE)
     graph.add_edge(NODE_EXTRACT_ARTICLE, NODE_DETERMINE_PROCESSING_MODE)
+
+    # ── Markdown path ────
+    graph.add_edge(NODE_LOAD_MARKDOWN, NODE_PARSE_MARKDOWN)
+    graph.add_edge(NODE_PARSE_MARKDOWN, NODE_GENERATE_MARKDOWN_SUMMARIES)
+    graph.add_edge(NODE_GENERATE_MARKDOWN_SUMMARIES, NODE_RENDER_MARKDOWN)
 
     # After mode determination
     graph.add_conditional_edges(

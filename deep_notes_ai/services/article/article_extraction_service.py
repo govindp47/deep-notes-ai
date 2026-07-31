@@ -62,7 +62,7 @@ class ArticleExtractionService:
         "output_format": "markdown",
         "include_comments": False,
         "include_tables": True,
-        "include_links": False,
+        "include_links": True,
         "include_images": False,
         "include_formatting": True,
         "favor_precision": True,

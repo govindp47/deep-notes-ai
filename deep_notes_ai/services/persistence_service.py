@@ -7,6 +7,7 @@ Single point of access for reading and writing artefacts.
 """
 from __future__ import annotations
 
+import shutil
 from dataclasses import asdict, is_dataclass
 import json
 import logging
@@ -224,3 +225,36 @@ class PersistenceService:
     def save_markdown(self, path: Path, markdown: str) -> None:
         """Write a markdown string to a file."""
         self.save_text(path, markdown)
+
+    # -------------------------------------------------------------------------
+    # Directory operations
+    # -------------------------------------------------------------------------
+
+    def clear_directory(self, path: Path) -> None:
+        """
+        Remove all files and subdirectories inside a directory while preserving
+        the directory itself.
+
+        Creates the directory if it does not already exist.
+
+        Args:
+            path: Directory to clear.
+
+        Raises:
+            PersistenceError: If the directory cannot be cleared.
+        """
+        try:
+            path.mkdir(parents=True, exist_ok=True)
+
+            for child in path.iterdir():
+                if child.is_dir():
+                    shutil.rmtree(child)
+                else:
+                    child.unlink()
+
+            logger.info("Cleared directory %s", path)
+
+        except OSError as exc:
+            raise PersistenceError(
+                f"Failed to clear directory {path}: {exc}"
+            ) from exc

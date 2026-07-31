@@ -80,11 +80,11 @@ def make_extract_content_nodes(
                 content_points=content_points,
             )
 
-            if len(payload_result) != content_node_count:
+            if len(content_payload) != content_node_count:
                 raise ContentNodeCountMismatchError(
                     "Cached hierarchy/content is inconsistent with the validated "
                     f"hierarchy. Expected {content_node_count} content nodes, "
-                    f"but reconstructed {len(payload_result)} payloads."
+                    f"but reconstructed {len(content_payload)} payloads."
                 )
             
             if progress_service is not None:

@@ -218,6 +218,34 @@ class ArticleStructureError(Exception):
     """
 
 
+class MarkdownError(Exception):
+    """
+    Base exception for all markdown-related errors.
+    """
+
+
+class MarkdownLoadError(MarkdownError):
+    """
+    Raised when markdown cannot be loaded from a local file or remote URL.
+    """
+
+
+class MarkdownMetadataError(MarkdownError):
+    """
+    Raised when markdown metadata cannot be extracted.
+    """
+
+
+class MarkdownParseError(MarkdownError):
+    """
+    Raised when a markdown document cannot be parsed into the expected
+    node hierarchy and content store representation.
+
+    This includes failures during markdown structure reconstruction,
+    hierarchy creation, or any other parsing-related operation.
+    """
+
+
 # ============================================================================
 # ENUMS
 # ============================================================================
@@ -228,6 +256,7 @@ class SourceType(StrEnum):
     """
     YOUTUBE = "youtube"
     ARTICLE = "article"
+    MARKDOWN = "markdown"
     DOCUMENTATION = "documentation"
     BOOK = "book"
     PRESENTATION = "presentation"
@@ -624,6 +653,19 @@ class ArticleMetadata(ContentMetadata):
     """
 
     raw_html: str = Field(...)
+
+
+class MarkdownMetadata(ContentMetadata):
+    """
+    Metadata specific to Markdown-based sources.
+
+    This model extends the generic ContentMetadata for content provided as
+    Markdown, whether loaded from a local file or a remote URL. It stores the
+    original Markdown text so downstream pipeline stages can parse, normalize,
+    and transform the document without requiring another read from the source.
+    """
+
+    raw_content: str = Field(...)
 
 
 class TopicNode(BaseModel):

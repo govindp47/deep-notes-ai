@@ -425,6 +425,103 @@ def rebuild_content_payloads(
     return payload
 
 
+def _extract_content_payloads_for_markdown(
+    hierarchy_node: Node,
+    counter: list[int],
+    path: tuple[str, ...] = (),
+) -> list[ContentPayload]:
+    """
+    Traverse a converted markdown hierarchy and generate ContentPayload objects
+    for every ContentNode encountered.
+
+    The traversal is depth-first and preserves the original document order.
+    Each ContentNode is assigned a monotonically increasing range so downstream
+    stages can process the payloads in the same order as the markdown document.
+
+    Args:
+        hierarchy_node:
+            Current node being traversed.
+
+        counter:
+            Mutable traversal counter shared across the recursion. The current
+            value represents the next content index.
+
+        path:
+            Hierarchical path accumulated from the root to the current node.
+
+    Returns:
+        List of ContentPayload objects extracted from the subtree rooted at
+        the given node.
+
+    Raises:
+        HierarchyMismatchError:
+            If an unexpected node type is encountered.
+    """
+    if isinstance(hierarchy_node, ContentNode):
+        current_index = counter[0]
+        counter[0] += 1
+
+        return [
+            ContentPayload(
+                id=hierarchy_node.id,
+                hierarchy_path=list(path),
+                range=(current_index, current_index),
+                content_points_list=[],
+            )
+        ]
+
+    if not isinstance(hierarchy_node, TitleNode):
+        raise HierarchyMismatchError(
+            f"Hierarchy mismatch: expected TitleNode for topic '{hierarchy_node.name}'."
+        )
+
+    current_path = (*path, hierarchy_node.name)
+    extracted: list[ContentPayload] = []
+
+    for hierarchy_child in hierarchy_node.subtopics:
+        extracted.extend(
+            _extract_content_payloads_for_markdown(
+                hierarchy_node=hierarchy_child,
+                counter=counter,
+                path=current_path,
+            )
+        )
+
+    return extracted
+
+
+def build_content_payloads_from_hierarchy(
+    hierarchy: list[Node],
+) -> list[ContentPayload]:
+    """
+    Build ContentPayload objects from a converted markdown hierarchy.
+
+    The hierarchy is traversed in document order (depth-first), producing one
+    ContentPayload for every ContentNode. Since markdown-derived hierarchies
+    already preserve document ordering, ranges are assigned sequentially as
+    content nodes are visited.
+
+    Args:
+        converted_hierarchy:
+            Root nodes of the converted hierarchy.
+
+    Returns:
+        List of ContentPayload objects in document order.
+    """
+    payload: list[ContentPayload] = []
+    counter = [0]
+
+    for node in hierarchy:
+        payload.extend(
+            _extract_content_payloads_for_markdown(
+                hierarchy_node=node,
+                counter=counter,
+            )
+        )
+
+    return payload
+
+
 def filter_payload_by_range(
     payload: list[ContentPayload],
     start_point: int,

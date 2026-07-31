@@ -168,7 +168,7 @@ class MarkdownStructureService:
         heading_stack: list[tuple[str, int]] = []
 
         current_heading = "Introduction"
-        current_level = 0
+        current_level = 1
 
         segment_start = 0
         index = 0
@@ -300,6 +300,14 @@ class MarkdownStructureService:
 
         if not content:
             return
+        
+        if not heading:
+            logger.warning("no heading for section content: %s", content[:min(25, len(content))])
+            heading = "NO HEADING DETECTED"
+        
+        if level < 1:
+            logger.warning("Level for section: %s is < 1", heading)
+            level = 1
 
         sections.append(
             DocumentSection(
